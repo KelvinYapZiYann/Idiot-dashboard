@@ -7,8 +7,8 @@
       data-original-title="Sidebar toggle"
       data-placement="right"
     >
-      <i class="tim-icons icon-align-center visible-on-sidebar-regular"></i>
-      <i class="tim-icons icon-bullet-list-67 visible-on-sidebar-mini"></i>
+      <i class="fas fa-align-justify visible-on-sidebar-regular"></i>
+      <i class="fas fa-list-ul visible-on-sidebar-mini"></i>
     </button>
   <!-- </el-tooltip> -->
 </template>

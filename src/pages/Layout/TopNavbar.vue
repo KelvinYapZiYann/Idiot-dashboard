@@ -118,8 +118,8 @@
           <drop-down :defaultShow="showMenu">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
               <div class="photo" :title="userFullname">
-                <!-- <img v-if="userGender == 'FEMALE'" src="@/assets/img/anime6.png" alt="Profile Photo" />
-                <img v-else src="@/assets/img/anime3.png" alt="Profile Photo" /> -->
+                <img src="@/assets/img/anime6.png" alt="Profile Photo" />
+                <!-- <img v-else src="@/assets/img/anime3.png" alt="Profile Photo" /> -->
               </div>
               <b class="caret d-none d-lg-block d-xl-block"></b>
               <p class="d-lg-none">

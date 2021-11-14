@@ -50,7 +50,7 @@ export default {
     },
     backgroundColor: {
       type: String,
-      default: "blue",
+      default: "green",
       description: "Sidebar background color (blue|green|orange|red|primary)"
     },
     sidebarLinks: {

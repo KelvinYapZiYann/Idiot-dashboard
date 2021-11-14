@@ -6,7 +6,7 @@
           <sidebar-link
             :link="{
               name: $t('route.dashboard'),
-              icon: 'tim-icons icon-chart-pie-36',
+              icon: 'fas fa-home',
               path: '/dashboard'
             }"
           >
@@ -125,7 +125,7 @@ export default {
   },
   data() {
     return {
-      backgroundColor: "blue"
+      backgroundColor: "primary"
     };
   },
   computed: {
