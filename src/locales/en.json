@@ -4,6 +4,8 @@
   },
   "route": {
     "dashboard": "Dashboard",
+    "stores": "Stores",
+    "inStoreTraffics": "In-Store Traffics",
     "userProfile": "User Profile",
     "logout": "Logout"
   },

@@ -12,6 +12,33 @@
           >
           </sidebar-link>
 
+          <sidebar-link
+            :link="{
+              name: $t('route.stores'),
+              icon: 'fas fa-map-marker',
+              path: '/stores'
+            }"
+          >
+          </sidebar-link>
+
+          <sidebar-link
+            :link="{
+              name: $t('route.inStoreTraffics'),
+              icon: 'fas fa-camera',
+              path: '/inStoreTraffics'
+            }"
+          >
+          </sidebar-link>
+
+          <sidebar-link
+            :link="{
+              name: $t('route.userProfile'),
+              icon: 'fas fa-user',
+              path: '/user'
+            }"
+          >
+          </sidebar-link>
+
         
           <!-- <sidebar-link
             :link="{ name: $t('sidebar.assets'), path: '/assets', icon: 'fas fa-home'}"
