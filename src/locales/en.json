@@ -1,6 +1,11 @@
 {
   "company": {
-    "name": "ID iOT"
+    "name": "ID-IOT"
+  },
+  "route": {
+    "dashboard": "Dashboard",
+    "userProfile": "User Profile",
+    "logout": "Logout"
   },
   "component": {
     "title": ""

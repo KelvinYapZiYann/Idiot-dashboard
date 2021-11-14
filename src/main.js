@@ -6,9 +6,14 @@ import router from "./router/index";
 import store from "./store";
 import i18n from "./i18n";
 
+import SideBar from "@/components/SidebarPlugin";
+
+import "@/assets/scss/dashboard.scss";
+
 Vue.config.productionTip = false
 
 Vue.use(VueRouter);
+Vue.use(SideBar);
 
 new Vue({
   store,
