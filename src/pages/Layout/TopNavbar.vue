@@ -33,7 +33,7 @@
         <span class="navbar-toggler-bar navbar-kebab"></span>
       </button>
       <div class="collapse navbar-collapse show text-left" v-show="showMenu">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav ml-auto">
           <!-- <li class="search-bar input-group" @click="searchModalVisible = true">
             <button
               class="btn btn-link"
@@ -275,7 +275,7 @@ export default {
         if (this.$router.currentRoute.path == "/profile") {
           return;
         }
-        this.$router.push({name: "User Profile"});
+        this.$router.push({name: "Profile Detail"});
       } catch (error) {
         this.$notify({
           type: "danger",

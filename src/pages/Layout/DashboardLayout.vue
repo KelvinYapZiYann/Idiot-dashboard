@@ -34,7 +34,7 @@
             :link="{
               name: $t('route.userProfile'),
               icon: 'fas fa-user',
-              path: '/user'
+              path: '/profile'
             }"
           >
           </sidebar-link>
