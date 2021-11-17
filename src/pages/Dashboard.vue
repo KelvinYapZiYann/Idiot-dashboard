@@ -172,6 +172,30 @@ export default {
                     this.resource.maxTrafficsEnter = this.$store.getters["dashboard/maxTrafficsEnter"];
                     this.resource.maxTrafficsExit = this.$store.getters["dashboard/maxTrafficsExit"];
                 });
+                await this.$store.dispatch('dashboard/getTodayTraffics').then(() => {
+                    this.resource.todayEnter = this.$store.getters["dashboard/todayEnter"];
+                    this.resource.todayExit = this.$store.getters["dashboard/todayExit"];
+                });
+                await this.$store.dispatch('dashboard/getYesterdayTraffics').then(() => {
+                    this.resource.yesterdayEnter = this.$store.getters["dashboard/yesterdayEnter"];
+                    this.resource.yesterdayExit = this.$store.getters["dashboard/yesterdayExit"];
+                });
+                await this.$store.dispatch('dashboard/getThisWeekTraffics').then(() => {
+                    this.resource.thisWeekEnter = this.$store.getters["dashboard/thisWeekEnter"];
+                    this.resource.thisWeekExit = this.$store.getters["dashboard/thisWeekExit"];
+                });
+                await this.$store.dispatch('dashboard/getlastWeekTraffics').then(() => {
+                    this.resource.lastWeekEnter = this.$store.getters["dashboard/lastWeekEnter"];
+                    this.resource.lastWeekExit = this.$store.getters["dashboard/lastWeekExit"];
+                });
+                await this.$store.dispatch('dashboard/getThisMonthTraffics').then(() => {
+                    this.resource.thisMonthEnter = this.$store.getters["dashboard/thisMonthEnter"];
+                    this.resource.thisMonthExit = this.$store.getters["dashboard/thisMonthExit"];
+                });
+                await this.$store.dispatch('dashboard/getlastMonthTraffics').then(() => {
+                    this.resource.lastMonthEnter = this.$store.getters["dashboard/lastMonthEnter"];
+                    this.resource.lastMonthExit = this.$store.getters["dashboard/lastMonthExit"];
+                });
             } catch (e) {
                 console.error(e);
             } finally {
