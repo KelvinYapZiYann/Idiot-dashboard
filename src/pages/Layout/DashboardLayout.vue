@@ -14,7 +14,7 @@
 
           <sidebar-link
             :link="{
-              name: $t('route.stores'),
+              name: $t('component.stores'),
               icon: 'fas fa-map-marker',
               path: '/stores'
             }"
@@ -23,7 +23,7 @@
 
           <sidebar-link
             :link="{
-              name: $t('route.inStoreTraffics'),
+              name: $t('component.inStoreTraffics'),
               icon: 'fas fa-camera',
               path: '/inStoreTraffics'
             }"

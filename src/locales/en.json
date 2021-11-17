@@ -4,12 +4,28 @@
   },
   "route": {
     "dashboard": "Dashboard",
-    "stores": "Stores",
-    "inStoreTraffics": "In-Store Traffics",
     "userProfile": "User Profile",
     "logout": "Logout"
   },
   "component": {
-    "title": ""
+    "stores": "Stores",
+    "inStoreTraffics": "In-Store Traffics",
+    "enter": "Enter",
+    "exit": "Exit",
+    "return": "Return",
+    "passing": "Passing"
+  },
+  "dashboard": {
+    "maxTraffics": "Maximum Traffics"
+  },
+  "date": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "thisWeek": "This Week",
+    "lastWeek": "Last Week",
+    "thisMonth": "This Month",
+    "lastMonth": "Last Month",
+    "thisYear": "This Year",
+    "lastYear": "Last Year"
   }
 }

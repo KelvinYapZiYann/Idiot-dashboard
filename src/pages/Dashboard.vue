@@ -1,12 +1,166 @@
 <template>
     <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto main-content">
-        dashboard
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.maxTrafficsEnter"
+                    :sub-title="$t('dashboard.maxTraffics')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.maxTrafficsExit"
+                    :sub-title="$t('dashboard.maxTraffics')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.todayEnter"
+                    :sub-title="$t('date.today')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.todayExit"
+                    :sub-title="$t('date.today')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.yesterdayEnter"
+                    :sub-title="$t('date.yesterday')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.yesterdayExit"
+                    :sub-title="$t('date.yesterday')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.thisWeekEnter"
+                    :sub-title="$t('date.thisWeek')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.thisWeekExit"
+                    :sub-title="$t('date.thisWeek')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.lastWeekEnter"
+                    :sub-title="$t('date.lastWeek')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.lastWeekExit"
+                    :sub-title="$t('date.lastWeek')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.thisMonthEnter"
+                    :sub-title="$t('date.thisMonth')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.thisMonthExit"
+                    :sub-title="$t('date.thisMonth')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.lastMonthEnter"
+                    :sub-title="$t('date.lastMonth')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.lastMonthExit"
+                    :sub-title="$t('date.lastMonth')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+        </div>
     </div>
 </template>
 <script>
+import {
+    StatsCard,
+} from "@/components/index";
 
 export default {
-
+    components: {
+        StatsCard,
+    },
+    data() {
+        return {
+            resource: {
+                maxTrafficsEnter: '0',
+                maxTrafficsExit: '0',
+                todayEnter: '0',
+                todayExit: '0',
+                yesterdayEnter: '0',
+                yesterdayExit: '0',
+                thisWeekEnter: '0',
+                thisWeekExit: '0',
+                lastWeekEnter: '0',
+                lastWeekExit: '0',
+                thisMonthEnter: '0',
+                thisMonthExit: '0',
+                lastMonthEnter: '0',
+                lastMonthExit: '0',
+            }
+        }
+    },
 };
 
 </script>
