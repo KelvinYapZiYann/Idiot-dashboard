@@ -161,6 +161,24 @@ export default {
             }
         }
     },
+    mounted() {
+        this.getResource();
+    },
+    methods: {
+        async getResource() {
+            let loader = this.$loading.show();
+            try {
+                await this.$store.dispatch('dashboard/getMaxTraffics').then(() => {
+                    this.resource.maxTrafficsEnter = this.$store.getters["dashboard/maxTrafficsEnter"];
+                    this.resource.maxTrafficsExit = this.$store.getters["dashboard/maxTrafficsExit"];
+                });
+            } catch (e) {
+                console.error(e);
+            } finally {
+                loader.hide();
+            }
+        }
+    }
 };
 
 </script>

@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import auth from "./modules/auth";
 import users from "./modules/users-module";
 import reset from "./modules/reset";
-// import dashboard from "./modules/resources/dashboard-modules";
+import dashboard from "./modules/resources/dashboard-module";
 
 Vue.use(Vuex);
 
@@ -13,6 +13,6 @@ export default new Vuex.Store({
     auth,
     users,
     reset,
-    // dashboard,
+    dashboard,
   }
 });
