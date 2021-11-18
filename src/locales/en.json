@@ -9,14 +9,31 @@
   },
   "component": {
     "stores": "Stores",
+    "store": "Store",
     "inStoreTraffics": "In-Store Traffics",
+    "inStoreTraffic": "In-Store Traffic",
+
+    "index": "Index",
+    "actions": "Actions",
+    "add": "Add",
+    "edit": "Edit",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "back": "Back",
+
+    "showing": "Showing",
+    "to": "To",
+    "of": "Of",
+    "entries": "Entries"
+  },
+  "property": {
     "enter": "Enter",
     "exit": "Exit",
     "return": "Return",
     "passing": "Passing",
 
-    "index": "Index",
-    "actions": "Actions"
+    "name": "Name",
+    "address": "Address"
   },
   "dashboard": {
     "maxTraffics": "Maximum Traffics"
