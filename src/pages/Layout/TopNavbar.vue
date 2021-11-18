@@ -118,7 +118,8 @@
           <drop-down :defaultShow="showMenu">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
               <div class="photo" :title="userFullname">
-                <img src="@/assets/img/anime6.png" alt="Profile Photo" />
+                <i class="fas fa-user"></i>
+                <!-- <img src="@/assets/img/anime6.png" alt="Profile Photo" /> -->
                 <!-- <img v-else src="@/assets/img/anime3.png" alt="Profile Photo" /> -->
               </div>
               <b class="caret d-none d-lg-block d-xl-block"></b>
@@ -277,10 +278,10 @@ export default {
         }
         this.$router.push({name: "Profile Detail"});
       } catch (error) {
-        this.$notify({
-          type: "danger",
-          message: "Oops, something went wrong!",
-        });
+        // this.$notify({
+        //   type: "danger",
+        //   message: "Oops, something went wrong!",
+        // });
       }
     },
   },

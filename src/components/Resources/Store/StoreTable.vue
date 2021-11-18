@@ -6,9 +6,10 @@
         <div class="text-right">
           <base-button
             @click="addModel"
-            type="primary"      
+            type="primary"
           >
             {{$t('component.add')}} {{$t('component.store')}}
+            <i class="fas fa-map-marker ml-1"></i>
           </base-button>
         </div>
         <!-- <div class="row">
@@ -128,8 +129,7 @@
 </template>
 <script>
 import { BaseButton, BasePagination, BaseTable, Card } from "@/components/index";
-// import router from "@/router";
-// import swal from "sweetalert2";
+import router from "@/router";
 // import errorHandlingService from "@/store/services/error-handling-service";
 
 export default {
@@ -184,144 +184,62 @@ export default {
   },
   methods: {
     showDetails(id) {
-        console.log(id);
-    //   console.log(router.currentRoute);
-    //   router.push({
-    //     name: router.currentRoute.matched[0].path == "/m" ? "Mobile Asset Detail" : "Asset Detail",
-    //     params: {
-    //       assetId: id,
-    //       previousRoute: this.$router.currentRoute.name,
-    //       previousRouteParam: {
-    //         name: 'asset',
-    //         pageId: this.paginationPage
-    //       },
-    //     }
-    //   });
+      router.push({
+        name: "Store Detail",
+        params: {
+          storeId: id,
+          previousRoute: this.$router.currentRoute.name,
+        }
+      });
     },
     editDetails(id) {
-        console.log(id);
-    //   router.push({
-    //     name: router.currentRoute.matched[0].path == "/m" ? "Mobile Edit Assets" : "Edit Assets",
-    //     params: {
-    //       assetId: id,
-    //       previousRoute: this.$router.currentRoute.name,
-    //       previousRouteParam: {
-    //         name: 'asset',
-    //         pageId: this.paginationPage
-    //       },
-    //     }
-    //   });
+      router.push({
+        name: "Edit Store",
+        params: {
+          storeId: id,
+          previousRoute: this.$router.currentRoute.name,
+        }
+      });
     },
     deleteDetails(id) {
-        console.log(id);
-    //   swal.fire({
-    //     title: this.$t('alert.notDeletable'),
-    //     text: this.$t('alert.notDeletableText'),
-    //     buttonsStyling: false,
-    //     confirmButtonClass: "btn btn-info btn-fill",
-    //     icon: "error",
-    //   });
-      // if (id == null) {
-      //   this.$notify({
-      //     message:'Server error del id == null',
-      //     icon: 'tim-icons icon-bell-55',
-      //     type: 'danger'
-      //   });
-      // } else {
-      //   try {
-      //     this.$store.dispatch('asset/remove', id)
-      //     this.$notify({
-      //       message:'Successfully Deleted',
-      //       icon: 'tim-icons icon-bell-55',
-      //       type: 'success'
-      //     });
-      //     this.getResource();
-      //   } catch (e) {
-      //     this.$notify({
-      //       message:'Server error when del',
-      //       icon: 'tim-icons icon-bell-55',
-      //       type: 'danger'
-      //     });
-      //   }
-      // }
+      this.$swal.fire({
+        title: this.$t('component.remove'),
+        text: this.$t('alert.removeConfirmation'),
+        icon: "warning",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            this.$store.dispatch('store/remove', id).then(() => {
+              this.getResource();
+            });
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
+        
     },
     addModel() {
-    //   if (!this.resource.data.canAdd) {
-    //     swal.fire({
-    //       title: this.$t('alert.assetFailedAdded'),
-    //       text: this.$t('alert.basicTierAssetCount'),
-    //       buttonsStyling: false,
-    //       confirmButtonClass: "btn btn-info btn-fill",
-    //       icon: "error",
-    //     });
-    //     return;
-    //   }
-    //   router.push({
-    //     name: router.currentRoute.matched[0].path == "/m" ? "Mobile Add Assets" : "Add Assets",
-    //     params: {
-    //       previousRoute: this.$router.currentRoute.name,
-    //       previousRouteParam: {
-    //         name: 'asset',
-    //         pageId: this.paginationPage
-    //       },
-    //     }
-    //   });
+      if (!this.resource.data.canAdd) {
+        this.$swal.fire({
+          title: this.$t('alert.error'),
+          text: this.$t('component.store') + ' ' + this.$t('alert.cannotBeAdded'),
+          icon: "error",
+        });
+        return;
+      }
+      router.push({
+        name: "Add Store",
+        params: {
+          previousRoute: this.$router.currentRoute.name,
+        }
+      });
     },
     getResource() {
-      this.$emit('getResource');
+      this.$emit('getResource', this.resource.data.currentPage);
     },
     async handlePagination(pageId) {
-        console.log(pageId);
-    //   this.paginationPage = pageId;
-    //   let loader = this.$loading.show({
-    //     canCancel: false,
-    //     color: '#1d8cf8',
-    //     loader: 'spinner',
-    //   });
-    //   try {
-    //     if (this.$props.query) {
-    //       if (this.$props.query.tenantId) {
-    //         var param = {
-    //           id: this.$props.query.tenantId,
-    //           pageId: pageId
-    //         }
-    //         await this.$store.dispatch('tenant/getAssets', param).then(() => {
-    //           this.resource.models = this.$store.getters["tenant/assetModels"];
-    //           this.resource.data = Object.assign({}, this.$store.getters["tenant/assetData"]);
-    //           // let models = this.$store.getters["tenant/assetModels"];
-    //           // for (let i = 0; i < models.length; i++) {
-    //           //   this.getAssetTenantsFromTenant(models, i, models[i].id);
-    //           // }
-    //         });
-    //       } else {
-    //         await this.$store.dispatch('asset/get', pageId).then(() => {
-    //           this.resource.models = this.$store.getters["asset/models"];
-    //           this.resource.data = Object.assign({}, this.$store.getters["asset/data"]);
-    //           // let models = this.$store.getters["asset/models"];
-    //           // for (let i = 0; i < models.length; i++) {
-    //           //   this.getAssetTenantsFromAsset(models, i, models[i].id);
-    //           // }
-    //         });
-    //       }
-    //     } else {
-    //       await this.$store.dispatch('asset/get', pageId).then(() => {
-    //         this.resource.models = this.$store.getters["asset/models"];
-    //         this.resource.data = Object.assign({}, this.$store.getters["asset/data"]);
-    //         // let models = this.$store.getters["asset/models"];
-    //         // for (let i = 0; i < models.length; i++) {
-    //         //   this.getAssetTenantsFromAsset(models, i, models[i].id);
-    //         // }
-    //       });
-    //     }
-    //   } catch (e) {
-    //     this.$notify({
-    //       message: errorHandlingService.displayAlertFromServer(e),
-    //       icon: 'tim-icons icon-bell-55',
-    //       type: 'danger'
-    //     });
-    //   } finally {
-    //     loader.hide();
-    //   }
+      this.$emit('getResource', pageId);
     },
     longClickEvent(id) {
         console.log(id);

@@ -5,6 +5,7 @@ import auth from "./modules/auth";
 import users from "./modules/users-module";
 import reset from "./modules/reset";
 import dashboard from "./modules/resources/dashboard-module";
+import store from "./modules/resources/store-module";
 
 Vue.use(Vuex);
 
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     users,
     reset,
     dashboard,
+    store
   }
 });

@@ -9,6 +9,10 @@ import i18n from "./i18n";
 import SideBar from "@/components/SidebarPlugin";
 import VueLoadingOverlay from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import swal from "vue-sweetalert2";
+import '@sweetalert2/theme-bootstrap-4/bootstrap-4.scss';
+// import '@sweetalert2/theme-material-ui/material-ui.scss';
+// import 'sweetalert2/dist/sweetalert2.min.css';
 
 import "@/assets/scss/dashboard.scss";
 
@@ -20,6 +24,12 @@ Vue.use(VueLoadingOverlay, {
   canCancel: false,
   color: '#1d8cf8',
   loader: 'spinner',
+});
+Vue.use(swal, {
+  // confirmButtonColor: '#41b882',
+  // cancelButtonColor: '#ffffff',
+  confirmButtonClass: "btn btn-info btn-fill",
+  buttonsStyling: false,
 });
 
 new Vue({

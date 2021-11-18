@@ -47,5 +47,11 @@
     "lastMonth": "Last Month",
     "thisYear": "This Year",
     "lastYear": "Last Year"
+  },
+  "alert": {
+    "removeConfirmation": "Are you sure to remove this?",
+    "error": "Error",
+
+    "cannotBeAdded": "cannot be added"
   }
 }

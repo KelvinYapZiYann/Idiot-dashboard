@@ -30,50 +30,22 @@ export default {
     }
   },
   mounted() {
-    this.getResource();
+    this.getResource(1);
   },
   methods: {
-    async getResource() {
+    async getResource(pageId) {
       let loader = this.$loading.show();
       try {
-        // await this.$store.dispatch('asset/get', this.previousRouteParam ? (this.previousRouteParam.name ? (this.previousRouteParam.name == 'asset' ? this.previousRouteParam.pageId : {}) : {}) : {}).then(() => {
-        //   this.resource.models = this.$store.getters["asset/models"]
-        //   this.resource.data = Object.assign({}, this.$store.getters["asset/data"]);
-
-        //   // let models = this.$store.getters["asset/models"];
-
-        //   // for (let i = 0; i < models.length; i++) {
-        //   //   this.getAssetTenants(models, i, models[i].id);
-        //   // }
-        // });
+        await this.$store.dispatch('store/get', pageId).then(() => {
+          this.resource.models = this.$store.getters["store/models"]
+          this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
+        });
       } catch (e) {
           console.error(e);
-        // this.$notify({
-        //   message: errorHandlingService.displayAlertFromServer(e),
-        //   icon: 'tim-icons icon-bell-55',
-        //   type: 'danger'
-        // });
       } finally {
         loader.hide();
       }
     },
-    // async getAssetTenants(models, id, assetId) {
-    //   try {
-    //     await this.$store.dispatch('asset/getTenants', assetId).then(() => {
-    //       models[id]['tenantCount'] = this.$store.getters["asset/tenantData"].total;
-    //       if (models.length - 1 == id) {
-    //         this.resource.models = models;
-    //         this.resource.data = Object.assign({}, this.$store.getters["asset/data"]);
-    //       }
-    //     })
-    //   } catch (e) {
-    //     this.$notify({
-    //       message: errorHandlingService.displayAlertFromServer(e),
-    //       icon: 'tim-icons icon-bell-55',
-    //       type: 'danger'
-    //     });
-    //   }
-    // }
   }
 };
 </script>
