@@ -13,7 +13,10 @@
     "enter": "Enter",
     "exit": "Exit",
     "return": "Return",
-    "passing": "Passing"
+    "passing": "Passing",
+
+    "index": "Index",
+    "actions": "Actions"
   },
   "dashboard": {
     "maxTraffics": "Maximum Traffics"
