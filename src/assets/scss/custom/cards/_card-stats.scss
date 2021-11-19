@@ -39,6 +39,10 @@
      &.icon-primary {
        @include diagonal-gradient($primary,$primary-states);
      }
+
+     &.icon-neutral {
+      @include diagonal-gradient($yellow,$light);
+    }
    }
 
    .numbers{
