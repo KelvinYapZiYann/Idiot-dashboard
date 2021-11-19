@@ -52,8 +52,8 @@ const mutations = {
 };
 
 const actions = {
-    get({commit}, pageId) {
-        return service.get(pageId).then((response) => {
+    get({commit}, param) {
+        return service.get(param).then((response) => {
             commit('SET_RESOURCES', response);
         }).catch((e) => {
             console.error(e);

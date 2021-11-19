@@ -7,6 +7,11 @@
      thead-classes="text-primary"
     ></base-detail>
 
+    <in-store-traffic-table
+      :resource="inStoreTrafficResource"
+      @getResource="getResource"
+    ></in-store-traffic-table>
+
     <base-button slot="footer" type="primary" @click="handleBack()" fill>
       <i class="fas fa-chevron-left mr-1"></i>
       {{$t('component.back')}}
@@ -19,18 +24,24 @@
 </template>
 <script>
 import { BaseButton, BaseDetail } from "@/components";
+import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
 import router from "@/router";
 
 export default {
   components: {
     BaseButton,
     BaseDetail,
+    InStoreTrafficTable
   },
   data() {
     return {
       storeId: this.$route.params.storeId,
       resource: {
         model: {},
+        data: {}
+      },
+      inStoreTrafficResource: {
+        models: [],
         data: {}
       },
       detail: {
@@ -59,6 +70,13 @@ export default {
         await this.$store.dispatch('store/getById', this.storeId).then(() => {
           this.resource.model = this.$store.getters["store/models"][0];
           this.resource.data = this.$store.getters["asset/data"];
+        });
+        let param = {
+          storeId: this.storeId
+        };
+        await this.$store.dispatch('inStoreTraffic/get', param).then(() => {
+          this.inStoreTrafficResource.model = this.$store.getters["inStoreTraffic/models"];
+          this.inStoreTrafficResource.data = this.$store.getters["inStoreTraffic/data"];
         });
       } catch (e) {
         console.error(e);

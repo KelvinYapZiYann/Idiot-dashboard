@@ -8,15 +8,34 @@ const config = {
     }
 };
 
-function get(pageId) {
-    if (pageId && typeof pageId == "number") {
-        return axios.get(`${url}/device?page=${pageId}`, config).then(response => {
-            return response.data;
-        });
+function get(param) {
+    if (param) {
+        if (typeof param == "number") {
+            return axios.get(`${url}/device?page=${param}`, config).then(response => {
+                return response.data;
+            });
+        } else if (typeof param == "object") {
+            if (param.pageId && param.storeId) {
+                return axios.get(`${url}/device?page=${param.pageId}&storeId=${param.storeId}`, config).then(response => {
+                    return response.data;
+                });
+            } else if (param.pageId) {
+                return axios.get(`${url}/device?page=${param.pageId}`, config).then(response => {
+                    return response.data;
+                });
+            } else if (param.storeId) {
+                return axios.get(`${url}/device?storeId=${param.storeId}`, config).then(response => {
+                    return response.data;
+                });
+            } else {
+                return axios.get(`${url}/device`, config).then(response => {
+                    return response.data;
+                });
+            }
+        }
     } else {
-      return axios.get(`${url}/device`, config)
-        .then(response => {
-          return response.data;
+        return axios.get(`${url}/device`, config).then(response => {
+            return response.data;
         });
     }
 }
