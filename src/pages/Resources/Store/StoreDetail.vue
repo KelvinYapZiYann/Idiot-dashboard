@@ -1,22 +1,29 @@
 <template>
   <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto main-content">
-   <base-detail
-     :title="$t('property.financialDetails')"
+    <base-detail
+     :title="$t('component.store')"
      :model="resource.model"
      :headers="detail.detailHeaders"
      thead-classes="text-primary"
-   ></base-detail>
+    ></base-detail>
 
-   <base-button slot="footer" type="neutral" @click="handleBack()" fill>{{$t('component.back')}}</base-button>
-   <base-button slot="footer" type="info" @click="handleEdit()" fill>{{$t('component.edit')}} {{$t('component.store')}}</base-button>
+    <base-button slot="footer" type="primary" @click="handleBack()" fill>
+      <i class="fas fa-chevron-left mr-1"></i>
+      {{$t('component.back')}}
+    </base-button>
+    <base-button slot="footer" type="primary" @click="handleEdit()" fill>
+      <i class="fas fa-edit mr-1"></i>
+      {{$t('component.edit')}} {{$t('component.store')}}
+    </base-button>
   </div>
 </template>
 <script>
-import { BaseDetail } from "@/components";
+import { BaseButton, BaseDetail } from "@/components";
 import router from "@/router";
 
 export default {
   components: {
+    BaseButton,
     BaseDetail,
   },
   data() {

@@ -1,6 +1,7 @@
 import SidebarPlugin from "./SidebarPlugin/index";
 
 import BaseButton from "./BaseButton.vue";
+import BaseDetail from "./BaseDetail.vue";
 import BasePagination from "./BasePagination.vue";
 import BaseTable from "./BaseTable.vue";
 import Card from "./Card/Card.vue";
@@ -12,6 +13,7 @@ export {
   SidebarPlugin,
 
   BaseButton,
+  BaseDetail,
   BasePagination,
   BaseTable,
   Card,

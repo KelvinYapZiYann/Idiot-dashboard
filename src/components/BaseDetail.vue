@@ -1,45 +1,39 @@
 <template>
-    <card>
-        <div class="card-header mb-3">
-            <h5 class="card-category">{{ category }}</h5>
-            <h3 class="card-title">{{ title }}</h3>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div :class="headers2 ? 'col-md-6' : 'col-12'">
-                    <slot name="column1" v-bind:text="headers">
-                        <div class="row" v-for="(value, key) in headers" :key="key">
-                            <div class="col-12">
-                                <h6 class="mb-0">{{ headers[key] }}</h6>
-                            </div>
-                            <span class="col-12 mb-3">
-                                <span :class="itemClass(key)">
-                                    {{ itemValue(model, key) }}
-                                </span>
-                            </span>
+    <card :category="category" :title="title">
+        <div class="row">
+            <div :class="headers2 ? 'col-md-6' : 'col-12'">
+                <slot name="column1" v-bind:text="headers">
+                    <div class="row" v-for="(value, key) in headers" :key="key">
+                        <div class="col-12">
+                            <h6 class="mb-0">{{ headers[key] }}</h6>
                         </div>
-                    </slot>
-                </div>
-                <div :class="headers2 ? 'col-md-6' : 'col-12'">
-                    <slot name="column2" v-bind:text="headers2">
-                        <div class="row" v-for="(value, key) in headers2" :key="key">
-                            <div class="col-12">
-                                <h6 class="mb-0">{{ headers2[key] }}</h6>
-                            </div>
-                            <span class="col-12 mb-3">
-                                <span :class="itemClass(key)">
-                                    {{ itemValue(model, key) }}
-                                </span>
+                        <span class="col-12 mb-3">
+                            <span :class="itemClass(key)">
+                                {{ itemValue(model, key) }}
                             </span>
+                        </span>
+                    </div>
+                </slot>
+            </div>
+            <div :class="headers2 ? 'col-md-6' : 'col-12'">
+                <slot name="column2" v-bind:text="headers2">
+                    <div class="row" v-for="(value, key) in headers2" :key="key">
+                        <div class="col-12">
+                            <h6 class="mb-0">{{ headers2[key] }}</h6>
                         </div>
-                    </slot>
-                </div>
+                        <span class="col-12 mb-3">
+                            <span :class="itemClass(key)">
+                                {{ itemValue(model, key) }}
+                            </span>
+                        </span>
+                    </div>
+                </slot>
             </div>
         </div>
     </card>
 </template>
 <script>
-import { Card } from "@/components";
+import Card from "./Card/Card";
 export default {
     components: {
         Card

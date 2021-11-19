@@ -1,8 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <card>
-        <h3 slot="header" class="card-title">{{$t('component.stores')}}</h3>
+      <card :title="$t('component.stores')" :showFooterLine="true">
         <div class="text-right">
           <base-button
             @click="addModel"
@@ -21,7 +20,7 @@
             </base-input>
           </div>
         </div> -->
-        <div class="table-responsive">
+        <!-- <div class="table-responsive"> -->
           <base-table
             :data="resource.models"
             :columns="table.columns"
@@ -122,7 +121,7 @@
             >
             </base-pagination>
           </div>
-        </div>
+        <!-- </div> -->
       </card>
     </div>
   </div>
