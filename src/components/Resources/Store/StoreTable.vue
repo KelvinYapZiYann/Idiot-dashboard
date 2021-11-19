@@ -9,7 +9,7 @@
             type="primary"
           >
             {{$t('component.add')}} {{$t('component.store')}}
-            <i class="fas fa-map-marker ml-1"></i>
+            <i class="fas fa-map-marker-alt ml-1"></i>
           </base-button>
         </div>
         <!-- <div class="row">

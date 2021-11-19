@@ -15,7 +15,7 @@
           <sidebar-link
             :link="{
               name: $t('component.stores'),
-              icon: 'fas fa-map-marker',
+              icon: 'fas fa-map-marker-alt',
               path: '/stores'
             }"
           >
