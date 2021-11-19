@@ -33,7 +33,9 @@
     "passing": "Passing",
 
     "name": "Name",
-    "address": "Address"
+    "address": "Address",
+    "macAddress": "Mac Address",
+    "status": "Status"
   },
   "dashboard": {
     "maxTraffics": "Maximum Traffics"
