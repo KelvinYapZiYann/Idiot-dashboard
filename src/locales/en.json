@@ -53,10 +53,12 @@
     "error": "Error",
 
     "addedSuccessfully": "Added successfully",
+    "editedSuccessfully": "Edited successfully",
 
     "cannotBeAdded": "Cannot be added",
     "failedToBeAdded": "Failed to be added",
     "failedToBeInitialized": "Failed to be initialized",
+    "failedToBeEdited": "Failed to be edited",
     "redirectingToPreviousPage": "Redirecting to previous page",
 
     "tryAgain": "Try again"

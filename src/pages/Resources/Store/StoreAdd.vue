@@ -1,5 +1,5 @@
 <template>
-    <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto main-content">
+    <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto">
         <store-input-fields
             :resource="resource"
             :tmpApiValidationErrors="apiValidationErrors"
@@ -12,13 +12,11 @@
 </template>
 <script>
 import StoreInputFields from "@/components/Resources/Store/StoreInputFields.vue";
-// import ValidationError from "@/components/ValidationError.vue";
 import router from "@/router";
 
 export default {
   components: {
     StoreInputFields,
-    // ValidationError,
   },
   data() {
     return {
@@ -47,25 +45,25 @@ export default {
       let loader = this.$loading.show();
       try {
         await this.$store.dispatch('store/create').then(() => {
-          this.resource.model = Object.assign({}, this.$store.getters["store/model"][0])
-          this.resource.data = Object.assign({}, this.$store.getters["store/data"])
-          this.resource.selector = Object.assign({}, this.$store.getters["store/selector"])
-        })
+          this.resource.model = Object.assign({}, this.$store.getters["store/model"][0]);
+          this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
+          this.resource.selector = Object.assign({}, this.$store.getters["store/selector"]);
+        });
       } catch (e) {
           this.$swal.fire({
               title: this.$t('alert.failedToBeInitialized'),
               text: this.$t('alert.redirectingToPreviousPage'),
           }).then(() => {
-                // if (this.previousRoute) {
-                //     router.push({
-                //         name: this.previousRoute, 
-                //         params: {
-                //             previousRouteParam: this.previousRouteParam
-                //         }
-                //     });
-                // } else {
-                //     router.go(-1);
-                // }
+                if (this.previousRoute) {
+                    router.push({
+                        name: this.previousRoute, 
+                        params: {
+                            previousRouteParam: this.previousRouteParam
+                        }
+                    });
+                } else {
+                    router.go(-1);
+                }
           });
         console.error(e);
       } finally {
@@ -106,7 +104,12 @@ export default {
     },
     async handleCancel() {
       if (this.previousRoute) {
-        this.$router.push({name: this.previousRoute, params: {previousRouteParam: this.previousRouteParam}});
+        router.push({
+            name: this.previousRoute, 
+            params: {
+                previousRouteParam: this.previousRouteParam
+            }
+        });
       } else {
         router.go(-1);
       }
