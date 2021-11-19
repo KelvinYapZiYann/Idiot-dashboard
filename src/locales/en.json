@@ -52,6 +52,13 @@
     "removeConfirmation": "Are you sure to remove this?",
     "error": "Error",
 
-    "cannotBeAdded": "cannot be added"
+    "addedSuccessfully": "Added successfully",
+
+    "cannotBeAdded": "Cannot be added",
+    "failedToBeAdded": "Failed to be added",
+    "failedToBeInitialized": "Failed to be initialized",
+    "redirectingToPreviousPage": "Redirecting to previous page",
+
+    "tryAgain": "Try again"
   }
 }
