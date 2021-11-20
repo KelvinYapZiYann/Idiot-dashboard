@@ -73,7 +73,7 @@ export default {
     async handleSubmit(model) {
       let loader = this.$loading.show();
         try {
-          await this.$store.dispatch('inStoreTraffic/add', {'model': model}).then(() => {
+          await this.$store.dispatch('inStoreTraffic/update', {'model': model}).then(() => {
             this.resetApiValidation();
             this.$swal.fire({
                 title: this.$t('alert.editedSuccessfully'),

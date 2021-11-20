@@ -32,6 +32,9 @@
     "return": "Return",
     "passing": "Passing",
 
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "businessName": "Business Name",
     "name": "Name",
     "address": "Address",
     "macAddress": "Mac Address",
