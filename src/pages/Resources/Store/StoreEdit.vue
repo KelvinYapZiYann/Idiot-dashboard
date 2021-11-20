@@ -54,16 +54,16 @@ export default {
               title: this.$t('alert.failedToBeInitialized'),
               text: this.$t('alert.redirectingToPreviousPage'),
           }).then(() => {
-                // if (this.previousRoute) {
-                //     router.push({
-                //         name: this.previousRoute, 
-                //         params: {
-                //             previousRouteParam: this.previousRouteParam
-                //         }
-                //     });
-                // } else {
-                //     router.go(-1);
-                // }
+              if (this.previousRoute) {
+                  router.push({
+                      name: this.previousRoute, 
+                      params: {
+                          previousRouteParam: this.previousRouteParam
+                      }
+                  });
+              } else {
+                  router.go(-1);
+              }
           });
         console.error(e);
       } finally {

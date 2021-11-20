@@ -4,6 +4,7 @@ import BaseButton from "./BaseButton.vue";
 import BaseDetail from "./BaseDetail.vue";
 import BaseInput from "./BaseInput.vue";
 import BasePagination from "./BasePagination.vue";
+import BaseSelectorInput from "./BaseSelectorInput.vue";
 import BaseTable from "./BaseTable.vue";
 import Card from "./Card/Card.vue";
 import StatsCard from "./Card/StatsCard.vue";
@@ -17,6 +18,7 @@ export {
   BaseDetail,
   BaseInput,
   BasePagination,
+  BaseSelectorInput,
   BaseTable,
   Card,
   StatsCard,
