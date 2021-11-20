@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper wrapper-full-page">
+    <div class="wrapper wrapper-full-page full-page">
         <div class="content">
           <router-view></router-view>
         </div>

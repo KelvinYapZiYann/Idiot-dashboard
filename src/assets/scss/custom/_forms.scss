@@ -92,7 +92,7 @@
 .has-danger{
     &:after{
         font-family: 'nucleo';
-        content: "\ea1b";
+        // content: "\ea1b";
         display: inline-block;
         position: absolute;
         right: 20px;
@@ -126,7 +126,7 @@
 
 .has-danger{
   &:after{
-    content: "\ea48";
+    // content: "\ea48";
     color: $danger-states;
   }
 

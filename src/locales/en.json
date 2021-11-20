@@ -5,6 +5,7 @@
   "route": {
     "dashboard": "Dashboard",
     "userProfile": "User Profile",
+    "login": "Login",
     "logout": "Logout"
   },
   "component": {
@@ -35,6 +36,8 @@
     "email": "Email",
     "phoneNumber": "Phone Number",
     "businessName": "Business Name",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
     "name": "Name",
     "address": "Address",
     "macAddress": "Mac Address",
