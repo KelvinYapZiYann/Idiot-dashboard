@@ -185,7 +185,7 @@ export default {
         name: "In Store Traffic Detail",
         params: {
           storeId: id,
-          previousRoute: this.$router.currentRoute.name,
+          previousRoute: router.currentRoute.name,
         }
       });
     },
@@ -194,7 +194,7 @@ export default {
         name: "Edit In Store Traffic",
         params: {
           storeId: id,
-          previousRoute: this.$router.currentRoute.name,
+          previousRoute: router.currentRoute.name,
         }
       });
     },
@@ -228,7 +228,7 @@ export default {
       router.push({
         name: "Add In Store Traffic",
         params: {
-          previousRoute: this.$router.currentRoute.name,
+          previousRoute: router.currentRoute.name,
         }
       });
     },
@@ -259,7 +259,7 @@ export default {
     //         name: router.currentRoute.matched[0].path == "/m" ? "Mobile Edit Assets" : "Edit Assets",
     //         params: {
     //           assetId: id,
-    //           previousRoute: this.$router.currentRoute.name,
+    //           previousRoute: router.currentRoute.name,
     //           previousRouteParam: {
     //             name: 'asset',
     //             pageId: this.paginationPage

@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent>
-    <card :title="(detailOrEdit == 'detail' ? '' : $t('component.edit')) + ' ' + $t('route.userProfile')">
+    <card :title="(detailOrEdit == 'Detail' ? '' : $t('component.edit')) + ' ' + $t('route.userProfile')">
       <div class="row">
         <div class="col-md-6 ">
           <base-input 
@@ -43,19 +43,19 @@
         </div>
       </div>
     </card>
-    <base-button slot="footer" type="primary" @click="handleCancel()" fill>
+    <base-button slot="footer" type="primary" v-if="detailOrEdit=='Edit'" @click="handleCancel()" fill>
       <i class="fas fa-chevron-left mr-1"></i>
       {{$t('component.cancel')}}
     </base-button>
-    <base-button slot="footer" type="primary" @click="handleSubmit()" fill>
+    <base-button slot="footer" type="primary" v-if="detailOrEdit=='Edit'" @click="handleSubmit()" fill>
       <i class="fas fa-check mr-1"></i>
-      {{ addOrEdit == "Add" ? $t('component.add') : $t('component.edit') }}
+      {{ $t('component.edit') }}
     </base-button>
   </form>
 </template>
 <script>
 import formMixin from "@/mixins/form-mixin";
-import { BaseButton, BaseInput, BaseSelectorInput, Card } from "@/components";
+import { BaseButton, BaseInput, Card } from "@/components";
 
 export default {
   name: "profile-input-fields",
@@ -63,7 +63,6 @@ export default {
   components: {
     BaseButton,
     BaseInput,
-    BaseSelectorInput,
     Card,
   },
   props: {

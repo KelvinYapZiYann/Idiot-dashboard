@@ -11,7 +11,7 @@
     </div>
 </template>
 <script>
-import ProfileInputFields from "@/components/Resources/Profile/ProfileInputFields.vue";
+import ProfileInputFields from "@/components/Profile/ProfileInputFields.vue";
 import router from "@/router";
 
 export default {
