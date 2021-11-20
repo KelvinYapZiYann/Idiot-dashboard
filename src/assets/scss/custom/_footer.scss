@@ -1,5 +1,5 @@
 .footer{
-    padding: 24px 0 0 250px;
+    // padding: 24px 0 0 250px;
 
     [class*="container-"] {
       padding: 0;
@@ -58,25 +58,25 @@
 }
 
 
-@media screen and (max-width: 991px){
-  .footer {
-    padding-left: 0px;
+// @media screen and (max-width: 991px){
+//   .footer {
+//     padding-left: 0px;
 
-    .copyright {
-      text-align: right;
-      margin-right: 15px;
-    }
-  }
-}
+//     .copyright {
+//       text-align: right;
+//       margin-right: 15px;
+//     }
+//   }
+// }
 
-@media screen and (min-width: 992px){
-  .footer {
-    .copyright {
-      float: right;
-      padding-right: 30px;
-    }
-  }
-}
+// @media screen and (min-width: 992px){
+//   .footer {
+//     .copyright {
+//       float: right;
+//       padding-right: 30px;
+//     }
+//   }
+// }
 
 @media screen and (max-width: 768px){
   .footer {
@@ -88,18 +88,18 @@
   }
 }
 
-@media screen and (max-width: 576px){
-  .footer {
-    text-align: center;
-    .copyright {
-      text-align: center;
-      margin-right: 5px;
-      margin-left: 5px;
-    }
+// @media screen and (max-width: 576px){
+//   .footer {
+//     text-align: center;
+//     .copyright {
+//       text-align: center;
+//       margin-right: 5px;
+//       margin-left: 5px;
+//     }
 
-    .nav{
-      float: none;
-      padding-left: 0;
-    }
-  }
-}
+//     .nav{
+//       float: none;
+//       padding-left: 0;
+//     }
+//   }
+// }

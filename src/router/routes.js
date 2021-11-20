@@ -1,5 +1,10 @@
 import NotFound from "@/pages/NotFoundPage.vue";
+import AuthLayout from "@/pages/Layout/AuthLayout.vue";
 import DashboardLayout from "@/pages/Layout/DashboardLayout.vue";
+import auth from "@/middleware/auth";
+import authSession from "@/middleware/authSession";
+
+const Login = () => import("@/pages/Login.vue");
 
 const ProfileDetail = () => import("@/pages/Profile/ProfileDetail.vue");
 const ProfileEdit = () => import("@/pages/Profile/ProfileEdit.vue");
@@ -22,6 +27,19 @@ const routes = [
   },
   {
     path: "/",
+    component: AuthLayout,
+    name: "Authentication",
+    children: [
+      {
+        path: "login",
+        name: "Login",
+        component: Login,
+        meta: { middleware: authSession }
+      },
+    ]
+  },
+  {
+    path: "/",
     component: DashboardLayout,
     name: "Others",
     children: [
@@ -29,7 +47,7 @@ const routes = [
         path: "profile",
         name: "Profile Detail",
         component: ProfileDetail,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -38,7 +56,7 @@ const routes = [
         path: "profile/edit",
         name: "Edit Profile",
         component: ProfileEdit,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -54,7 +72,7 @@ const routes = [
         path: "dashboard",
         name: "Dashboard",
         component: Dashboard,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -63,7 +81,7 @@ const routes = [
         path: "stores",
         name: "Stores",
         component: Stores,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -72,7 +90,7 @@ const routes = [
         path: "stores/add",
         name: "Add Store",
         component: StoreAdd,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -81,7 +99,7 @@ const routes = [
         path: "stores/:storeId",
         name: "Store Detail",
         component: StoreDetail,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -90,7 +108,7 @@ const routes = [
         path: "stores/:storeId/edit",
         name: "Edit Store",
         component: StoreEdit,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -99,7 +117,7 @@ const routes = [
         path: "inStoreTraffics",
         name: "In Store Traffics",
         component: InStoreTraffics,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -108,7 +126,7 @@ const routes = [
         path: "inStoreTraffics/add",
         name: "Add In Store Traffic",
         component: InStoreTrafficAdd,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -117,7 +135,7 @@ const routes = [
         path: "inStoreTraffics/:inStoreTrafficId",
         name: "In Store Traffic Detail",
         component: InStoreTrafficDetail,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
@@ -126,7 +144,7 @@ const routes = [
         path: "inStoreTraffics/:inStoreTrafficId/edit",
         name: "Edit In Store Traffic",
         component: InStoreTrafficEdit,
-        // meta: { middleware: auth },
+        meta: { middleware: auth },
         props: {
           default: true
         }
