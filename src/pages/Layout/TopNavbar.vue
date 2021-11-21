@@ -161,6 +161,7 @@ import DropDown from "@/components/Dropdown.vue";
 import Modal from "@/components/Modal.vue";
 import SidebarToggleButton from "./SidebarToggleButton.vue";
 // import swal from "sweetalert2";
+import router from "@/router";
 
 export default {
   components: {
@@ -248,35 +249,31 @@ export default {
       this.showMenu = !this.showMenu;
     },
     async logout() {
-      // swal.fire({
-      //   title: this.$t('topbar.logout'),
-      //   text: this.$t('alert.logoutText'),
-      //   buttonsStyling: false,
-      //   showCancelButton: true,
-      //   confirmButtonText: this.$t('topbar.logout'),
-      //   cancelButtonText: this.$t('component.cancel'),
-      //   cancelButtonClass: "btn btn-info btn-fill",
-      //   confirmButtonClass: "btn btn-neutral btn-fill",
-      //   icon: "warning",
-      // }).then((result) => {
-      //   if (result.value) {
-      //     try {
-      //       this.$store.dispatch("logout");
-      //     } catch (error) {
-      //       this.$notify({
-      //         type: "danger",
-      //         message: "Oops, something went wrong!",
-      //       });
-      //     }
-      //   }
-      // });
+      this.$swal.fire({
+        title: this.$t('route.logout'),
+        text: this.$t('alert.logoutConfirmation'),
+        showCancelButton: true,
+        confirmButtonText: this.$t('route.logout'),
+        cancelButtonText: this.$t('component.cancel'),
+        icon: "warning",
+      }).then((result) => {
+        if (result.value) {
+          try {
+            this.$store.dispatch("auth/logout").then(() => {
+              router.push({ name: "Login" });
+            });
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
     },
     async profile() {
       try {
-        if (this.$router.currentRoute.path == "/profile") {
+        if (router.currentRoute.path == "/profile") {
           return;
         }
-        this.$router.push({name: "Profile Detail"});
+        router.push({name: "Profile Detail"});
       } catch (error) {
         // this.$notify({
         //   type: "danger",

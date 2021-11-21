@@ -35,6 +35,7 @@ Vue.use(VueLoadingOverlay, {
 });
 Vue.use(swal, {
   confirmButtonClass: "btn btn-info btn-fill",
+  cancelButtonClass: "btn btn-neutral btn-fill",
   buttonsStyling: false,
 });
 

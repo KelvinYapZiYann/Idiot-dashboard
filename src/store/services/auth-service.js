@@ -23,8 +23,11 @@ function register(payload) {
 
 function logout() {
     return axios.post(`${url}/logout`, config).then(response => {
-        localStorage.removeItem("vue-authenticate.vueauth_access_token", );
+        localStorage.removeItem("vue-authenticate.vueauth_access_token");
         return response.data;
+    }).catch((e) => {
+        localStorage.removeItem("vue-authenticate.vueauth_access_token");
+        return e;
     });
 }
 

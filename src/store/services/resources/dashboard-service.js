@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 const url = process.env.VUE_APP_API_BASE_URL;
 const config = {
     headers: {
