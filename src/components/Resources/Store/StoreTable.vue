@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <card :title="$t('component.stores')" :showFooterLine="true">
-        <div class="text-right">
+        <!-- <div class="text-right">
           <base-button
             @click="addModel"
             type="primary"
@@ -10,7 +10,7 @@
             {{$t('component.add')}} {{$t('component.store')}}
             <i class="fas fa-map-marker-alt ml-1"></i>
           </base-button>
-        </div>
+        </div> -->
         <!-- <div class="row">
           <div class="col-xl-4 col-lg-5 col-md-6 ml-auto">
             <base-input 
@@ -26,11 +26,17 @@
             :columns="table.columns"
             thead-classes="text-primary"
             v-on:show-details="showDetails"
-            v-on:edit-details="editDetails"
-            v-on:delete-details="deleteDetails"
-            :startIndex="resource.data.from"
+            :disableDelete="true"
+            :disableEdit="true"
+            :startIndex="1"
           >
-            <!-- <template slot-scope="{ row }">
+            <!-- v-on:edit-details="editDetails"
+            v-on:delete-details="deleteDetails" -->
+            <!-- :startIndex="resource.data.from" -->
+
+
+
+            <template slot-scope="{ row }">
               <td
                 @click="showDetails(row.id)"
                 @mousedown="startLongClick(row.id)" 
@@ -40,43 +46,7 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                {{ row.asset_nickname }}
-              </td>
-              <td
-                v-if="!$store.getters['mobileLayout/isMobileLayout']"
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
-                @mouseleave="stopLongClick"
-                @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
-                @touchend="stopLongClick"
-                @touchcancel="stopLongClick"
-              >
-                {{ row.location_details ? row.location_details.asset_unit_no : '' }}
-              </td>
-              <td
-                v-if="!$store.getters['mobileLayout/isMobileLayout']"
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
-                @mouseleave="stopLongClick"
-                @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
-                @touchend="stopLongClick"
-                @touchcancel="stopLongClick"
-              >
-                {{ row.location_details ? row.location_details.asset_address_line : '' }}
-              </td>
-              <td
-                v-if="!$store.getters['mobileLayout/isMobileLayout']"
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
-                @mouseleave="stopLongClick"
-                @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
-                @touchend="stopLongClick"
-                @touchcancel="stopLongClick"
-              >
-                {{ row.location_details ? row.location_details.asset_city : '' }}
+                {{ row.store_address ? row.store_address : '-' }}
               </td>
               <td
                 @click="showDetails(row.id)"
@@ -87,7 +57,7 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                <base-room-indicator :value="row.number_of_rooms"></base-room-indicator>
+                {{ row.store_address ? row.store_address : '-' }}
               </td>
               <td
                 @click="showDetails(row.id)"
@@ -98,11 +68,11 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                <base-tenant-indicator :value="row.number_of_tenants"></base-tenant-indicator>
-              </td> 
-            </template> -->
+                <in-store-traffic-icon-list :value="row.devices"></in-store-traffic-icon-list>
+              </td>
+            </template>
           </base-table>
-          <div
+          <!-- <div
             slot="footer"
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
@@ -120,34 +90,35 @@
               type="primary"
             >
             </base-pagination>
-          </div>
+          </div> -->
         <!-- </div> -->
       </card>
     </div>
   </div>
 </template>
 <script>
-import { BaseButton, BasePagination, BaseTable, Card } from "@/components/index";
+import { /*BaseButton, BasePagination,*/ BaseTable, Card } from "@/components/index";
+import InStoreTrafficIconList from "@/components/Resources/InStoreTraffic/InStoreTrafficIconList";
 import router from "@/router";
-// import errorHandlingService from "@/store/services/error-handling-service";
 
 export default {
   components: {
     // BaseInput,
-    BaseButton,
-    BasePagination,
+    // BaseButton,
+    // BasePagination,
     BaseTable,
     Card,
+    InStoreTrafficIconList,
   },
   data() {
     return {
       table: {
         columns: {
-          name: this.$t('property.name'),
-          address: this.$t('property.address'),
+          store_name: this.$t('property.name'),
+          store_address: this.$t('property.address'),
           inStoreTraffics: this.$t('component.inStoreTraffics'),
-          enter: this.$t('property.enter'),
-          exit: this.$t('property.exit'),
+          // enter: this.$t('property.enter'),
+          // exit: this.$t('property.exit'),
         },
       },
     //   searchQuery: "",
@@ -218,28 +189,29 @@ export default {
       });
         
     },
-    addModel() {
-      if (!this.resource.data.canAdd) {
-        this.$swal.fire({
-          title: this.$t('alert.error'),
-          text: this.$t('component.store') + ' ' + this.$t('alert.cannotBeAdded'),
-          icon: "error",
-        });
-        return;
-      }
-      router.push({
-        name: "Add Store",
-        params: {
-          previousRoute: router.currentRoute.name,
-        }
-      });
-    },
+    // addModel() {
+    //   if (!this.resource.data.canAdd) {
+    //     this.$swal.fire({
+    //       title: this.$t('alert.error'),
+    //       text: this.$t('component.store') + ' ' + this.$t('alert.cannotBeAdded'),
+    //       icon: "error",
+    //     });
+    //     return;
+    //   }
+    //   router.push({
+    //     name: "Add Store",
+    //     params: {
+    //       previousRoute: router.currentRoute.name,
+    //     }
+    //   });
+    // },
     getResource() {
-      this.$emit('getResource', this.resource.data.currentPage);
+      this.$emit('getResource');
+      // this.$emit('getResource', this.resource.data.currentPage);
     },
-    async handlePagination(pageId) {
-      this.$emit('getResource', pageId);
-    },
+    // async handlePagination(pageId) {
+    //   this.$emit('getResource', pageId);
+    // },
     longClickEvent(id) {
         console.log(id);
     //   swal.fire({

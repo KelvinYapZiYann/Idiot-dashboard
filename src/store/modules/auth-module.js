@@ -19,7 +19,6 @@ const actions = {
     });
   },
   register({commit}, payload) {
-    console.log(payload);
     return service.register(payload).then(() => {
       commit("IS_AUTHENTICATED", {
         isAuthenticated: false

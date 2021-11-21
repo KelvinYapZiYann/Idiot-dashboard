@@ -5,6 +5,7 @@ const config = {
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("vue-authenticate.vueauth_access_token")
     }
 };
 

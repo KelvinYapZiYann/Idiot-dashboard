@@ -10,11 +10,46 @@
     </tr>
     </thead>
     <tbody :class="tbodyClasses">
-    <tr v-for="(item, index) in data" :key="index" :class="[{viewableRow: !disableView}]" :style="rowColor[index]">
+    <tr v-for="(item, index) in data" :key="index" :class="[{viewableRow: !disableView}]" :style="rowBackgroundColor[index]">
       <td v-if="!disableIndex">
         <span>
           {{startIndex + index}}.
         </span>
+      </td>
+      <td>
+        <base-button
+            v-if="!disableView"
+            @click="showDetails(item.id)"
+            class="remove btn-link"
+            type="info"
+            size="sm"
+            :title="$t('component.detail')"
+            icon
+        >
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </base-button>
+        <base-button
+            v-if="!disableEdit"
+            @click="editDetails(item.id)"
+            class="edit btn-link"
+            type="info"
+            size="sm"
+            :title="$t('component.edit')"
+            icon
+        >
+          <i class="fas fa-edit"></i>
+        </base-button>
+        <base-button
+            v-if="!disableDelete"
+            @click="deleteDetails(item.id)"
+            class="remove btn-link"
+            type="danger"
+            size="sm"
+            :title="$t('component.remove')"
+            icon
+        >
+          <i class="fas fa-trash"></i>
+        </base-button>
       </td>
       <slot :row="item">
         <td v-for="(column, columnKey, i) in columns"
@@ -37,9 +72,13 @@
   </table>
 </template>
 <script>
+import { BaseButton } from "@/components/index";
 
 export default {
   name: 'base-table',
+  components: {
+    BaseButton,
+  },
   data() {
     return {
       timeout: null
@@ -150,8 +189,17 @@ export default {
       }
       let itemValue = item[columLowerCase];
       if (itemValue) {
-        let itemDisplayValue = itemDisplayValue(itemValue, columLowerCase);
-        if (itemDisplayValue) {
+        // let tmpItemDisplayValue = itemDisplayValuef(itemValue, columLowerCase);
+        if (this.columnsDisplayValue) {
+            let displayValueObject = this.columnsDisplayValue[columLowerCase];
+            if (displayValueObject) {
+                if (displayValueObject[itemValue]) {
+                    itemValue = displayValueObject[itemValue];
+                }
+            }
+        }
+        let itemValueType = typeof itemValue;
+        if (itemValueType == 'boolean' || itemValueType == 'number' || itemValueType == 'string') {
           return prefix + itemValue + suffix;
         } else {
           return '-';
@@ -185,7 +233,7 @@ export default {
     //   }
       return '-';
     },
-    itemDisplayValue(itemValue, columLowerCase) {
+    itemDisplayValuef(itemValue, columLowerCase) {
         if (this.columnsDisplayValue) {
             let displayValueObject = this.columnsDisplayValue[columLowerCase];
             if (displayValueObject) {

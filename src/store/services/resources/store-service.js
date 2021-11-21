@@ -5,8 +5,15 @@ const config = {
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("vue-authenticate.vueauth_access_token")
     }
 };
+
+function getAll() {
+    return axios.get(`${url}/details/all`, config).then(response => {
+        return response.data;
+    });
+}
 
 function get(pageId) {
     if (pageId && typeof pageId == "number") {
@@ -14,9 +21,8 @@ function get(pageId) {
             return response.data;
         });
     } else {
-      return axios.get(`${url}/store`, config)
-        .then(response => {
-          return response.data;
+        return axios.get(`${url}/store`, config).then(response => {
+            return response.data;
         });
     }
 }
@@ -57,6 +63,7 @@ function remove(id) {
 }
 
 export default {
+    getAll,
     get,
     getById,
     create,

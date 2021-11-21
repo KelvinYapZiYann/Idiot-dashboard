@@ -19,6 +19,7 @@
 
     "index": "Index",
     "actions": "Actions",
+    "detail": "Detail",
     "add": "Add",
     "edit": "Edit",
     "remove": "Remove",

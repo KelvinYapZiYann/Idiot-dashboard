@@ -30,15 +30,19 @@ export default {
     }
   },
   mounted() {
-    this.getResource(1);
+    this.getResource();
   },
   methods: {
-    async getResource(pageId) {
+    async getResource() {
       let loader = this.$loading.show();
       try {
-        await this.$store.dispatch('store/get', pageId).then(() => {
-          this.resource.models = this.$store.getters["store/models"]
-          this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
+        // await this.$store.dispatch('store/get', pageId).then(() => {
+        //   this.resource.models = this.$store.getters["store/models"]
+        //   this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
+        // });
+        await this.$store.dispatch('store/getAll').then(() => {
+          this.resource.models = this.$store.getters["store/models"];
+          // this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
         });
       } catch (e) {
           console.error(e);
