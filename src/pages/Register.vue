@@ -120,10 +120,18 @@ export default {
       };
       let loader = this.$loading.show();
       try {
-          console.log(payload);
         await this.$store.dispatch("auth/register", payload).then(() => {
-            router.push({
-                name: 'Login'
+            this.$swal.fire({
+                title: this.$t('alert.registerSuccessfully'),
+                text: this.$t('alert.registerSuccessfullyText'),
+                icon: "success",
+            }).then((result) => {
+                this.resetApiValidation();
+                if (result.isConfirmed) {
+                    router.push({
+                        name: 'Login'
+                    });
+                }
             });
         });
       } catch (e) {

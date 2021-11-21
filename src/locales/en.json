@@ -64,15 +64,21 @@
     "removeConfirmation": "Are you sure to remove this?",
     "error": "Error",
 
-    "addedSuccessfully": "Added successfully",
-    "editedSuccessfully": "Edited successfully",
+    "registerSuccessfully": "Register Successfully",
+    "registerSuccessfullyText": "Please wait for us to process the registration. We will come back for you as soon as posibile. Don't hesitate to contact us if you face any problems.",
+    "forgotPasswordSuccessfully": "Forgot Password Successfully",
+    "forgotPasswordSuccessfullyText": "Check your email and follow the procedure. Don't hesitate to contact us if you face any problems.",
+    "addedSuccessfully": "Added Successfully",
+    "editedSuccessfully": "Edited Successfully",
 
     "cannotBeAdded": "Cannot be added",
     "failedToBeAdded": "Failed to be added",
     "failedToBeInitialized": "Failed to be initialized",
     "failedToBeEdited": "Failed to be edited",
     "redirectingToPreviousPage": "Redirecting to previous page",
+    "redirectingToLoginPage": "Redirecting to login page",
 
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "contactUs": "Don't hesitate to contact us if you face any problems"
   }
 }

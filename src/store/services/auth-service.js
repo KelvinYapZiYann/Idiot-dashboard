@@ -16,10 +16,8 @@ function login(payload) {
 }
 
 function register(payload) {
-    console.log(payload);
     return axios.post(`${url}/register`, payload, config).then(response => {
         localStorage.removeItem("vue-authenticate.vueauth_access_token");
-        console.log(response.data);
         return response.data;
     });
 }
@@ -34,8 +32,16 @@ function logout() {
     });
 }
 
+function forgotPassword(payload) {
+    return axios.post(`${url}/password/email`, payload, config).then(response => {
+        localStorage.removeItem("vue-authenticate.vueauth_access_token");
+        return response.data;
+    });
+}
+
 export default {
     login,
     register,
     logout,
+    forgotPassword,
 };

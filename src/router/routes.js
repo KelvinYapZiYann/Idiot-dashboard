@@ -6,6 +6,7 @@ import authSession from "@/middleware/authSession";
 
 const Login = () => import("@/pages/Login.vue");
 const Register = () => import("@/pages/Register.vue");
+const ForgotPassword = () => import("@/pages/ForgotPassword.vue");
 
 const ProfileDetail = () => import("@/pages/Profile/ProfileDetail.vue");
 const ProfileEdit = () => import("@/pages/Profile/ProfileEdit.vue");
@@ -41,6 +42,11 @@ const routes = [
         path: "register",
         name: "Register",
         component: Register,
+      },
+      {
+        path: "forgot-password",
+        name: "Forgot Password",
+        component: ForgotPassword,
       },
     ]
   },

@@ -33,6 +33,13 @@ const actions = {
       });
     });
   },
+  forgotPassword({commit}, payload) {
+    return service.forgotPassword(payload).then(() => {
+      commit("IS_AUTHENTICATED", {
+        isAuthenticated: false
+      });
+    });
+  },
 };
 
 const getters = {
