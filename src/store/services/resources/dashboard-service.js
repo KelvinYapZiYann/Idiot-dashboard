@@ -10,8 +10,8 @@ const config = {
     }
 };
 
-function getMaxTraffics() {
-    return axios.get(`${url}/total-traffics?type=total`, config)
+function getTotalTraffics(param) {
+    return axios.get(`${url}/total-traffics?store_id=${param.storeId}&device_id=${param.deviceId}`, config)
         .then(response => {
             return response.data;
         });
@@ -60,7 +60,7 @@ function getlastMonthTraffics() {
 }
 
 export default {
-    getMaxTraffics,
+    getTotalTraffics,
     getTodayTraffics,
     getYesterdayTraffics,
     getThisWeekTraffics,

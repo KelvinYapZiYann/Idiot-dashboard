@@ -39,7 +39,7 @@ export default {
       default: "primary"
     },
     icon: String,
-    title: String,
+    title: [String, Number],
     subTitle: String,
     image: String
   }

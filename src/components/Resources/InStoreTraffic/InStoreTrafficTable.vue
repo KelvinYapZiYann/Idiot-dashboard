@@ -56,7 +56,7 @@
               >
                 {{ row.device_mac_address }}
               </td>
-              <td
+              <!-- <td
                 @click="showDetails(row.id)"
                 @mousedown="startLongClick(row.id)" 
                 @mouseleave="stopLongClick"
@@ -68,7 +68,7 @@
                 <span class="badge badge-pill badge-success">
                   {{$t('component.online')}}
                 </span>
-              </td>
+              </td> -->
             </template>
           </base-table>
           <!-- <div
@@ -112,7 +112,7 @@ export default {
         columns: {
           device_description: this.$t('property.name'),
           device_mac_address: this.$t('property.macAddress'),
-          status: this.$t('property.status'),
+          // status: this.$t('property.status'),
           // enter: this.$t('property.enter'),
           // exit: this.$t('property.exit'),
         },
@@ -153,7 +153,7 @@ export default {
       router.push({
         name: "In Store Traffic Detail",
         params: {
-          storeId: id,
+          inStoreTrafficId: id,
           previousRoute: router.currentRoute.name,
         }
       });
@@ -162,7 +162,7 @@ export default {
       router.push({
         name: "Edit In Store Traffic",
         params: {
-          storeId: id,
+          deviceId: id,
           previousRoute: router.currentRoute.name,
         }
       });
@@ -202,7 +202,7 @@ export default {
       });
     },
     getResource() {
-      this.$emit('getResource', this.resource.data.currentPage);
+      this.$emit('getResource');
     },
     async handlePagination(pageId) {
       this.$emit('getResource', pageId);

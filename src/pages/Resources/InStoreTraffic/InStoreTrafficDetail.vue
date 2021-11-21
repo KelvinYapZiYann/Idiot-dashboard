@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="resource.model.enter"
+                :title="inStoreTrafficResource.enter ? inStoreTrafficResource.enter : '0'"
                 :sub-title="$t('property.enter')"
                 type="primary"
                 icon="fas fa-sign-in-alt"
@@ -19,7 +19,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="resource.model.exit"
+                :title="inStoreTrafficResource.exit ? inStoreTrafficResource.exit : '0'"
                 :sub-title="$t('property.exit')"
                 type="warning"
                 icon="fas fa-sign-out-alt"
@@ -28,19 +28,19 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="resource.model.passing"
-                :sub-title="$t('property.passing')"
-                type="neutral"
-                icon="fas fa-times"
+                :title="inStoreTrafficResource.return ? inStoreTrafficResource.return : '0'"
+                :sub-title="$t('property.return')"
+                type="success"
+                icon="fas fa-undo-alt"
                 >
             </stats-card>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="resource.model.return"
-                :sub-title="$t('property.return')"
-                type="success"
-                icon="fas fa-undo-alt"
+                :title="inStoreTrafficResource.passing ? inStoreTrafficResource.passing : '0'"
+                :sub-title="$t('property.passing')"
+                type="neutral"
+                icon="fas fa-times"
                 >
             </stats-card>
         </div>
@@ -50,10 +50,10 @@
       <i class="fas fa-chevron-left mr-1"></i>
       {{$t('component.back')}}
     </base-button>
-    <base-button slot="footer" type="primary" @click="handleEdit()" fill>
+    <!-- <base-button slot="footer" type="primary" @click="handleEdit()" fill>
       <i class="fas fa-edit mr-1"></i>
       {{$t('component.edit')}} {{$t('component.inStoreTraffic')}}
-    </base-button>
+    </base-button> -->
   </div>
 </template>
 <script>
@@ -70,19 +70,20 @@ export default {
     return {
       inStoreTrafficId: this.$route.params.inStoreTrafficId,
       resource: {
-        model: {
-            enter: '0',
-            exit: '0',
-            passing: '0',
-            return: '0',
-        },
+        model: {},
         data: {}
+      },
+      inStoreTrafficResource: {
+        enter: 0,
+        exit: 0,
+        return: 0,
+        passing: 0
       },
       detail: {
         detailHeaders: {
-          name: this.$t('property.name'),
-          macAddress: this.$t('property.macAddress'),
-          status: this.$t('property.status'),
+          device_description: this.$t('property.name'),
+          device_mac_address: this.$t('property.macAddress'),
+          // status: this.$t('property.status'),
         },
       }
     };
@@ -102,9 +103,27 @@ export default {
     async getResource() {
       let loader = this.$loading.show();
       try {
-        await this.$store.dispatch('inStoreTraffic/getById', this.storeId).then(() => {
-          this.resource.model = this.$store.getters["store/models"][0];
-          this.resource.data = this.$store.getters["asset/data"];
+        // await this.$store.dispatch('inStoreTraffic/getById', this.storeId).then(() => {
+        //   this.resource.model = this.$store.getters["store/models"][0];
+        //   this.resource.data = this.$store.getters["asset/data"];
+        // });
+        await this.$store.dispatch('store/getAll').then(() => {
+          let tmp = this.$store.getters["store/models"];
+          tmp.forEach((store) => {
+            store.devices.forEach((device) => {
+              if (device.device_id == this.inStoreTrafficId) {
+                this.resource.model = device;
+                let param = {
+                  storeId: store.store_id,
+                  deviceId: device.device_id,
+                };
+                this.$store.dispatch('dashboard/getTotalTraffics', param).then(() => {
+                  this.inStoreTrafficResource = this.$store.getters["dashboard/models"][0];
+                });
+              }
+            });
+          });
+          // this.resource.data = this.$store.getters["asset/data"];
         });
       } catch (e) {
         console.error(e);

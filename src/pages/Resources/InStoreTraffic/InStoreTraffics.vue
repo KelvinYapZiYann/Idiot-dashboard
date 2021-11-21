@@ -45,7 +45,9 @@ export default {
           this.resource.models = [];
           tmp.forEach((item) => {
             item.devices.forEach((device) => {
-              this.resource.models.push(device);
+              let obj = device;
+              obj.id = device.device_id;
+              this.resource.models.push(obj);
             });
           });
           // this.resource.data = Object.assign({}, this.$store.getters["inStoreTraffic/data"]);

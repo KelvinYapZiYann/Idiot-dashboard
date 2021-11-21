@@ -1,8 +1,8 @@
 import service from '@/store/services/resources/dashboard-service';
 
 const state = {
-    maxTrafficsEnter: '0',
-    maxTrafficsExit: '0',
+    totalTrafficsEnter: '0',
+    totalTrafficsExit: '0',
     todayEnter: '0',
     todayExit: '0',
     yesterdayEnter: '0',
@@ -15,12 +15,17 @@ const state = {
     thisMonthExit: '0',
     lastMonthEnter: '0',
     lastMonthExit: '0',
+
+    models: []
 };
 
 const mutations = {
-    SET_MAX_TRAFFICS: (state, response) => {
-        state.maxTrafficsEnter = response.maxTrafficsEnter;
-        state.maxTrafficsExit = response.maxTrafficsExit;
+    SET_TRAFFICS: (state, response) => {
+        state.models = response;
+    },
+    SET_TOTAL_TRAFFICS: (state, response) => {
+        state.totalTrafficsEnter = response.totalTrafficsEnter;
+        state.totalTrafficsExit = response.totalTrafficsExit;
     },
     SET_TODAY_TRAFFICS: (state, response) => {
         state.todayEnter = response.todayEnter;
@@ -49,9 +54,9 @@ const mutations = {
 };
 
 const actions = {
-    getMaxTraffics({commit}) {
-        return service.getMaxTraffics().then((response) => {
-            commit('SET_MAX_TRAFFICS', response);
+    getTotalTraffics({commit}, param) {
+        return service.getTotalTraffics(param).then((response) => {
+            commit('SET_TRAFFICS', response);
         }).catch((e) => {
             console.error(e);
         });
@@ -101,8 +106,8 @@ const actions = {
 };
 
 const getters = {
-    maxTrafficsEnter: state => state.maxTrafficsEnter,
-    maxTrafficsExit: state => state.maxTrafficsExit,
+    totalTrafficsEnter: state => state.totalTrafficsEnter,
+    totalTrafficsExit: state => state.totalTrafficsExit,
     todayEnter: state => state.todayEnter,
     todayExit: state => state.todayExit,
     yesterdayEnter: state => state.yesterdayEnter,
@@ -115,6 +120,8 @@ const getters = {
     thisMonthExit: state => state.thisMonthExit,
     lastMonthEnter: state => state.lastMonthEnter,
     lastMonthExit: state => state.lastMonthExit,
+
+    models: state => state.models,
 };
 
 const store = {

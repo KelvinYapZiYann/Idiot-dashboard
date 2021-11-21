@@ -81,13 +81,13 @@ export default {
           // this.resource.models = this.$store.getters["store/models"];
           // this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
         });
-        let param = {
-          storeId: this.storeId
-        };
-        await this.$store.dispatch('inStoreTraffic/get', param).then(() => {
-          this.inStoreTrafficResource.model = this.$store.getters["inStoreTraffic/models"];
-          this.inStoreTrafficResource.data = this.$store.getters["inStoreTraffic/data"];
-        });
+        // let param = {
+        //   storeId: this.storeId
+        // };
+        // await this.$store.dispatch('inStoreTraffic/get', param).then(() => {
+        //   this.inStoreTrafficResource.model = this.$store.getters["inStoreTraffic/models"];
+        //   this.inStoreTrafficResource.data = this.$store.getters["inStoreTraffic/data"];
+        // });
       } catch (e) {
         console.error(e);
       } finally {

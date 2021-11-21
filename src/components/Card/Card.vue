@@ -36,7 +36,7 @@
 export default {
   name: "card",
   props: {
-    title: String,
+    title: [Number, String],
     subTitle: String,
     type: String,
     icon: String,
