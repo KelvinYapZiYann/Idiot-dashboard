@@ -128,11 +128,11 @@
               </p>
             </a>
             <ul class="dropdown-menu dropdown-navbar">
-              <li class="nav-link">
+              <!-- <li class="nav-link">
                 <a href="javascript:void(0)" @click="profile" class="nav-item dropdown-item"
                   >{{$t('route.userProfile')}}</a
                 >
-              </li>
+              </li> -->
               <!-- <li class="nav-link">
                 <a href="/settings" class="nav-item dropdown-item"
                   >Settings</a
@@ -143,7 +143,7 @@
                 >{{$t('topbar.changeRole')}}</a
                 >
               </li> -->
-              <li class="dropdown-divider"></li>
+              <!-- <li class="dropdown-divider"></li> -->
               <li class="nav-link">
                 <a href="javascript:void(0)" @click="logout" class="nav-item dropdown-item"
                   >{{$t('route.logout')}}</a
