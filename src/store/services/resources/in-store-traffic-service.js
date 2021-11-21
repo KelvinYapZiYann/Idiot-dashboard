@@ -9,6 +9,12 @@ const config = {
     }
 };
 
+function getAll(param) {
+    return axios.get(`${url}/details/device?store_id=${param}`, config).then(response => {
+        return response.data;
+    });
+}
+
 function get(param) {
     if (param) {
         if (typeof param == "number") {
@@ -77,6 +83,8 @@ function remove(id) {
 }
 
 export default {
+    getAll,
+    
     get,
     getById,
     create,

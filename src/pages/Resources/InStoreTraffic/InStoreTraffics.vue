@@ -30,15 +30,25 @@ export default {
     }
   },
   mounted() {
-    this.getResource(1);
+    this.getResource();
   },
   methods: {
-    async getResource(pageId) {
+    async getResource() {
       let loader = this.$loading.show();
       try {
-        await this.$store.dispatch('inStoreTraffic/get', pageId).then(() => {
-          this.resource.models = this.$store.getters["inStoreTraffic/models"]
-          this.resource.data = Object.assign({}, this.$store.getters["inStoreTraffic/data"]);
+        // await this.$store.dispatch('inStoreTraffic/get', pageId).then(() => {
+        //   this.resource.models = this.$store.getters["inStoreTraffic/models"]
+        //   this.resource.data = Object.assign({}, this.$store.getters["inStoreTraffic/data"]);
+        // });
+        await this.$store.dispatch('store/getAll').then(() => {
+          let tmp = this.$store.getters["store/models"];
+          this.resource.models = [];
+          tmp.forEach((item) => {
+            item.devices.forEach((device) => {
+              this.resource.models.push(device);
+            });
+          });
+          // this.resource.data = Object.assign({}, this.$store.getters["inStoreTraffic/data"]);
         });
       } catch (e) {
           console.error(e);

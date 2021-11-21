@@ -7,6 +7,17 @@ const state = {
 };
 
 const mutations = {
+    SET_RESOURCES_ALL: (state, response) => {
+        state.models = [];
+        response.forEach((item) => {
+            let obj = {};
+            obj.id = item.device_id;
+            for (let key in item) {
+                obj[key] = item[key];
+            }
+            state.models.push(obj);
+        });
+    },
     SET_RESOURCES: (state, response) => {
         state.models = [];
         response.data.forEach((item) => {
@@ -52,6 +63,13 @@ const mutations = {
 };
 
 const actions = {
+    getAll({commit}, param) {
+        return service.getAll(param).then((response) => {
+            commit('SET_RESOURCES_ALL', response);
+        }).catch((e) => {
+            console.error(e);
+        });
+    },
     get({commit}, param) {
         return service.get(param).then((response) => {
             commit('SET_RESOURCES', response);

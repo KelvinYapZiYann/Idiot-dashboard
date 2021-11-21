@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <card :title="$t('component.inStoreTraffics')" :showFooterLine="true">
-        <div class="text-right">
+        <!-- <div class="text-right">
           <base-button
             @click="addModel"
             type="primary"
@@ -10,7 +10,7 @@
             {{$t('component.add')}} {{$t('component.inStoreTraffic')}}
             <i class="fas fa-camera-alt ml-1"></i>
           </base-button>
-        </div>
+        </div> -->
         <!-- <div class="row">
           <div class="col-xl-4 col-lg-5 col-md-6 ml-auto">
             <base-input 
@@ -26,11 +26,14 @@
             :columns="table.columns"
             thead-classes="text-primary"
             v-on:show-details="showDetails"
-            v-on:edit-details="editDetails"
-            v-on:delete-details="deleteDetails"
-            :startIndex="resource.data.from"
+            :disableDelete="true"
+            :disableEdit="true"
+            :startIndex="1"
           >
-            <!-- <template slot-scope="{ row }">
+          <!-- v-on:edit-details="editDetails"
+            v-on:delete-details="deleteDetails" -->
+
+            <template slot-scope="{ row }">
               <td
                 @click="showDetails(row.id)"
                 @mousedown="startLongClick(row.id)" 
@@ -40,43 +43,7 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                {{ row.asset_nickname }}
-              </td>
-              <td
-                v-if="!$store.getters['mobileLayout/isMobileLayout']"
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
-                @mouseleave="stopLongClick"
-                @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
-                @touchend="stopLongClick"
-                @touchcancel="stopLongClick"
-              >
-                {{ row.location_details ? row.location_details.asset_unit_no : '' }}
-              </td>
-              <td
-                v-if="!$store.getters['mobileLayout/isMobileLayout']"
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
-                @mouseleave="stopLongClick"
-                @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
-                @touchend="stopLongClick"
-                @touchcancel="stopLongClick"
-              >
-                {{ row.location_details ? row.location_details.asset_address_line : '' }}
-              </td>
-              <td
-                v-if="!$store.getters['mobileLayout/isMobileLayout']"
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
-                @mouseleave="stopLongClick"
-                @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
-                @touchend="stopLongClick"
-                @touchcancel="stopLongClick"
-              >
-                {{ row.location_details ? row.location_details.asset_city : '' }}
+                {{ row.device_description }}
               </td>
               <td
                 @click="showDetails(row.id)"
@@ -87,7 +54,7 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                <base-room-indicator :value="row.number_of_rooms"></base-room-indicator>
+                {{ row.device_mac_address }}
               </td>
               <td
                 @click="showDetails(row.id)"
@@ -98,11 +65,13 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                <base-tenant-indicator :value="row.number_of_tenants"></base-tenant-indicator>
-              </td> 
-            </template> -->
+                <span class="badge badge-pill badge-success">
+                  {{$t('component.online')}}
+                </span>
+              </td>
+            </template>
           </base-table>
-          <div
+          <!-- <div
             slot="footer"
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
@@ -120,20 +89,20 @@
               type="primary"
             >
             </base-pagination>
-          </div>
+          </div> -->
         <!-- </div> -->
       </card>
     </div>
   </div>
 </template>
 <script>
-import { BaseButton, BasePagination, BaseTable, Card } from "@/components/index";
+import { /*BaseButton, BasePagination,*/ BaseTable, Card } from "@/components/index";
 import router from "@/router";
 
 export default {
   components: {
-    BaseButton,
-    BasePagination,
+    // BaseButton,
+    // BasePagination,
     BaseTable,
     Card,
   },
@@ -141,11 +110,11 @@ export default {
     return {
       table: {
         columns: {
-          name: this.$t('property.name'),
-          macAddress: this.$t('property.macAddress'),
+          device_description: this.$t('property.name'),
+          device_mac_address: this.$t('property.macAddress'),
           status: this.$t('property.status'),
-          enter: this.$t('property.enter'),
-          exit: this.$t('property.exit'),
+          // enter: this.$t('property.enter'),
+          // exit: this.$t('property.exit'),
         },
       },
     //   searchQuery: "",
