@@ -23,34 +23,34 @@ const mutations = {
     SET_TRAFFICS: (state, response) => {
         state.models = response;
     },
-    SET_TOTAL_TRAFFICS: (state, response) => {
-        state.totalTrafficsEnter = response.totalTrafficsEnter;
-        state.totalTrafficsExit = response.totalTrafficsExit;
-    },
-    SET_TODAY_TRAFFICS: (state, response) => {
-        state.todayEnter = response.todayEnter;
-        state.todayExit = response.todayExit;
-    },
-    SET_YESTERDAY_TRAFFICS: (state, response) => {
-        state.yesterdayEnter = response.yesterdayEnter;
-        state.yesterdayExit = response.yesterdayExit;
-    },
-    SET_THIS_WEEK_TRAFFICS: (state, response) => {
-        state.thisWeekEnter = response.thisWeekEnter;
-        state.thisWeekExit = response.thisWeekExit;
-    },
-    SET_LAST_WEEK_TRAFFICS: (state, response) => {
-        state.lastWeekEnter = response.lastWeekEnter;
-        state.lastWeekExit = response.lastWeekExit;
-    },
-    SET_THIS_MONTH_TRAFFICS: (state, response) => {
-        state.thisMonthEnter = response.thisMonthEnter;
-        state.thisMonthExit = response.thisMonthExit;
-    },
-    SET_LAST_MONTH_TRAFFICS: (state, response) => {
-        state.lastMonthEnter = response.lastMonthEnter;
-        state.lastMonthExit = response.lastMonthExit;
-    },
+    // SET_TOTAL_TRAFFICS: (state, response) => {
+    //     state.totalTrafficsEnter = response.totalTrafficsEnter;
+    //     state.totalTrafficsExit = response.totalTrafficsExit;
+    // },
+    // SET_TODAY_TRAFFICS: (state, response) => {
+    //     state.todayEnter = response.todayEnter;
+    //     state.todayExit = response.todayExit;
+    // },
+    // SET_YESTERDAY_TRAFFICS: (state, response) => {
+    //     state.yesterdayEnter = response.yesterdayEnter;
+    //     state.yesterdayExit = response.yesterdayExit;
+    // },
+    // SET_THIS_WEEK_TRAFFICS: (state, response) => {
+    //     state.thisWeekEnter = response.thisWeekEnter;
+    //     state.thisWeekExit = response.thisWeekExit;
+    // },
+    // SET_LAST_WEEK_TRAFFICS: (state, response) => {
+    //     state.lastWeekEnter = response.lastWeekEnter;
+    //     state.lastWeekExit = response.lastWeekExit;
+    // },
+    // SET_THIS_MONTH_TRAFFICS: (state, response) => {
+    //     state.thisMonthEnter = response.thisMonthEnter;
+    //     state.thisMonthExit = response.thisMonthExit;
+    // },
+    // SET_LAST_MONTH_TRAFFICS: (state, response) => {
+    //     state.lastMonthEnter = response.lastMonthEnter;
+    //     state.lastMonthExit = response.lastMonthExit;
+    // },
 };
 
 const actions = {
@@ -61,48 +61,62 @@ const actions = {
             console.error(e);
         });
     },
-    getTodayTraffics({commit}) {
-        return service.getTodayTraffics().then((response) => {
-            commit('SET_TODAY_TRAFFICS', response);
+    getDailyTrafficsInCustomDateRange({commit}, param) {
+        return service.getDailyTrafficsInCustomDateRange(param).then((response) => {
+            commit('SET_TRAFFICS', response);
         }).catch((e) => {
             console.error(e);
         });
     },
-    getYesterdayTraffics({commit}) {
-        return service.getYesterdayTraffics().then((response) => {
-            commit('SET_YESTERDAY_TRAFFICS', response);
+    getDailyTrafficsInMonth({commit}, param) {
+        return service.getDailyTrafficsInMonth(param).then((response) => {
+            commit('SET_TRAFFICS', response);
         }).catch((e) => {
             console.error(e);
         });
     },
-    getThisWeekTraffics({commit}) {
-        return service.getThisWeekTraffics().then((response) => {
-            commit('SET_THIS_WEEK_TRAFFICS', response);
-        }).catch((e) => {
-            console.error(e);
-        });
-    },
-    getlastWeekTraffics({commit}) {
-        return service.getlastWeekTraffics().then((response) => {
-            commit('SET_LAST_WEEK_TRAFFICS', response);
-        }).catch((e) => {
-            console.error(e);
-        });
-    },
-    getThisMonthTraffics({commit}) {
-        return service.getThisMonthTraffics().then((response) => {
-            commit('SET_THIS_MONTH_TRAFFICS', response);
-        }).catch((e) => {
-            console.error(e);
-        });
-    },
-    getlastMonthTraffics({commit}) {
-        return service.getlastMonthTraffics().then((response) => {
-            commit('SET_LAST_MONTH_TRAFFICS', response);
-        }).catch((e) => {
-            console.error(e);
-        });
-    },
+    // getTodayTraffics({commit}) {
+    //     return service.getTodayTraffics().then((response) => {
+    //         commit('SET_TODAY_TRAFFICS', response);
+    //     }).catch((e) => {
+    //         console.error(e);
+    //     });
+    // },
+    // getYesterdayTraffics({commit}) {
+    //     return service.getYesterdayTraffics().then((response) => {
+    //         commit('SET_YESTERDAY_TRAFFICS', response);
+    //     }).catch((e) => {
+    //         console.error(e);
+    //     });
+    // },
+    // getThisWeekTraffics({commit}) {
+    //     return service.getThisWeekTraffics().then((response) => {
+    //         commit('SET_THIS_WEEK_TRAFFICS', response);
+    //     }).catch((e) => {
+    //         console.error(e);
+    //     });
+    // },
+    // getlastWeekTraffics({commit}) {
+    //     return service.getlastWeekTraffics().then((response) => {
+    //         commit('SET_LAST_WEEK_TRAFFICS', response);
+    //     }).catch((e) => {
+    //         console.error(e);
+    //     });
+    // },
+    // getThisMonthTraffics({commit}) {
+    //     return service.getThisMonthTraffics().then((response) => {
+    //         commit('SET_THIS_MONTH_TRAFFICS', response);
+    //     }).catch((e) => {
+    //         console.error(e);
+    //     });
+    // },
+    // getlastMonthTraffics({commit}) {
+    //     return service.getlastMonthTraffics().then((response) => {
+    //         commit('SET_LAST_MONTH_TRAFFICS', response);
+    //     }).catch((e) => {
+    //         console.error(e);
+    //     });
+    // },
 };
 
 const getters = {

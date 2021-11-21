@@ -17,6 +17,20 @@ function getTotalTraffics(param) {
         });
 }
 
+function getDailyTrafficsInCustomDateRange(param) {
+    return axios.get(`${url}/total-custom-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&start_date=${param.startDate}&end_date=${param.endDate}`, config)
+        .then(response => {
+            return response.data;
+        });
+}
+
+function getDailyTrafficsInMonth(param) {
+    return axios.get(`${url}/total-daily-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&month=${param.month}`, config)
+        .then(response => {
+            return response.data;
+        });
+}
+
 function getTodayTraffics() {
     return axios.get(`${url}/total-traffics?type=today`, config)
         .then(response => {
@@ -61,6 +75,9 @@ function getlastMonthTraffics() {
 
 export default {
     getTotalTraffics,
+    getDailyTrafficsInCustomDateRange,
+    getDailyTrafficsInMonth,
+
     getTodayTraffics,
     getYesterdayTraffics,
     getThisWeekTraffics,

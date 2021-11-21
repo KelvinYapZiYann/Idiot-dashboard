@@ -51,7 +51,7 @@
     "status": "Status"
   },
   "dashboard": {
-    "maxTraffics": "Maximum Traffics"
+    "totalTraffics": "Total Traffics"
   },
   "date": {
     "today": "Today",
