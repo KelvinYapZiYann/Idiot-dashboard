@@ -5,6 +5,7 @@ import auth from "@/middleware/auth";
 import authSession from "@/middleware/authSession";
 
 const Login = () => import("@/pages/Login.vue");
+const Register = () => import("@/pages/Register.vue");
 
 const ProfileDetail = () => import("@/pages/Profile/ProfileDetail.vue");
 const ProfileEdit = () => import("@/pages/Profile/ProfileEdit.vue");
@@ -35,6 +36,11 @@ const routes = [
         name: "Login",
         component: Login,
         meta: { middleware: authSession }
+      },
+      {
+        path: "register",
+        name: "Register",
+        component: Register,
       },
     ]
   },

@@ -6,7 +6,10 @@
     "dashboard": "Dashboard",
     "userProfile": "User Profile",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "register": "Register",
+    "backToLogin": "Back to Login",
+    "forgotPassword": "Forgot Password"
   },
   "component": {
     "stores": "Stores",

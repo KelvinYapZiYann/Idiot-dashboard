@@ -38,20 +38,20 @@
             >
               {{$t('route.login')}}
             </base-button>
-            <!-- <div class="pull-left">
+            <div class="pull-left">
               <h6>
                 <router-link class="link footer-link" to="/register" v-slot="{ navigate, href }" custom>
-                  <a @click="navigate" @keypress.enter="navigate" role="link" :href="href">{{$t('login.createAccount')}}</a>
+                  <a @click="navigate" @keypress.enter="navigate" role="link" :href="href">{{$t('route.register')}}</a>
                 </router-link>
               </h6>
             </div>
             <div class="pull-right">
               <h6>
                 <router-link class="link footer-link" to="/forgot-password" v-slot="{ navigate, href }" custom>
-                  <a @click="navigate" @keypress.enter="navigate" role="link" :href="href">{{$t('login.forgotPassword')}}</a>
+                  <a @click="navigate" @keypress.enter="navigate" role="link" :href="href">{{$t('route.forgotPassword')}}</a>
                 </router-link>
               </h6>
-            </div> -->
+            </div>
           </div>
         </card>
       </form>
@@ -62,7 +62,6 @@
 import { BaseButton, BaseInput, Card } from "@/components/index";
 import formMixin from "@/mixins/form-mixin";
 import router from "@/router";
-// import axios from "axios";
 
 export default {
   mixins: [formMixin],

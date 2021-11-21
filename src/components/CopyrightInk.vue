@@ -2,10 +2,10 @@
     <div class="copyright">
         Copyright <i class="fa fa-copyright" style="font-weight: 200;"></i> {{ year }} All Rights Reserved by 
           <a
-            href="https://propster.io/"
+            href="https://id-iot.asia/"
             target="_blank"
             rel="noopener"
-          >Propster.io</a>
+          >{{$t('company.name')}}</a>
     </div>
 </template>
 <script>
