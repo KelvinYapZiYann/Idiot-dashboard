@@ -16,7 +16,7 @@ const mutations = {
                 obj[key] = item[key];
             }
             state.models.push(obj);
-        })
+        });
     },
     SET_RESOURCES: (state, response) => {
         state.models = [];

@@ -16,10 +16,10 @@
       <i class="fas fa-chevron-left mr-1"></i>
       {{$t('component.back')}}
     </base-button>
-    <base-button slot="footer" type="primary" @click="handleEdit()" fill>
+    <!-- <base-button slot="footer" type="primary" @click="handleEdit()" fill>
       <i class="fas fa-edit mr-1"></i>
       {{$t('component.edit')}} {{$t('component.store')}}
-    </base-button>
+    </base-button> -->
   </div>
 </template>
 <script>
@@ -46,8 +46,8 @@ export default {
       },
       detail: {
         detailHeaders: {
-          name: this.$t('property.name'),
-          address: this.$t('property.address'),
+          store_name: this.$t('property.name'),
+          store_address: this.$t('property.address'),
         },
       }
     };
@@ -67,9 +67,19 @@ export default {
     async getResource() {
       let loader = this.$loading.show();
       try {
-        await this.$store.dispatch('store/getById', this.storeId).then(() => {
-          this.resource.model = this.$store.getters["store/models"][0];
-          this.resource.data = this.$store.getters["asset/data"];
+        // await this.$store.dispatch('store/getById', this.storeId).then(() => {
+        //   this.resource.model = this.$store.getters["store/models"][0];
+        //   this.resource.data = this.$store.getters["asset/data"];
+        // });
+        await this.$store.dispatch('store/getAll').then(() => {
+          let tmpModels = this.$store.getters["store/models"];
+          tmpModels.forEach((item) => {
+            if (item.store_id == this.storeId) {
+              this.resource.model = item;
+            }
+          });
+          // this.resource.models = this.$store.getters["store/models"];
+          // this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
         });
         let param = {
           storeId: this.storeId
