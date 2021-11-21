@@ -23,15 +23,17 @@
           </a> -->
         </li>
       </ul>
-      <!-- <copyright-ink></copyright-ink> -->
+      <div class="text-right mr-3 mt-3">
+        <copyright-ink></copyright-ink>
+      </div>
     </div>
   </footer>
 </template>
 <script>
-// import CopyrightInk from "@/components/CopyrightInk";
+import CopyrightInk from "@/components/CopyrightInk";
 export default {
   components: {
-    // CopyrightInk
+    CopyrightInk
   }
 };
 </script>

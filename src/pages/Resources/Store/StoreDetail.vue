@@ -73,9 +73,14 @@ export default {
         // });
         await this.$store.dispatch('store/getAll').then(() => {
           let tmpModels = this.$store.getters["store/models"];
-          tmpModels.forEach((item) => {
-            if (item.store_id == this.storeId) {
-              this.resource.model = item;
+          tmpModels.forEach((store) => {
+            if (store.store_id == this.storeId) {
+              this.resource.model = store;
+              store.devices.forEach((device) => {
+                let obj = device;
+                obj.id = device.device_id;
+                this.inStoreTrafficResource.models.push(obj);
+              });
             }
           });
           // this.resource.models = this.$store.getters["store/models"];
