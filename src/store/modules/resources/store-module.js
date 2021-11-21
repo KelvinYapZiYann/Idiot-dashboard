@@ -8,7 +8,15 @@ const state = {
 
 const mutations = {
     SET_RESOURCES_ALL: (state, response) => {
-        state.models = response;
+        state.models = [];
+        response.forEach((item) => {
+            let obj = {};
+            obj.id = item.store_id;
+            for (let key in item) {
+                obj[key] = item[key];
+            }
+            state.models.push(obj);
+        })
     },
     SET_RESOURCES: (state, response) => {
         state.models = [];

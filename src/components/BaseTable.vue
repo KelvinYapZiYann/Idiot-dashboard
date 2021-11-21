@@ -12,7 +12,7 @@
     <tbody :class="tbodyClasses">
     <tr v-for="(item, index) in data" :key="index" :class="[{viewableRow: !disableView}]" :style="rowBackgroundColor[index]">
       <td v-if="!disableIndex">
-        <span>
+        <span @click="showDetails(item.id)">
           {{startIndex + index}}.
         </span>
       </td>
