@@ -16,6 +16,7 @@
     "store": "Store",
     "inStoreTraffics": "In-Store Traffics",
     "inStoreTraffic": "In-Store Traffic",
+    "traffic": "Traffic",
 
     "index": "Index",
     "actions": "Actions",
@@ -51,7 +52,8 @@
     "status": "Status"
   },
   "dashboard": {
-    "totalTraffics": "Total Traffics"
+    "totalTraffics": "Total Traffics",
+    "trafficsOfPastMonth": "Traffics Of Past Month"
   },
   "date": {
     "today": "Today",

@@ -11,6 +11,7 @@ import StatsCard from "./Card/StatsCard.vue";
 import CopyrightInk from "./CopyrightInk";
 import DropDown from "./Dropdown.vue";
 import Modal from "./Modal";
+import LineChart from "./Chart/LineChart";
 
 export {
   SidebarPlugin,
@@ -24,6 +25,7 @@ export {
   Card,
   StatsCard,
   CopyrightInk,
-  Modal,
   DropDown,
+  Modal,
+  LineChart,
 };

@@ -8,6 +8,7 @@
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
+                    <!-- <div slot="footer" v-html="asd"></div> -->
                 </stats-card>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
@@ -24,7 +25,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.todayEnter ? resource.todayEnter : '0'"
-                    :sub-title="$t('date.today')"
+                    :sub-title="$t('date.today') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
@@ -33,7 +34,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.todayExit ? resource.todayExit : '0'"
-                    :sub-title="$t('date.today')"
+                    :sub-title="$t('date.today') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
                     >
@@ -42,7 +43,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.yesterdayEnter ? resource.yesterdayEnter : '0'"
-                    :sub-title="$t('date.yesterday')"
+                    :sub-title="$t('date.yesterday') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
@@ -51,7 +52,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.yesterdayExit ? resource.yesterdayExit : '0'"
-                    :sub-title="$t('date.yesterday')"
+                    :sub-title="$t('date.yesterday') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
                     >
@@ -60,7 +61,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.thisWeekEnter ? resource.thisWeekEnter : '0'"
-                    :sub-title="$t('date.thisWeek')"
+                    :sub-title="$t('date.thisWeek') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
@@ -69,7 +70,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.thisWeekExit ? resource.thisWeekExit : '0'"
-                    :sub-title="$t('date.thisWeek')"
+                    :sub-title="$t('date.thisWeek') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
                     >
@@ -78,7 +79,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.lastWeekEnter ? resource.lastWeekEnter : '0'"
-                    :sub-title="$t('date.lastWeek')"
+                    :sub-title="$t('date.lastWeek') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
@@ -87,7 +88,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.lastWeekExit ? resource.lastWeekExit : '0'"
-                    :sub-title="$t('date.lastWeek')"
+                    :sub-title="$t('date.lastWeek') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
                     >
@@ -96,7 +97,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.thisMonthEnter ? resource.thisMonthEnter : '0'"
-                    :sub-title="$t('date.thisMonth')"
+                    :sub-title="$t('date.thisMonth') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
@@ -105,7 +106,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.thisMonthExit ? resource.thisMonthExit : '0'"
-                    :sub-title="$t('date.thisMonth')"
+                    :sub-title="$t('date.thisMonth') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
                     >
@@ -114,7 +115,7 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.lastMonthEnter ? resource.lastMonthEnter : '0'"
-                    :sub-title="$t('date.lastMonth')"
+                    :sub-title="$t('date.lastMonth') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
@@ -123,23 +124,48 @@
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.lastMonthExit ? resource.lastMonthExit : '0'"
-                    :sub-title="$t('date.lastMonth')"
+                    :sub-title="$t('date.lastMonth') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
                     >
                 </stats-card>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <card type="chart" :title="$t('dashboard.trafficsOfPastMonth')">
+                    <!-- <h4 class="text-left ml-2">
+                        <span><i class="fas fa-sign-in-alt"></i> {{resource.wholeMonthEnter}}</span>
+                    </h4>
+                    <h4 class="text-left ml-2">
+                        <span><i class="fas fa-sign-out-alt"></i> {{resource.wholeMonthExit}}</span>
+                    </h4> -->
+                    <line-chart
+                        chart-id="green-line-chart"
+                        :chart-data="chartData"
+                        :extra-options="lineChart.extraOptions"
+                    >
+                    <!-- :gradient-colors="greenLineChart.gradientColors"
+                        :gradient-stops="greenLineChart.gradientStops" -->
+                    </line-chart>
+                </card>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 import {
+    Card,
     StatsCard,
+    LineChart
 } from "@/components/index";
+import * as chartConfigs from "@/components/Chart/ChartConfig";
 
 export default {
     components: {
+        Card,
         StatsCard,
+        LineChart,
     },
     data() {
         return {
@@ -158,8 +184,13 @@ export default {
                 thisMonthExit: 0,
                 lastMonthEnter: 0,
                 lastMonthExit: 0,
-
-                stores: [],
+            },
+            // asd: '<i class="fas fa-user"></i> Update Now',
+            lineChart: {
+                extraOptions: chartConfigs.chartOptions,
+                labels: [],
+                enters: [],
+                exits: [],
             },
         }
     },
@@ -170,35 +201,6 @@ export default {
         async getResource() {
             let loader = this.$loading.show();
             try {
-                // await this.$store.dispatch('dashboard/getMaxTraffics').then(() => {
-                //     this.resource.maxTrafficsEnter = this.$store.getters["dashboard/maxTrafficsEnter"];
-                //     this.resource.maxTrafficsExit = this.$store.getters["dashboard/maxTrafficsExit"];
-                // });
-                // await this.$store.dispatch('dashboard/getTodayTraffics').then(() => {
-                //     this.resource.todayEnter = this.$store.getters["dashboard/todayEnter"];
-                //     this.resource.todayExit = this.$store.getters["dashboard/todayExit"];
-                // });
-                // await this.$store.dispatch('dashboard/getYesterdayTraffics').then(() => {
-                //     this.resource.yesterdayEnter = this.$store.getters["dashboard/yesterdayEnter"];
-                //     this.resource.yesterdayExit = this.$store.getters["dashboard/yesterdayExit"];
-                // });
-                // await this.$store.dispatch('dashboard/getThisWeekTraffics').then(() => {
-                //     this.resource.thisWeekEnter = this.$store.getters["dashboard/thisWeekEnter"];
-                //     this.resource.thisWeekExit = this.$store.getters["dashboard/thisWeekExit"];
-                // });
-                // await this.$store.dispatch('dashboard/getlastWeekTraffics').then(() => {
-                //     this.resource.lastWeekEnter = this.$store.getters["dashboard/lastWeekEnter"];
-                //     this.resource.lastWeekExit = this.$store.getters["dashboard/lastWeekExit"];
-                // });
-                // await this.$store.dispatch('dashboard/getThisMonthTraffics').then(() => {
-                //     this.resource.thisMonthEnter = this.$store.getters["dashboard/thisMonthEnter"];
-                //     this.resource.thisMonthExit = this.$store.getters["dashboard/thisMonthExit"];
-                // });
-                // await this.$store.dispatch('dashboard/getlastMonthTraffics').then(() => {
-                //     this.resource.lastMonthEnter = this.$store.getters["dashboard/lastMonthEnter"];
-                //     this.resource.lastMonthExit = this.$store.getters["dashboard/lastMonthExit"];
-                // });
-
                 this.resource.totalTrafficsEnter = 0;
                 this.resource.totalTrafficsExit = 0;
                 this.resource.todayEnter = 0;
@@ -214,12 +216,10 @@ export default {
                 this.resource.lastMonthEnter = 0;
                 this.resource.lastMonthExit = 0;
 
-                // console.log();
                 let today = this.$moment();
-                
                 let currentDay = today.format('D');
-                let todayDateString = today.format('YYYY-MM-DD');
-                let yesterday = today.subtract(1, 'days').format('D');
+                let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+                let yesterday = today.subtract(2, 'days').format('D');
                 let thisWeekStartDateString = today.subtract(5, 'days').format('YYYY-MM-DD');
                 let lastWeekEndDateString = today.subtract(1, 'days').format('YYYY-MM-DD');
                 let lastWeekStartDateString = today.subtract(6, 'days').format('YYYY-MM-DD');
@@ -228,12 +228,14 @@ export default {
                 let thisMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
                 let lastMonthStartDateString = today.subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
                 let lastMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
+                today = this.$moment();
+                let wholeMonthStartDateString = today.subtract(1, 'months').format('YYYY-MM-DD');
                 
 
                 await this.$store.dispatch('store/getAll').then(() => {
-                    this.stores = this.$store.getters["store/models"];
+                    let stores = this.$store.getters["store/models"];
                     
-                    this.stores.forEach((store) => {
+                    stores.forEach((store) => {
                         store.devices.forEach((device) => {
                             this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
                                 let model = this.$store.getters["dashboard/models"][0];
@@ -285,15 +287,40 @@ export default {
                                     this.resource.lastMonthExit += model.exit;
                                 });
                             });
+
+                            this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: wholeMonthStartDateString, endDate: todayDateString}).then(() => {
+                                let models = this.$store.getters["dashboard/models"];
+                                // models.sort((a, b) => {
+                                //     return a.date < b.date;
+                                // });
+                                this.lineChart.labels = [];
+                                this.lineChart.enters = [];
+                                this.lineChart.exits = [];
+                                // models.forEach((model) => {
+                                //     this.lineChart.labels.push(model.date);
+                                //     this.lineChart.enters.push(model.enter);
+                                //     this.lineChart.exits.push(model.exit);
+                                // });
+
+                                let duration = this.$moment.duration(this.$moment().diff(today));
+                                let durationDiffDays = Math.floor(duration.asDays());
+                                mainLoop: for (let i = 0; i < durationDiffDays; i++) {
+                                    let tmpDate = today.add(1, 'days').format('YYYY-MM-DD');
+                                    for (let j = 0; j < models.length; j++) {
+                                        if (tmpDate == models[j].date) {
+                                            this.lineChart.labels.push(models[j].date);
+                                            this.lineChart.enters.push(models[j].enter);
+                                            this.lineChart.exits.push(models[j].exit);
+                                            continue mainLoop;
+                                        }
+                                    }
+                                    this.lineChart.labels.push(tmpDate);
+                                    this.lineChart.enters.push(0);
+                                    this.lineChart.exits.push(0);
+                                }
+                            });
                         });
                     });
-
-                    // await this.$store.dispatch('dashboard/getTotalTraffics', ).then(() => {
-                    //     let model = this.$store.getters["dashboard/models"][0];
-                    //     this.resource.totalTrafficsEnter = model.enter;
-                    //     this.resource.totalTrafficsExit = model.exit;
-                    // });
-
                 });
             } catch (e) {
                 console.error(e);
@@ -301,7 +328,51 @@ export default {
                 loader.hide();
             }
         }
+    },
+    computed: {
+        chartData() {
+            return {
+                labels: this.lineChart.labels,
+                datasets: [
+                    {
+                        label: this.$t('property.enter'),
+                        fill: true,
+                        borderColor: "#00f2c3",
+                        borderWidth: 2,
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBackgroundColor: "#00f2c3",
+                        pointBorderColor: "rgba(255,255,255,0)",
+                        pointHoverBackgroundColor: "#00f2c3",
+                        pointBorderWidth: 20,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 15,
+                        pointRadius: 4,
+                        data: this.lineChart.enters
+                    },
+                    {
+                        label: this.$t('property.exit'),
+                        fill: true,
+                        borderColor: "#fd5d93",
+                        borderWidth: 2,
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBackgroundColor: "#fd5d93",
+                        pointBorderColor: "rgba(255,255,255,0)",
+                        pointHoverBackgroundColor: "#fd5d93",
+                        pointBorderWidth: 20,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 15,
+                        pointRadius: 4,
+                        data: this.lineChart.exits
+                    }
+                ]
+            };
+        }
     }
 };
 
 </script>
+<style>
+
+</style>
