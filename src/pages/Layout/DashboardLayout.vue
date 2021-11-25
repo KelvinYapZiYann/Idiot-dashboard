@@ -30,6 +30,12 @@
           >
           </sidebar-link>
 
+          <li class="">
+            <a href="javascript:void(0)" class="nav-link" @click="logout">
+                <i class="fas fa-sign-out-alt"></i><p>{{$t('route.logout')}}</p>
+            </a>
+          </li>
+
           <!-- <sidebar-link
             :link="{
               name: $t('route.userProfile'),
@@ -58,6 +64,7 @@ import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./DashboardContent.vue";
 import SideBar from "@/components/SidebarPlugin/SideBar.vue";
 import SidebarLink from "@/components/SidebarPlugin/SidebarLink.vue";
+import router from "@/router";
 
 export default {
   components: {
@@ -82,6 +89,26 @@ export default {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false);
       }
+    },
+    logout() {
+      this.$swal.fire({
+        title: this.$t('route.logout'),
+        text: this.$t('alert.logoutConfirmation'),
+        showCancelButton: true,
+        confirmButtonText: this.$t('route.logout'),
+        cancelButtonText: this.$t('component.cancel'),
+        icon: "warning",
+      }).then((result) => {
+        if (result.value) {
+          try {
+            this.$store.dispatch("auth/logout").then(() => {
+              router.push({ name: "Login" });
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      });
     },
   }
 };

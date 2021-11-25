@@ -508,21 +508,21 @@
     //   border-top: 2px solid $info;
     // }
 
-    &[data="green"]{
-      border-top: 2px solid $success;
-    }
+    // &[data="green"]{
+    //   border-top: 2px solid $success;
+    // }
 
-    &[data="primary"]{
-      border-top: 2px solid $primary;
-    }
+    // &[data="primary"]{
+    //   border-top: 2px solid $primary;
+    // }
 
-    &[data="orange"]{
-      border-top: 2px solid $warning;
-    }
+    // &[data="orange"]{
+    //   border-top: 2px solid $warning;
+    // }
 
-    &[data="red"]{
-      border-top: 2px solid $danger;
-    }
+    // &[data="red"]{
+    //   border-top: 2px solid $danger;
+    // }
 
     > .content {
         padding: 1rem 30px 30px 280px;

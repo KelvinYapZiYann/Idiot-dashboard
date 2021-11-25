@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="container-fluid">
-      <ul class="nav">
+      <!-- <ul class="nav"> -->
         <!-- <li class="nav-item">
           <a href="javascript:void(0)" class="nav-link">
             Creative Tim
@@ -17,13 +17,13 @@
             <i class="fas fa-phone"></i> {{$t('footer.contactUs')}}
           </a>
         </li> -->
-        <li class="nav-item">
+        <!-- <li class="nav-item"> -->
           <!-- <a href="https://www.facebook.com/Propster.io" target="_blank" rel="noopener" class="nav-link">
             <i class="fab fa-facebook-f"></i> {{$t('footer.facebook')}}
           </a> -->
-        </li>
-      </ul>
-      <div class="text-right mr-3 mt-3">
+        <!-- </li> -->
+      <!-- </ul> -->
+      <div class="">
         <copyright-ink></copyright-ink>
       </div>
     </div>

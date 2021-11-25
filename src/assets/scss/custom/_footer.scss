@@ -78,6 +78,10 @@
 //   }
 // }
 
+.main-panel .footer {
+  padding-left: 280px;
+}
+
 @media screen and (max-width: 768px){
   .footer {
     nav {
@@ -86,7 +90,21 @@
       float: none;
     }
   }
+
+  .main-panel .footer {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
+
+@media screen and (max-width: 991px) {
+  .main-panel .footer {
+    padding-left: 30px;
+  }
+}
+
+
+
 
 // @media screen and (max-width: 576px){
 //   .footer {
@@ -103,3 +121,5 @@
 //     }
 //   }
 // }
+
+
