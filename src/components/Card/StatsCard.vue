@@ -41,7 +41,7 @@ export default {
     icon: String,
     title: [String, Number],
     subTitle: String,
-    image: String
+    // image: String
   }
 };
 </script>

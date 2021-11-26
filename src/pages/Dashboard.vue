@@ -22,7 +22,40 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <traffics-card
+                    :sub-title="$t('date.today')"
+                    :previous-title="$t('date.yesterday')"
+                    :enter="resource.todayEnter ? resource.todayEnter : 0"
+                    :exit="resource.todayExit ? resource.todayExit : 0"
+                    :previous-enter="resource.yesterdayEnter ? resource.yesterdayEnter : 0"
+                    :previous-exit="resource.yesterdayExit ? resource.yesterdayExit : 0"
+                    >
+                </traffics-card>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <traffics-card
+                    :sub-title="$t('date.thisWeek')"
+                    :previous-title="$t('date.lastWeek')"
+                    :enter="resource.thisWeekEnter ? resource.thisWeekEnter : 0"
+                    :exit="resource.thisWeekExit ? resource.thisWeekExit : 0"
+                    :previous-enter="resource.lastWeekEnter ? resource.lastWeekEnter : 0"
+                    :previous-exit="resource.lastWeekExit ? resource.lastWeekExit : 0"
+                    >
+                </traffics-card>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <traffics-card
+                    :sub-title="$t('date.thisMonth')"
+                    :previous-title="$t('date.lastMonth')"
+                    :enter="resource.thisMonthEnter ? resource.thisMonthEnter : 0"
+                    :exit="resource.thisMonthExit ? resource.thisMonthExit : 0"
+                    :previous-enter="resource.lastMonthEnter ? resource.lastMonthEnter : 0"
+                    :previous-exit="resource.lastMonthExit ? resource.lastMonthExit : 0"
+                    >
+                </traffics-card>
+            </div>
+            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="resource.todayEnter ? resource.todayEnter : '0'"
                     :sub-title="$t('date.today') + ' ' + $t('property.enter')"
@@ -129,7 +162,7 @@
                     icon="fas fa-sign-out-alt"
                     >
                 </stats-card>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-12">
@@ -157,6 +190,7 @@
 import {
     Card,
     StatsCard,
+    TrafficsCard,
     LineChart
 } from "@/components/index";
 import * as chartConfigs from "@/components/Chart/ChartConfig";
@@ -165,6 +199,7 @@ export default {
     components: {
         Card,
         StatsCard,
+        TrafficsCard,
         LineChart,
     },
     data() {
@@ -185,7 +220,7 @@ export default {
                 lastMonthEnter: 0,
                 lastMonthExit: 0,
             },
-            // asd: '<i class="fas fa-user"></i> Update Now',
+            asd: '<i class="fas fa-user"></i> Update Now',
             lineChart: {
                 extraOptions: chartConfigs.chartOptions,
                 labels: [],
