@@ -56,7 +56,7 @@
               >
                 {{ row.device_mac_address }}
               </td>
-              <!-- <td
+              <td
                 @click="showDetails(row.id)"
                 @mousedown="startLongClick(row.id)" 
                 @mouseleave="stopLongClick"
@@ -68,7 +68,29 @@
                 <span class="badge badge-pill badge-success">
                   {{$t('component.online')}}
                 </span>
-              </td> -->
+              </td>
+              <td
+                @click="showDetails(row.id)"
+                @mousedown="startLongClick(row.id)" 
+                @mouseleave="stopLongClick"
+                @mouseup="stopLongClick"
+                @touchstart="startLongClick(row.id)"
+                @touchend="stopLongClick"
+                @touchcancel="stopLongClick"
+              >
+                {{ row.enter ? row.enter : '0' }}
+              </td>
+              <td
+                @click="showDetails(row.id)"
+                @mousedown="startLongClick(row.id)" 
+                @mouseleave="stopLongClick"
+                @mouseup="stopLongClick"
+                @touchstart="startLongClick(row.id)"
+                @touchend="stopLongClick"
+                @touchcancel="stopLongClick"
+              >
+                {{ row.exit ? row.exit : '0' }}
+              </td>
             </template>
           </base-table>
           <!-- <div
@@ -117,9 +139,9 @@ export default {
         columns: {
           device_description: this.$t('property.name'),
           device_mac_address: this.$t('property.macAddress'),
-          // status: this.$t('property.status'),
-          // enter: this.$t('property.enter'),
-          // exit: this.$t('property.exit'),
+          status: this.$t('property.status'),
+          enter: this.$t('property.enter'),
+          exit: this.$t('property.exit'),
         },
       },
     //   searchQuery: "",

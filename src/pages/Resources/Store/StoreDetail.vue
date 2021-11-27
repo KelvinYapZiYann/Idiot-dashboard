@@ -79,7 +79,13 @@ export default {
               store.devices.forEach((device) => {
                 let obj = device;
                 obj.id = device.device_id;
-                this.inStoreTrafficResource.models.push(obj);
+                // this.inStoreTrafficResource.models.push(obj);
+                this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
+                  let model = this.$store.getters["dashboard/models"][0];
+                  obj.enter = model.enter;
+                  obj.exit = model.exit;
+                  this.inStoreTrafficResource.models.push(obj);
+                });
               });
             }
           });
