@@ -70,6 +70,28 @@
               >
                 <in-store-traffic-icon-list :value="row.devices"></in-store-traffic-icon-list>
               </td>
+              <td
+                @click="showDetails(row.id)"
+                @mousedown="startLongClick(row.id)" 
+                @mouseleave="stopLongClick"
+                @mouseup="stopLongClick"
+                @touchstart="startLongClick(row.id)"
+                @touchend="stopLongClick"
+                @touchcancel="stopLongClick"
+              >
+                {{ row.enter ? row.enter : '0' }}
+              </td>
+              <td
+                @click="showDetails(row.id)"
+                @mousedown="startLongClick(row.id)" 
+                @mouseleave="stopLongClick"
+                @mouseup="stopLongClick"
+                @touchstart="startLongClick(row.id)"
+                @touchend="stopLongClick"
+                @touchcancel="stopLongClick"
+              >
+                {{ row.exit ? row.exit : '0' }}
+              </td>
             </template>
           </base-table>
           <!-- <div
@@ -117,8 +139,8 @@ export default {
           store_name: this.$t('property.name'),
           store_address: this.$t('property.address'),
           inStoreTraffics: this.$t('component.inStoreTraffics'),
-          // enter: this.$t('property.enter'),
-          // exit: this.$t('property.exit'),
+          enter: this.$t('property.enter'),
+          exit: this.$t('property.exit'),
         },
       },
     //   searchQuery: "",

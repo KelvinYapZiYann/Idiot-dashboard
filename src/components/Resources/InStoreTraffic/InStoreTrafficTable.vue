@@ -96,7 +96,12 @@
   </div>
 </template>
 <script>
-import { /*BaseButton, BasePagination,*/ BaseTable, Card } from "@/components/index";
+import { 
+  // BaseButton, 
+  // BasePagination,
+  BaseTable, 
+  Card 
+} from "@/components/index";
 import router from "@/router";
 
 export default {

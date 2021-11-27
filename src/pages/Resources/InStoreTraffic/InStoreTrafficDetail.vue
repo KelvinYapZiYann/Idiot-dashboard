@@ -1,9 +1,10 @@
 <template>
   <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto">
     <base-detail
-     :title="$t('component.store')"
+     :title="$t('component.inStoreTraffic')"
      :model="resource.model"
      :headers="detail.detailHeaders"
+     :detailDisplayValue="detail.detailDisplayValue"
      thead-classes="text-primary"
     ></base-detail>
 
@@ -84,7 +85,11 @@ export default {
           device_description: this.$t('property.name'),
           device_mac_address: this.$t('property.macAddress'),
           // status: this.$t('property.status'),
+          device_type: this.$t('property.type'),
         },
+        detailDisplayValue: {
+          device_type: this.$t('inStoreTrafficType')
+        }
       }
     };
   },
