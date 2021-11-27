@@ -166,13 +166,32 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <card type="chart" :title="$t('dashboard.trafficsOfPastMonth')">
-                    <!-- <h4 class="text-left ml-2">
-                        <span><i class="fas fa-sign-in-alt"></i> {{resource.wholeMonthEnter}}</span>
-                    </h4>
-                    <h4 class="text-left ml-2">
-                        <span><i class="fas fa-sign-out-alt"></i> {{resource.wholeMonthExit}}</span>
-                    </h4> -->
+                <card type="chart">
+                    <div slot="header">
+                        <h2 class="card-title">
+                            {{ $t('dashboard.trafficsOfPastMonth') }}
+                        </h2>
+                        <!-- <base-input 
+                            :placeholder="$t('date.dateRange')"
+                            v-model="lineChart.enter"
+                            >
+                        </base-input> -->
+                        <!-- <date-range-picker 
+                            v-model="lineChart.dateRange"
+                            :autoApply="true"
+                            >
+                            <template>
+                                style="min-width: 350px;"
+                                <base-input 
+                                    :placeholder="$t('date.dateRange')"
+                                    v-model="lineChart.enter"
+                                    :value="(lineChart.dateRange.startDate) + ' - ' + (lineChart.dateRange.endDate)"
+                                    >
+                                </base-input>
+                                {{ lineChart.dateRange.startDate | date }} - {{ lineChart.dateRange.endDate | date }}
+                            </template>
+                        </date-range-picker> -->
+                    </div>
                     <line-chart
                         chart-id="green-line-chart"
                         :chart-data="chartData"
@@ -188,19 +207,24 @@
 </template>
 <script>
 import {
+    // BaseInput,
     Card,
     StatsCard,
     TrafficsCard,
     LineChart
 } from "@/components/index";
 import * as chartConfigs from "@/components/Chart/ChartConfig";
+// import DateRangePicker from 'vue2-daterange-picker';
+// import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 
 export default {
     components: {
+        // BaseInput,
         Card,
         StatsCard,
         TrafficsCard,
         LineChart,
+        // DateRangePicker,
     },
     data() {
         return {
@@ -226,6 +250,10 @@ export default {
                 labels: [],
                 enters: [],
                 exits: [],
+                dateRange: {
+                    startDate: null,
+                    endDate: null
+                }
             },
         }
     },
