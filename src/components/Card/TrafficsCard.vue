@@ -65,7 +65,11 @@ export default {
     },
     methods: {
         ratio() {
-            return `${(((this.enter - this.previousEnter) / this.enter) * 100).toFixed(2)}%`;
+            if (this.enter == 0) {
+                return `${-(this.previousEnter * 100).toFixed(2)}%`;
+            } else {
+                return `${(((this.enter - this.previousEnter) / this.enter) * 100).toFixed(2)}%`;
+            }
         }
     }
 };
