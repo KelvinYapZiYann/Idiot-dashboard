@@ -7,6 +7,45 @@
      thead-classes="text-primary"
     ></base-detail>
 
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="trafficResource.enter ? trafficResource.enter : '0'"
+                :sub-title="$t('property.enter')"
+                type="primary"
+                icon="fas fa-sign-in-alt"
+                >
+            </stats-card>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="trafficResource.exit ? trafficResource.exit : '0'"
+                :sub-title="$t('property.exit')"
+                type="warning"
+                icon="fas fa-sign-out-alt"
+                >
+            </stats-card>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="trafficResource.return ? trafficResource.return : '0'"
+                :sub-title="$t('property.return')"
+                type="success"
+                icon="fas fa-undo-alt"
+                >
+            </stats-card>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="trafficResource.passing ? trafficResource.passing : '0'"
+                :sub-title="$t('property.passing')"
+                type="neutral"
+                icon="fas fa-times"
+                >
+            </stats-card>
+        </div>
+    </div>
+
     <in-store-traffic-table
       :resource="inStoreTrafficResource"
       @getResource="getResource"
@@ -23,7 +62,11 @@
   </div>
 </template>
 <script>
-import { BaseButton, BaseDetail } from "@/components";
+import { 
+  BaseButton, 
+  BaseDetail,
+  StatsCard
+} from "@/components";
 import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
 import router from "@/router";
 
@@ -31,6 +74,7 @@ export default {
   components: {
     BaseButton,
     BaseDetail,
+    StatsCard,
     InStoreTrafficTable
   },
   data() {
@@ -43,6 +87,12 @@ export default {
       inStoreTrafficResource: {
         models: [],
         data: {}
+      },
+      trafficResource: {
+        enter: 0,
+        exit: 0,
+        return: 0,
+        passing: 0
       },
       detail: {
         detailHeaders: {
@@ -71,6 +121,11 @@ export default {
         //   this.resource.model = this.$store.getters["store/models"][0];
         //   this.resource.data = this.$store.getters["asset/data"];
         // });
+        this.inStoreTrafficResource.models = [];
+        this.trafficResource.enter = 0;
+        this.trafficResource.exit = 0;
+        this.trafficResource.return = 0;
+        this.trafficResource.passing = 0;
         await this.$store.dispatch('store/getAll').then(() => {
           let tmpModels = this.$store.getters["store/models"];
           tmpModels.forEach((store) => {
@@ -84,6 +139,10 @@ export default {
                   let model = this.$store.getters["dashboard/models"][0];
                   obj.enter = model.enter;
                   obj.exit = model.exit;
+                  this.trafficResource.enter += model.enter;
+                  this.trafficResource.exit += model.exit;
+                  this.trafficResource.return += model.return;
+                  this.trafficResource.passing += model.passing;
                   this.inStoreTrafficResource.models.push(obj);
                 });
               });
