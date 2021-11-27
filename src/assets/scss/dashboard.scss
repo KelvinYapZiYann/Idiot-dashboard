@@ -1,5 +1,7 @@
  // Core
 
+ @use 'sass:math';
+
  @import "custom/functions";
  @import "bootstrap/functions";
  
@@ -8,7 +10,6 @@
  
  @import "custom/mixins";
  @import "bootstrap/mixins";
-
 
  
   // Bootstrap components
