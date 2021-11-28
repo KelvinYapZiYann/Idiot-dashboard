@@ -371,13 +371,13 @@ export default {
                                     let tmpDate = today.add(1, 'days').format('YYYY-MM-DD');
                                     for (let j = 0; j < models.length; j++) {
                                         if (tmpDate == models[j].date) {
-                                            this.lineChart.labels.push(models[j].date);
+                                            this.lineChart.labels.push(today.format('YYYY-MM-DD (ddd)'));
                                             this.lineChart.enters.push(models[j].enter);
                                             this.lineChart.exits.push(models[j].exit);
                                             continue mainLoop;
                                         }
                                     }
-                                    this.lineChart.labels.push(tmpDate);
+                                    this.lineChart.labels.push(today.format('YYYY-MM-DD (ddd)'));
                                     this.lineChart.enters.push(0);
                                     this.lineChart.exits.push(0);
                                 }

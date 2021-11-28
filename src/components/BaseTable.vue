@@ -1,75 +1,77 @@
 <template>
-  <table class="table tablesorter" :class="tableClass">
-    <thead :class="theadClasses">
-    <tr>
-      <slot name="columns">
-        <th v-if="!disableIndex">{{$t('component.index')}}</th>
-        <th v-if="(!disableView || !disableEdit || !disableDelete)">{{$t('component.actions')}}</th>
-        <th v-for="column in columns" :key="column">{{column}}</th>
-      </slot>
-    </tr>
-    </thead>
-    <tbody :class="tbodyClasses">
-    <tr v-for="(item, index) in data" :key="index" :class="[{viewableRow: !disableView}]" :style="rowBackgroundColor[index]">
-      <td v-if="!disableIndex">
-        <span @click="showDetails(item.id)">
-          {{startIndex + index}}.
-        </span>
-      </td>
-      <td>
-        <base-button
-            v-if="!disableView"
-            @click="showDetails(item.id)"
-            class="remove btn-link"
-            type="info"
-            size="sm"
-            :title="$t('component.detail')"
-            icon
-        >
-          <i class="fa fa-eye" aria-hidden="true"></i>
-        </base-button>
-        <base-button
-            v-if="!disableEdit"
-            @click="editDetails(item.id)"
-            class="edit btn-link"
-            type="info"
-            size="sm"
-            :title="$t('component.edit')"
-            icon
-        >
-          <i class="fas fa-edit"></i>
-        </base-button>
-        <base-button
-            v-if="!disableDelete"
-            @click="deleteDetails(item.id)"
-            class="remove btn-link"
-            type="danger"
-            size="sm"
-            :title="$t('component.remove')"
-            icon
-        >
-          <i class="fas fa-trash"></i>
-        </base-button>
-      </td>
-      <slot :row="item">
-        <td v-for="(column, columnKey, i) in columns"
-            :key="i"
-            @click="showDetails(item.id)"
-            @mousedown="startLongClick(item.id)" 
-            @mouseleave="stopLongClick"
-            @mouseup="stopLongClick"
-            @touchstart="startLongClick(item.id)"
-            @touchend="stopLongClick"
-            @touchcancel="stopLongClick"
-            >
-            <span :class="itemClass(columnKey, index)" >
-              {{itemValue(item, columnKey)}}
-            </span>
+  <div class="table-responsive">
+    <table class="table tablesorter" :class="tableClass">
+      <thead :class="theadClasses">
+      <tr>
+        <slot name="columns">
+          <th v-if="!disableIndex">{{$t('component.index')}}</th>
+          <th v-if="(!disableView || !disableEdit || !disableDelete)">{{$t('component.actions')}}</th>
+          <th v-for="column in columns" :key="column">{{column}}</th>
+        </slot>
+      </tr>
+      </thead>
+      <tbody :class="tbodyClasses">
+      <tr v-for="(item, index) in data" :key="index" :class="[{viewableRow: !disableView}]" :style="rowBackgroundColor[index]">
+        <td v-if="!disableIndex">
+          <span @click="showDetails(item.id)">
+            {{startIndex + index}}.
+          </span>
         </td>
-      </slot>
-    </tr>
-    </tbody>
-  </table>
+        <td>
+          <base-button
+              v-if="!disableView"
+              @click="showDetails(item.id)"
+              class="remove btn-link"
+              type="info"
+              size="sm"
+              :title="$t('component.detail')"
+              icon
+          >
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </base-button>
+          <base-button
+              v-if="!disableEdit"
+              @click="editDetails(item.id)"
+              class="edit btn-link"
+              type="info"
+              size="sm"
+              :title="$t('component.edit')"
+              icon
+          >
+            <i class="fas fa-edit"></i>
+          </base-button>
+          <base-button
+              v-if="!disableDelete"
+              @click="deleteDetails(item.id)"
+              class="remove btn-link"
+              type="danger"
+              size="sm"
+              :title="$t('component.remove')"
+              icon
+          >
+            <i class="fas fa-trash"></i>
+          </base-button>
+        </td>
+        <slot :row="item">
+          <td v-for="(column, columnKey, i) in columns"
+              :key="i"
+              @click="showDetails(item.id)"
+              @mousedown="startLongClick(item.id)" 
+              @mouseleave="stopLongClick"
+              @mouseup="stopLongClick"
+              @touchstart="startLongClick(item.id)"
+              @touchend="stopLongClick"
+              @touchcancel="stopLongClick"
+              >
+              <span :class="itemClass(columnKey, index)" >
+                {{itemValue(item, columnKey)}}
+              </span>
+          </td>
+        </slot>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 <script>
 import { BaseButton } from "@/components/index";
