@@ -16,9 +16,19 @@ export default {
       let root = document.getElementsByTagName("html")[0];
       root.classList.toggle("nav-open");
     },
+    screenSizeChangeHandler() {
+      this.$store.dispatch('mobileLayout/update', (window.innerWidth <= 991));
+    }
   },
   mounted() {
     this.$watch("$sidebar.showSidebar", this.toggleNavOpen);
+  },
+  created() {
+    this.$store.dispatch('mobileLayout/update', (window.innerWidth <= 991));
+    window.addEventListener("resize", this.screenSizeChangeHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.screenSizeChangeHandler);
   },
 }
 </script>

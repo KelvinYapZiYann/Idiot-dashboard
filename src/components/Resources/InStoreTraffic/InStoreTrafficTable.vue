@@ -142,7 +142,7 @@ export default {
           status: this.$t('property.status'),
           enter: this.$t('property.enter'),
           exit: this.$t('property.exit'),
-        },
+        }
       },
     //   searchQuery: "",
     //   searchQueryTimeout: null,

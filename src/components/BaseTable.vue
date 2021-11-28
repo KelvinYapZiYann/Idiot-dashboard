@@ -4,20 +4,20 @@
       <thead :class="theadClasses">
       <tr>
         <slot name="columns">
-          <th v-if="!disableIndex">{{$t('component.index')}}</th>
-          <th v-if="(!disableView || !disableEdit || !disableDelete)">{{$t('component.actions')}}</th>
+          <th v-if="!disableIndex && !$store.getters['mobileLayout/isMobileLayout']">{{$t('component.index')}}</th>
+          <th v-if="(!disableView || !disableEdit || !disableDelete) && !$store.getters['mobileLayout/isMobileLayout']">{{$t('component.actions')}}</th>
           <th v-for="column in columns" :key="column">{{column}}</th>
         </slot>
       </tr>
       </thead>
       <tbody :class="tbodyClasses">
       <tr v-for="(item, index) in data" :key="index" :class="[{viewableRow: !disableView}]" :style="rowBackgroundColor[index]">
-        <td v-if="!disableIndex">
+        <td v-if="!disableIndex  && !$store.getters['mobileLayout/isMobileLayout']">
           <span @click="showDetails(item.id)">
             {{startIndex + index}}.
           </span>
         </td>
-        <td>
+        <td v-if="!$store.getters['mobileLayout/isMobileLayout']">
           <base-button
               v-if="!disableView"
               @click="showDetails(item.id)"
@@ -53,19 +53,20 @@
           </base-button>
         </td>
         <slot :row="item">
-          <td v-for="(column, columnKey, i) in columns"
-              :key="i"
-              @click="showDetails(item.id)"
-              @mousedown="startLongClick(item.id)" 
-              @mouseleave="stopLongClick"
-              @mouseup="stopLongClick"
-              @touchstart="startLongClick(item.id)"
-              @touchend="stopLongClick"
-              @touchcancel="stopLongClick"
-              >
-              <span :class="itemClass(columnKey, index)" >
-                {{itemValue(item, columnKey)}}
-              </span>
+          <td 
+            v-for="(column, columnKey, i) in columns"
+            :key="i"
+            @click="showDetails(item.id)"
+            @mousedown="startLongClick(item.id)" 
+            @mouseleave="stopLongClick"
+            @mouseup="stopLongClick"
+            @touchstart="startLongClick(item.id)"
+            @touchend="stopLongClick"
+            @touchcancel="stopLongClick"
+            >
+            <span :class="itemClass(columnKey, index)" >
+              {{itemValue(item, columnKey)}}
+            </span>
           </td>
         </slot>
       </tr>
