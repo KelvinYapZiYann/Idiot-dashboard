@@ -191,29 +191,12 @@
                                 </base-input>
                             </div>
                         </div>
-                        <!-- <date-range-picker 
-                            v-model="lineChart.dateRange"
-                            :autoApply="true"
-                            >
-                            <template>
-                                style="min-width: 350px;"
-                                <base-input 
-                                    :placeholder="$t('date.dateRange')"
-                                    v-model="lineChart.enter"
-                                    :value="(lineChart.dateRange.startDate) + ' - ' + (lineChart.dateRange.endDate)"
-                                    >
-                                </base-input>
-                                {{ lineChart.dateRange.startDate | date }} - {{ lineChart.dateRange.endDate | date }}
-                            </template>
-                        </date-range-picker> -->
                     </div>
                     <line-chart
                         chart-id="green-line-chart"
                         :chart-data="chartData"
                         :extra-options="lineChart.extraOptions"
                     >
-                    <!-- :gradient-colors="greenLineChart.gradientColors"
-                        :gradient-stops="greenLineChart.gradientStops" -->
                     </line-chart>
                 </card>
             </div>
@@ -374,34 +357,28 @@ export default {
                                 });
                             });
 
+                            let tmpToday = today;
+
                             this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: this.lineChart.dateRange.startDate, endDate: this.lineChart.dateRange.endDate}).then(() => {
                                 let models = this.$store.getters["dashboard/models"];
-                                // models.sort((a, b) => {
-                                //     return a.date < b.date;
-                                // });
-                                // models.forEach((model) => {
-                                //     this.lineChart.labels.push(model.date);
-                                //     this.lineChart.enters.push(model.enter);
-                                //     this.lineChart.exits.push(model.exit);
-                                // });
 
-                                let duration = this.$moment.duration(this.$moment().diff(today));
+                                let duration = this.$moment.duration(this.$moment().diff(tmpToday));
                                 let durationDiffDays = Math.floor(duration.asDays());
                                 mainLoop: for (let i = 0; i < durationDiffDays; i++) {
-                                    let tmpDate = today.format('YYYY-MM-DD');
+                                    let tmpDate = tmpToday.format('YYYY-MM-DD');
                                     for (let j = 0; j < models.length; j++) {
                                         if (tmpDate == models[j].date) {
-                                            this.lineChart.labels.push(today.format('YYYY-MM-DD (ddd)'));
+                                            this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
                                             this.lineChart.enters.push(models[j].enter);
                                             this.lineChart.exits.push(models[j].exit);
-                                            today.add(1, 'days');
+                                            tmpToday.add(1, 'days');
                                             continue mainLoop;
                                         }
                                     }
-                                    this.lineChart.labels.push(today.format('YYYY-MM-DD (ddd)'));
+                                    this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
                                     this.lineChart.enters.push(0);
                                     this.lineChart.exits.push(0);
-                                    today.add(1, 'days');
+                                    tmpToday.add(1, 'days');
                                 }
                             });
                         });
