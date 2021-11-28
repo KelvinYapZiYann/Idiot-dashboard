@@ -54,7 +54,7 @@
   },
   "dashboard": {
     "totalTraffics": "Total Traffics",
-    "trafficsOfPastMonth": "Traffics Of Past Month"
+    "trafficTrendChart": "Traffic Trend Chart"
   },
   "date": {
     "today": "Today",
@@ -65,7 +65,9 @@
     "lastMonth": "Last Month",
     "thisYear": "This Year",
     "lastYear": "Last Year",
-    "dateRange": "Date Range"
+    "dateRange": "Date Range",
+    "start": "Start",
+    "end": "End"
   },
   "alert": {
     "logoutConfirmation": "Are you sure to logout?",
