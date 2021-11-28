@@ -47,6 +47,44 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-12">
+             <card type="chart">
+                <div slot="header">
+                    <h2 class="card-title">
+                        {{ $t('dashboard.trafficTrendChart') }}
+                    </h2>
+                    <div class="row">
+                        <div class="col-sm-6 col-12">
+                            <base-input 
+                                :placeholder="$t('date.start')"
+                                v-model="lineChart.dateRange.startDate"
+                                type="date"
+                                @input="getLineChartDateRange"
+                                >
+                            </base-input>
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <base-input 
+                                :placeholder="$t('date.end')"
+                                v-model="lineChart.dateRange.endDate"
+                                type="date"
+                                @input="getLineChartDateRange"
+                                >
+                            </base-input>
+                        </div>
+                    </div>
+                </div>
+                <line-chart
+                    chart-id="green-line-chart"
+                    :chart-data="chartData"
+                    :extra-options="lineChart.extraOptions"
+                >
+                </line-chart>
+            </card>
+        </div>
+    </div>
+
     <base-button slot="footer" type="primary" @click="handleBack()" fill>
       <i class="fas fa-chevron-left mr-1"></i>
       {{$t('component.back')}}
@@ -58,14 +96,25 @@
   </div>
 </template>
 <script>
-import { BaseButton, BaseDetail, StatsCard } from "@/components";
+import { 
+  BaseButton, 
+  BaseDetail,
+  BaseInput,
+  Card,
+  StatsCard,
+  LineChart
+} from "@/components/index";
 import router from "@/router";
+import * as chartConfigs from "@/components/Chart/ChartConfig";
 
 export default {
   components: {
     BaseButton,
     BaseDetail,
-    StatsCard
+    BaseInput, 
+    Card,
+    StatsCard,
+    LineChart
   },
   data() {
     return {
@@ -90,7 +139,17 @@ export default {
         detailDisplayValue: {
           device_type: this.$t('inStoreTrafficType')
         }
-      }
+      },
+      lineChart: {
+          extraOptions: chartConfigs.chartOptions,
+          labels: [],
+          enters: [],
+          exits: [],
+          dateRange: {
+              startDate: null,
+              endDate: null
+          }
+      },
     };
   },
   props: {
@@ -125,6 +184,42 @@ export default {
                 this.$store.dispatch('dashboard/getTotalTraffics', param).then(() => {
                   this.inStoreTrafficResource = this.$store.getters["dashboard/models"][0];
                 });
+
+                this.lineChart.labels = [];
+                this.lineChart.enters = [];
+                this.lineChart.exits = [];
+                
+                let today = this.$moment();
+                let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+                today = this.$moment();
+                let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
+                this.lineChart.dateRange.startDate = wholeMonthStartDateString;
+                this.lineChart.dateRange.endDate = todayDateString;
+
+                let tmpToday = today;
+
+                this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: this.lineChart.dateRange.startDate, endDate: this.lineChart.dateRange.endDate}).then(() => {
+                    let models = this.$store.getters["dashboard/models"];
+
+                    let duration = this.$moment.duration(this.$moment().diff(tmpToday));
+                    let durationDiffDays = Math.floor(duration.asDays());
+                    mainLoop: for (let i = 0; i < durationDiffDays; i++) {
+                        let tmpDate = tmpToday.format('YYYY-MM-DD');
+                        for (let j = 0; j < models.length; j++) {
+                            if (tmpDate == models[j].date) {
+                                this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
+                                this.lineChart.enters.push(models[j].enter);
+                                this.lineChart.exits.push(models[j].exit);
+                                tmpToday.add(1, 'days');
+                                continue mainLoop;
+                            }
+                        }
+                        this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
+                        this.lineChart.enters.push(0);
+                        this.lineChart.exits.push(0);
+                        tmpToday.add(1, 'days');
+                    }
+                });
               }
             });
           });
@@ -156,8 +251,91 @@ export default {
           previousRoute: router.currentRoute.name,
         }
       });
-    },
-  }
+    },async getLineChartDateRange() {
+          if (this.lineChart.dateRange.endDate <= this.lineChart.dateRange.startDate) {
+              return;
+          }
+          let startDateMoment = this.$moment(this.lineChart.dateRange.startDate);
+          let endDateMoment = this.$moment(this.lineChart.dateRange.endDate);
+          let duration = this.$moment.duration(endDateMoment.diff(startDateMoment));
+          let durationDiffDays = Math.floor(duration.asDays());
+          if (duration._milliseconds <= 0) {
+              return;
+          }
+          this.lineChart.labels = [];
+          this.lineChart.enters = [];
+          this.lineChart.exits = [];
+          await this.$store.dispatch('store/getAll').then(() => {
+              let stores = this.$store.getters["store/models"];
+              
+              stores.forEach((store) => {
+                  store.devices.forEach((device) => {
+                      this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: this.lineChart.dateRange.startDate, endDate: this.lineChart.dateRange.endDate}).then(() => {
+                          let models = this.$store.getters["dashboard/models"];
+                          
+                          mainLoop: for (let i = 0; i < durationDiffDays; i++) {
+                              let tmpDate = startDateMoment.format('YYYY-MM-DD');
+                              for (let j = 0; j < models.length; j++) {
+                                  if (tmpDate == models[j].date) {
+                                      this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
+                                      this.lineChart.enters.push(models[j].enter);
+                                      this.lineChart.exits.push(models[j].exit);
+                                      startDateMoment.add(1, 'days');
+                                      continue mainLoop;
+                                  }
+                              }
+                              this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
+                              this.lineChart.enters.push(0);
+                              this.lineChart.exits.push(0);
+                              startDateMoment.add(1, 'days');
+                          }
+                      });
+                  });
+              });
+          });
+      }
+  },
+  computed: {
+        chartData() {
+            return {
+                labels: this.lineChart.labels,
+                datasets: [
+                    {
+                        label: this.$t('property.enter'),
+                        fill: true,
+                        borderColor: "#00f2c3",
+                        borderWidth: 2,
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBackgroundColor: "#00f2c3",
+                        pointBorderColor: "rgba(255,255,255,0)",
+                        pointHoverBackgroundColor: "#00f2c3",
+                        pointBorderWidth: 20,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 15,
+                        pointRadius: 4,
+                        data: this.lineChart.enters
+                    },
+                    {
+                        label: this.$t('property.exit'),
+                        fill: true,
+                        borderColor: "#fd5d93",
+                        borderWidth: 2,
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBackgroundColor: "#fd5d93",
+                        pointBorderColor: "rgba(255,255,255,0)",
+                        pointHoverBackgroundColor: "#fd5d93",
+                        pointBorderWidth: 20,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 15,
+                        pointRadius: 4,
+                        data: this.lineChart.exits
+                    }
+                ]
+            };
+        }
+    }
 };
 </script>
 <style>

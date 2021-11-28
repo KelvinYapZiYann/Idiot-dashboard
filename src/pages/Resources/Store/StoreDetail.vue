@@ -110,9 +110,9 @@ import {
   StatsCard,
   LineChart
 } from "@/components/index";
-import * as chartConfigs from "@/components/Chart/ChartConfig";
 import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
 import router from "@/router";
+import * as chartConfigs from "@/components/Chart/ChartConfig";
 
 export default {
   components: {
@@ -191,7 +191,7 @@ export default {
         let today = this.$moment();
         let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
         today = this.$moment();
-        let wholeMonthStartDateString = today.subtract(1, 'months').format('YYYY-MM-DD');
+        let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
         this.lineChart.dateRange.startDate = wholeMonthStartDateString;
         this.lineChart.dateRange.endDate = todayDateString;
 

@@ -296,7 +296,7 @@ export default {
                 let lastMonthStartDateString = today.subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
                 let lastMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
                 today = this.$moment();
-                let wholeMonthStartDateString = today.subtract(1, 'months').format('YYYY-MM-DD');
+                let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
 
                 this.lineChart.dateRange.startDate = wholeMonthStartDateString;
                 this.lineChart.dateRange.endDate = todayDateString;
