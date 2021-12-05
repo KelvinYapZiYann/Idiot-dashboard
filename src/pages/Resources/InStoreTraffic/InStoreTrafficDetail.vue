@@ -47,7 +47,16 @@
         </div>
     </div>
 
-    <div class="row">
+    
+    <traffic-trend-line-chart
+        :labels="lineChart.labels"
+        :enters="lineChart.enters"
+        :exits="lineChart.exits"
+        @getLineChartDateRange="getLineChartDateRange"
+    >
+    </traffic-trend-line-chart>
+
+    <!-- <div class="row">
         <div class="col-12">
              <card type="chart">
                 <div slot="header">
@@ -83,7 +92,7 @@
                 </line-chart>
             </card>
         </div>
-    </div>
+    </div> -->
 
     <base-button slot="footer" type="primary" @click="handleBack()" fill>
       <i class="fas fa-chevron-left mr-1"></i>
@@ -99,22 +108,24 @@
 import { 
   BaseButton, 
   BaseDetail,
-  BaseInput,
-  Card,
+  // BaseInput,
+  // Card,
   StatsCard,
-  LineChart
+  // LineChart
+  TrafficTrendLineChart
 } from "@/components/index";
 import router from "@/router";
-import * as chartConfigs from "@/components/Chart/ChartConfig";
+// import * as chartConfigs from "@/components/Chart/ChartConfig";
 
 export default {
   components: {
     BaseButton,
     BaseDetail,
-    BaseInput, 
-    Card,
+    // BaseInput, 
+    // Card,
     StatsCard,
-    LineChart
+    // LineChart
+    TrafficTrendLineChart
   },
   data() {
     return {
@@ -141,14 +152,14 @@ export default {
         }
       },
       lineChart: {
-          extraOptions: chartConfigs.chartOptions,
+          // extraOptions: chartConfigs.chartOptions,
           labels: [],
           enters: [],
           exits: [],
-          dateRange: {
-              startDate: null,
-              endDate: null
-          }
+          // dateRange: {
+          //     startDate: null,
+          //     endDate: null
+          // }
       },
     };
   },
@@ -185,18 +196,18 @@ export default {
                   this.inStoreTrafficResource = this.$store.getters["dashboard/models"][0];
                 });
 
-                this.lineChart.labels = [];
-                this.lineChart.enters = [];
-                this.lineChart.exits = [];
+                // this.lineChart.labels = [];
+                // this.lineChart.enters = [];
+                // this.lineChart.exits = [];
                 
-                let today = this.$moment();
-                let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
-                today = this.$moment();
-                let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
-                this.lineChart.dateRange.startDate = wholeMonthStartDateString;
-                this.lineChart.dateRange.endDate = todayDateString;
+                // let today = this.$moment();
+                // let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+                // today = this.$moment();
+                // let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
+                // this.lineChart.dateRange.startDate = wholeMonthStartDateString;
+                // this.lineChart.dateRange.endDate = todayDateString;
 
-                this.getLineChartDateRange();
+                // this.getLineChartDateRange();
               }
             });
           });
@@ -229,12 +240,24 @@ export default {
         }
       });
     },
-    async getLineChartDateRange() {
-          if (this.lineChart.dateRange.endDate <= this.lineChart.dateRange.startDate) {
+    async getLineChartDateRange(dateRange) {
+          if (!dateRange) {
               return;
           }
-          let startDateMoment = this.$moment(this.lineChart.dateRange.startDate);
-          let endDateMoment = this.$moment(this.lineChart.dateRange.endDate);
+          if (!dateRange.endDate) {
+              return;
+          }
+          if (!dateRange.startDate) {
+              return;
+          }
+          if (dateRange.endDate <= dateRange.startDate) {
+              return;
+          }
+          // if (this.lineChart.dateRange.endDate <= this.lineChart.dateRange.startDate) {
+          //     return;
+          // }
+          let startDateMoment = this.$moment(dateRange.startDate);
+          let endDateMoment = this.$moment(dateRange.endDate);
           let duration = this.$moment.duration(endDateMoment.diff(startDateMoment));
           let durationDiffDays = Math.floor(duration.asDays());
           if (duration._milliseconds <= 0) {
@@ -248,7 +271,7 @@ export default {
               
               stores.forEach((store) => {
                   store.devices.forEach((device) => {
-                      this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: this.lineChart.dateRange.startDate, endDate: this.lineChart.dateRange.endDate}).then(() => {
+                      this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: dateRange.startDate, endDate: dateRange.endDate}).then(() => {
                           let models = this.$store.getters["dashboard/models"];
                           
                           mainLoop: for (let i = 0; i < durationDiffDays; i++) {
@@ -273,47 +296,47 @@ export default {
           });
       }
   },
-  computed: {
-        chartData() {
-            return {
-                labels: this.lineChart.labels,
-                datasets: [
-                    {
-                        label: this.$t('property.enter'),
-                        fill: true,
-                        borderColor: "#00f2c3",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#00f2c3",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#00f2c3",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.lineChart.enters
-                    },
-                    {
-                        label: this.$t('property.exit'),
-                        fill: true,
-                        borderColor: "#fd5d93",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#fd5d93",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#fd5d93",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.lineChart.exits
-                    }
-                ]
-            };
-        }
-    }
+  // computed: {
+  //       chartData() {
+  //           return {
+  //               labels: this.lineChart.labels,
+  //               datasets: [
+  //                   {
+  //                       label: this.$t('property.enter'),
+  //                       fill: true,
+  //                       borderColor: "#00f2c3",
+  //                       borderWidth: 2,
+  //                       borderDash: [],
+  //                       borderDashOffset: 0.0,
+  //                       pointBackgroundColor: "#00f2c3",
+  //                       pointBorderColor: "rgba(255,255,255,0)",
+  //                       pointHoverBackgroundColor: "#00f2c3",
+  //                       pointBorderWidth: 20,
+  //                       pointHoverRadius: 4,
+  //                       pointHoverBorderWidth: 15,
+  //                       pointRadius: 4,
+  //                       data: this.lineChart.enters
+  //                   },
+  //                   {
+  //                       label: this.$t('property.exit'),
+  //                       fill: true,
+  //                       borderColor: "#fd5d93",
+  //                       borderWidth: 2,
+  //                       borderDash: [],
+  //                       borderDashOffset: 0.0,
+  //                       pointBackgroundColor: "#fd5d93",
+  //                       pointBorderColor: "rgba(255,255,255,0)",
+  //                       pointHoverBackgroundColor: "#fd5d93",
+  //                       pointBorderWidth: 20,
+  //                       pointHoverRadius: 4,
+  //                       pointHoverBorderWidth: 15,
+  //                       pointRadius: 4,
+  //                       data: this.lineChart.exits
+  //                   }
+  //               ]
+  //           };
+  //       }
+  //   }
 };
 </script>
 <style>

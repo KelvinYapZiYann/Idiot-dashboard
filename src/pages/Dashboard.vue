@@ -55,116 +55,15 @@
                     >
                 </traffics-card>
             </div>
-            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.todayEnter ? resource.todayEnter : '0'"
-                    :sub-title="$t('date.today') + ' ' + $t('property.enter')"
-                    type="primary"
-                    icon="fas fa-sign-in-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.todayExit ? resource.todayExit : '0'"
-                    :sub-title="$t('date.today') + ' ' + $t('property.exit')"
-                    type="warning"
-                    icon="fas fa-sign-out-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.yesterdayEnter ? resource.yesterdayEnter : '0'"
-                    :sub-title="$t('date.yesterday') + ' ' + $t('property.enter')"
-                    type="primary"
-                    icon="fas fa-sign-in-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.yesterdayExit ? resource.yesterdayExit : '0'"
-                    :sub-title="$t('date.yesterday') + ' ' + $t('property.exit')"
-                    type="warning"
-                    icon="fas fa-sign-out-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.thisWeekEnter ? resource.thisWeekEnter : '0'"
-                    :sub-title="$t('date.thisWeek') + ' ' + $t('property.enter')"
-                    type="primary"
-                    icon="fas fa-sign-in-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.thisWeekExit ? resource.thisWeekExit : '0'"
-                    :sub-title="$t('date.thisWeek') + ' ' + $t('property.exit')"
-                    type="warning"
-                    icon="fas fa-sign-out-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.lastWeekEnter ? resource.lastWeekEnter : '0'"
-                    :sub-title="$t('date.lastWeek') + ' ' + $t('property.enter')"
-                    type="primary"
-                    icon="fas fa-sign-in-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.lastWeekExit ? resource.lastWeekExit : '0'"
-                    :sub-title="$t('date.lastWeek') + ' ' + $t('property.exit')"
-                    type="warning"
-                    icon="fas fa-sign-out-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.thisMonthEnter ? resource.thisMonthEnter : '0'"
-                    :sub-title="$t('date.thisMonth') + ' ' + $t('property.enter')"
-                    type="primary"
-                    icon="fas fa-sign-in-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.thisMonthExit ? resource.thisMonthExit : '0'"
-                    :sub-title="$t('date.thisMonth') + ' ' + $t('property.exit')"
-                    type="warning"
-                    icon="fas fa-sign-out-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.lastMonthEnter ? resource.lastMonthEnter : '0'"
-                    :sub-title="$t('date.lastMonth') + ' ' + $t('property.enter')"
-                    type="primary"
-                    icon="fas fa-sign-in-alt"
-                    >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="resource.lastMonthExit ? resource.lastMonthExit : '0'"
-                    :sub-title="$t('date.lastMonth') + ' ' + $t('property.exit')"
-                    type="warning"
-                    icon="fas fa-sign-out-alt"
-                    >
-                </stats-card>
-            </div> -->
         </div>
-        <div class="row">
+        <traffic-trend-line-chart
+            :labels="lineChart.labels"
+            :enters="lineChart.enters"
+            :exits="lineChart.exits"
+            @getLineChartDateRange="getLineChartDateRange"
+        >
+        </traffic-trend-line-chart>
+        <!-- <div class="row">
             <div class="col-12">
                 <card type="chart">
                     <div slot="header">
@@ -200,31 +99,34 @@
                     </line-chart>
                 </card>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
 import {
     // BaseButton,
-    BaseInput,
-    Card,
+    // BaseInput,
+    // Card,
     StatsCard,
     TrafficsCard,
-    LineChart
+    // LineChart
+    TrafficTrendLineChart
 } from "@/components/index";
-import * as chartConfigs from "@/components/Chart/ChartConfig";
+// import * as chartConfigs from "@/components/Chart/ChartConfig";
+// import TrafficTrendLineChart from '../components/Chart/TrafficTrendLineChart.vue';
 // import DateRangePicker from 'vue2-daterange-picker';
 // import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 
 export default {
     components: {
         // BaseButton,
-        BaseInput,
-        Card,
+        // BaseInput,
+        // Card,
         StatsCard,
         TrafficsCard,
-        LineChart,
+        // LineChart,
         // DateRangePicker,
+        TrafficTrendLineChart
     },
     data() {
         return {
@@ -244,16 +146,15 @@ export default {
                 lastMonthEnter: 0,
                 lastMonthExit: 0,
             },
-            // asd: '<i class="fas fa-user"></i> Update Now',
             lineChart: {
-                extraOptions: chartConfigs.chartOptions,
+            //     extraOptions: chartConfigs.chartOptions,
                 labels: [],
                 enters: [],
                 exits: [],
-                dateRange: {
-                    startDate: null,
-                    endDate: null
-                }
+            //     dateRange: {
+            //         startDate: null,
+            //         endDate: null
+            //     }
             },
         }
     },
@@ -279,9 +180,9 @@ export default {
                 this.resource.lastMonthEnter = 0;
                 this.resource.lastMonthExit = 0;
 
-                this.lineChart.labels = [];
-                this.lineChart.enters = [];
-                this.lineChart.exits = [];
+                // this.lineChart.labels = [];
+                // this.lineChart.enters = [];
+                // this.lineChart.exits = [];
 
                 let today = this.$moment();
                 let currentDay = parseInt(today.format('D'));
@@ -295,11 +196,11 @@ export default {
                 let thisMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
                 let lastMonthStartDateString = today.subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
                 let lastMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
-                today = this.$moment();
-                let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
+                // today = this.$moment();
+                // let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
 
-                this.lineChart.dateRange.startDate = wholeMonthStartDateString;
-                this.lineChart.dateRange.endDate = todayDateString;
+                // this.lineChart.dateRange.startDate = wholeMonthStartDateString;
+                // this.lineChart.dateRange.endDate = todayDateString;
 
                 await this.$store.dispatch('store/getAll').then(() => {
                     let stores = this.$store.getters["store/models"];
@@ -357,7 +258,7 @@ export default {
                                 });
                             });
 
-                            this.getLineChartDateRange();
+                            // this.getLineChartDateRange();
                         });
                     });
                 });
@@ -367,12 +268,21 @@ export default {
                 loader.hide();
             }
         },
-        async getLineChartDateRange() {
-            if (this.lineChart.dateRange.endDate <= this.lineChart.dateRange.startDate) {
+        async getLineChartDateRange(dateRange) {
+            if (!dateRange) {
                 return;
             }
-            let startDateMoment = this.$moment(this.lineChart.dateRange.startDate);
-            let endDateMoment = this.$moment(this.lineChart.dateRange.endDate);
+            if (!dateRange.endDate) {
+                return;
+            }
+            if (!dateRange.startDate) {
+                return;
+            }
+            if (dateRange.endDate <= dateRange.startDate) {
+                return;
+            }
+            let startDateMoment = this.$moment(dateRange.startDate);
+            let endDateMoment = this.$moment(dateRange.endDate);
             let duration = this.$moment.duration(endDateMoment.diff(startDateMoment));
             let durationDiffDays = Math.floor(duration.asDays());
             if (duration._milliseconds <= 0) {
@@ -386,7 +296,7 @@ export default {
                 
                 stores.forEach((store) => {
                     store.devices.forEach((device) => {
-                        this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: this.lineChart.dateRange.startDate, endDate: this.lineChart.dateRange.endDate}).then(() => {
+                        this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: dateRange.startDate, endDate: dateRange.endDate}).then(() => {
                             let models = this.$store.getters["dashboard/models"];
                             
                             mainLoop: for (let i = 0; i < durationDiffDays; i++) {
@@ -411,47 +321,47 @@ export default {
             });
         }
     },
-    computed: {
-        chartData() {
-            return {
-                labels: this.lineChart.labels,
-                datasets: [
-                    {
-                        label: this.$t('property.enter'),
-                        fill: true,
-                        borderColor: "#00f2c3",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#00f2c3",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#00f2c3",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.lineChart.enters
-                    },
-                    {
-                        label: this.$t('property.exit'),
-                        fill: true,
-                        borderColor: "#fd5d93",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#fd5d93",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#fd5d93",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.lineChart.exits
-                    }
-                ]
-            };
-        }
-    }
+    // computed: {
+    //     chartData() {
+    //         return {
+    //             labels: this.lineChart.labels,
+    //             datasets: [
+    //                 {
+    //                     label: this.$t('property.enter'),
+    //                     fill: true,
+    //                     borderColor: "#00f2c3",
+    //                     borderWidth: 2,
+    //                     borderDash: [],
+    //                     borderDashOffset: 0.0,
+    //                     pointBackgroundColor: "#00f2c3",
+    //                     pointBorderColor: "rgba(255,255,255,0)",
+    //                     pointHoverBackgroundColor: "#00f2c3",
+    //                     pointBorderWidth: 20,
+    //                     pointHoverRadius: 4,
+    //                     pointHoverBorderWidth: 15,
+    //                     pointRadius: 4,
+    //                     data: this.lineChart.enters
+    //                 },
+    //                 {
+    //                     label: this.$t('property.exit'),
+    //                     fill: true,
+    //                     borderColor: "#fd5d93",
+    //                     borderWidth: 2,
+    //                     borderDash: [],
+    //                     borderDashOffset: 0.0,
+    //                     pointBackgroundColor: "#fd5d93",
+    //                     pointBorderColor: "rgba(255,255,255,0)",
+    //                     pointHoverBackgroundColor: "#fd5d93",
+    //                     pointBorderWidth: 20,
+    //                     pointHoverRadius: 4,
+    //                     pointHoverBorderWidth: 15,
+    //                     pointRadius: 4,
+    //                     data: this.lineChart.exits
+    //                 }
+    //             ]
+    //         };
+    //     }
+    // }
 };
 
 </script>

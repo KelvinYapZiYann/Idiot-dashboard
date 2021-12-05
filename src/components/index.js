@@ -13,6 +13,7 @@ import CopyrightInk from "./CopyrightInk";
 import DropDown from "./Dropdown.vue";
 import Modal from "./Modal";
 import LineChart from "./Chart/LineChart";
+import TrafficTrendLineChart from "./Chart/TrafficTrendLineChart";
 
 export {
   SidebarPlugin,
@@ -30,4 +31,5 @@ export {
   DropDown,
   Modal,
   LineChart,
+  TrafficTrendLineChart,
 };
