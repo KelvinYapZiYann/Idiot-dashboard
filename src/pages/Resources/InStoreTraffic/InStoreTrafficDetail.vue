@@ -196,30 +196,7 @@ export default {
                 this.lineChart.dateRange.startDate = wholeMonthStartDateString;
                 this.lineChart.dateRange.endDate = todayDateString;
 
-                let tmpToday = today;
-
-                this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: this.lineChart.dateRange.startDate, endDate: this.lineChart.dateRange.endDate}).then(() => {
-                    let models = this.$store.getters["dashboard/models"];
-
-                    let duration = this.$moment.duration(this.$moment().diff(tmpToday));
-                    let durationDiffDays = Math.floor(duration.asDays());
-                    mainLoop: for (let i = 0; i < durationDiffDays; i++) {
-                        let tmpDate = tmpToday.format('YYYY-MM-DD');
-                        for (let j = 0; j < models.length; j++) {
-                            if (tmpDate == models[j].date) {
-                                this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
-                                this.lineChart.enters.push(models[j].enter);
-                                this.lineChart.exits.push(models[j].exit);
-                                tmpToday.add(1, 'days');
-                                continue mainLoop;
-                            }
-                        }
-                        this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
-                        this.lineChart.enters.push(0);
-                        this.lineChart.exits.push(0);
-                        tmpToday.add(1, 'days');
-                    }
-                });
+                this.getLineChartDateRange();
               }
             });
           });
@@ -251,7 +228,8 @@ export default {
           previousRoute: router.currentRoute.name,
         }
       });
-    },async getLineChartDateRange() {
+    },
+    async getLineChartDateRange() {
           if (this.lineChart.dateRange.endDate <= this.lineChart.dateRange.startDate) {
               return;
           }

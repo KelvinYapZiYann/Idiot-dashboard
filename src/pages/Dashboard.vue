@@ -284,9 +284,9 @@ export default {
                 this.lineChart.exits = [];
 
                 let today = this.$moment();
-                let currentDay = today.format('D');
+                let currentDay = parseInt(today.format('D'));
                 let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
-                let yesterday = today.subtract(2, 'days').format('D');
+                let yesterday = parseInt(today.subtract(2, 'days').format('D'));
                 let thisWeekStartDateString = today.subtract(5, 'days').format('YYYY-MM-DD');
                 let lastWeekEndDateString = today.subtract(1, 'days').format('YYYY-MM-DD');
                 let lastWeekStartDateString = today.subtract(6, 'days').format('YYYY-MM-DD');
@@ -318,10 +318,10 @@ export default {
                                     this.resource.thisWeekEnter += model.enter;
                                     this.resource.thisWeekExit += model.exit;
                                     let day = model.date.substring(8, 10);
-                                    if (day == currentDay) {
+                                    if (parseInt(day) == (currentDay)) {
                                         this.resource.todayEnter = model.enter;
                                         this.resource.todayExit = model.exit;
-                                    } else if (day == yesterday) {
+                                    } else if (parseInt(day) == parseInt(yesterday)) {
                                         this.resource.yesterdayEnter = model.enter;
                                         this.resource.yesterdayExit = model.exit;
                                     }
@@ -336,7 +336,7 @@ export default {
                                 });
                             });
 
-                            if (currentDay == 1) {
+                            if ((currentDay) == 1) {
                                 this.resource.thisMonthEnter = this.resource.todayEnter;
                                 this.resource.thisMonthExit = this.resource.todayExit;
                             } else {
@@ -357,30 +357,7 @@ export default {
                                 });
                             });
 
-                            let tmpToday = today;
-
-                            this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: this.lineChart.dateRange.startDate, endDate: this.lineChart.dateRange.endDate}).then(() => {
-                                let models = this.$store.getters["dashboard/models"];
-
-                                let duration = this.$moment.duration(this.$moment().diff(tmpToday));
-                                let durationDiffDays = Math.floor(duration.asDays());
-                                mainLoop: for (let i = 0; i < durationDiffDays; i++) {
-                                    let tmpDate = tmpToday.format('YYYY-MM-DD');
-                                    for (let j = 0; j < models.length; j++) {
-                                        if (tmpDate == models[j].date) {
-                                            this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
-                                            this.lineChart.enters.push(models[j].enter);
-                                            this.lineChart.exits.push(models[j].exit);
-                                            tmpToday.add(1, 'days');
-                                            continue mainLoop;
-                                        }
-                                    }
-                                    this.lineChart.labels.push(tmpToday.format('YYYY-MM-DD (ddd)'));
-                                    this.lineChart.enters.push(0);
-                                    this.lineChart.exits.push(0);
-                                    tmpToday.add(1, 'days');
-                                }
-                            });
+                            this.getLineChartDateRange();
                         });
                     });
                 });
