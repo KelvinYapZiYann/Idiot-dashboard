@@ -1,8 +1,8 @@
 export const basicOptions = {
     maintainAspectRatio: false,
-    legend: {
-      display: false
-    },
+    // legend: {
+    //   display: false
+    // },
     responsive: true
 };
 
@@ -14,7 +14,7 @@ export let chartOptions = {
       bodyFontColor: "#666",
       bodySpacing: 4,
       xPadding: 12,
-      mode: "nearest",
+      mode: "label",
       intersect: 0,
       position: "nearest"
     },

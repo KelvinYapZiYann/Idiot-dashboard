@@ -60,6 +60,8 @@
             :labels="lineChart.labels"
             :enters="lineChart.enters"
             :exits="lineChart.exits"
+            :returns="lineChart.returns"
+            :passings="lineChart.passings"
             @getLineChartDateRange="getLineChartDateRange"
         >
         </traffic-trend-line-chart>
@@ -151,6 +153,8 @@ export default {
                 labels: [],
                 enters: [],
                 exits: [],
+                returns: [],
+                passings: [],
             //     dateRange: {
             //         startDate: null,
             //         endDate: null
@@ -291,6 +295,8 @@ export default {
             this.lineChart.labels = [];
             this.lineChart.enters = [];
             this.lineChart.exits = [];
+            this.lineChart.returns = [];
+            this.lineChart.passings = [];
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
                 
@@ -306,6 +312,8 @@ export default {
                                         this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
                                         this.lineChart.enters.push(models[j].enter);
                                         this.lineChart.exits.push(models[j].exit);
+                                        this.lineChart.returns.push(models[j].return);
+                                        this.lineChart.passings.push(models[j].passing);
                                         startDateMoment.add(1, 'days');
                                         continue mainLoop;
                                     }
@@ -313,6 +321,8 @@ export default {
                                 this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
                                 this.lineChart.enters.push(0);
                                 this.lineChart.exits.push(0);
+                                this.lineChart.returns.push(0);
+                                this.lineChart.passings.push(0);
                                 startDateMoment.add(1, 'days');
                             }
                         });

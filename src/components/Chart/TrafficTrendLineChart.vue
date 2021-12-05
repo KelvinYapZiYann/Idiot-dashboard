@@ -87,6 +87,22 @@ export default {
       },
       description: "Traffic Trend Line Exits"
     },
+    returns: {
+      type: Array,
+      required: true,
+      default: () => {
+        return [];
+      },
+      description: "Traffic Trend Line Returns"
+    },
+    passings: {
+      type: Array,
+      required: true,
+      default: () => {
+        return [];
+      },
+      description: "Traffic Trend Line Passings"
+    },
   },
   methods: {
     getLineChartDateRange() {
@@ -114,13 +130,13 @@ export default {
                     {
                         label: this.$t('property.enter'),
                         fill: true,
-                        borderColor: "#00f2c3",
+                        borderColor: "#1d8cf8",
                         borderWidth: 2,
                         borderDash: [],
                         borderDashOffset: 0.0,
-                        pointBackgroundColor: "#00f2c3",
+                        pointBackgroundColor: "#1d8cf8",
                         pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#00f2c3",
+                        pointHoverBackgroundColor: "#1d8cf8",
                         pointBorderWidth: 20,
                         pointHoverRadius: 4,
                         pointHoverBorderWidth: 15,
@@ -142,6 +158,38 @@ export default {
                         pointHoverBorderWidth: 15,
                         pointRadius: 4,
                         data: this.exits
+                    },
+                    {
+                        label: this.$t('property.return'),
+                        fill: true,
+                        borderColor: "#00f2c3",
+                        borderWidth: 2,
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBackgroundColor: "#00f2c3",
+                        pointBorderColor: "rgba(255,255,255,0)",
+                        pointHoverBackgroundColor: "#00f2c3",
+                        pointBorderWidth: 20,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 15,
+                        pointRadius: 4,
+                        data: this.returns
+                    },
+                    {
+                        label: this.$t('property.passing'),
+                        fill: true,
+                        borderColor: "#ffd600",
+                        borderWidth: 2,
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        pointBackgroundColor: "#ffd600",
+                        pointBorderColor: "rgba(255,255,255,0)",
+                        pointHoverBackgroundColor: "#ffd600",
+                        pointBorderWidth: 20,
+                        pointHoverRadius: 4,
+                        pointHoverBorderWidth: 15,
+                        pointRadius: 4,
+                        data: this.passings
                     }
                 ]
             };
