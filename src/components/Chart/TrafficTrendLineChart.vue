@@ -4,27 +4,27 @@
         <card type="chart">
             <div slot="header">
                 <h2 class="card-title">
-                    {{ $t('dashboard.trafficTrendChart') }}
+                    {{ $t('chart.trafficTrendChart.title') }}
                 </h2>
-                <div class="row">
-                    <div class="col-sm-6 col-12">
-                        <base-input 
-                            :placeholder="$t('date.start')"
-                            v-model="lineChart.dateRange.startDate"
-                            type="date"
-                            @input="getLineChartDateRange"
-                            >
-                        </base-input>
-                    </div>
-                    <div class="col-sm-6 col-12">
-                        <base-input 
-                            :placeholder="$t('date.end')"
-                            v-model="lineChart.dateRange.endDate"
-                            type="date"
-                            @input="getLineChartDateRange"
-                            >
-                        </base-input>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-12">
+                    <base-input 
+                        :placeholder="$t('date.start')"
+                        v-model="lineChart.dateRange.startDate"
+                        type="date"
+                        @input="getLineChartDateRange"
+                        >
+                    </base-input>
+                </div>
+                <div class="col-sm-6 col-12">
+                    <base-input 
+                        :placeholder="$t('date.end')"
+                        v-model="lineChart.dateRange.endDate"
+                        type="date"
+                        @input="getLineChartDateRange"
+                        >
+                    </base-input>
                 </div>
             </div>
             <line-chart
@@ -33,23 +33,31 @@
                 :extra-options="lineChart.extraOptions"
             >
             </line-chart>
+            <base-button slot="footer" type="primary" @click="generateTable()" fill>
+                <i class="fas fa-table mr-1"></i>
+                {{$t('chart.trafficTrendChart.generateTable')}}
+            </base-button>
         </card>
     </div>
   </div>
 </template>
 <script>
 import { 
-  BaseInput, 
+  BaseButton,
+  BaseInput,
   Card,
   LineChart
 } from "@/components/index";
 import * as chartConfigs from "@/components/Chart/ChartConfig";
+import download from "downloadjs";
 
 export default {
   components: {
+    BaseButton,
     BaseInput,
     Card,
-    LineChart
+    LineChart,
+    // JsonExcel
   },
   data() {
     return {
@@ -60,6 +68,20 @@ export default {
                 endDate: null
             }
         },
+        generateTableData: [
+          {
+            first: 'hello',
+            second: 'there'
+          },
+          {
+            first: 'hello',
+            second: 'there'
+          },
+          {
+            first: 'hello',
+            second: 'there'
+          }
+        ]
     };
   },
   props: {
@@ -110,7 +132,104 @@ export default {
             startDate: this.lineChart.dateRange.startDate,
             endDate: this.lineChart.dateRange.endDate,
         });
-    }
+    },
+    async export(data, filename, mime) {
+      let blob = this.base64ToBlob(data, mime);
+      // if (typeof this.beforeFinish === "function") await this.beforeFinish();
+      download(blob, filename, mime);
+    },
+    base64ToBlob(data, mime) {
+      let base64 = window.btoa(window.unescape(encodeURIComponent(data)));
+      let bstr = atob(base64);
+      let n = bstr.length;
+      let u8arr = new Uint8ClampedArray(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new Blob([u8arr], { type: mime });
+    },
+    generateTable() {
+      console.log('generateTable');
+      this.$swal.fire({
+        title: this.$t('component.download'),
+        text: this.$t('alert.downloadExcelConfirmation'),
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: this.$t('component.download'),
+        cancelButtonText: this.$t('component.cancel'),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            let excelData = [];
+            for (let i = 0; i < this.labels.length; i++) {
+              excelData.push({
+                date: this.labels[i],
+                enter: this.enters[i],
+                exit: this.exits[i],
+                return: this.returns[i],
+                passing: this.passings[i],
+              });
+            }
+            console.log(excelData);
+            let asd = this.jsonToXLS(excelData);
+            console.log(asd);
+            this.export(asd, "hello", "application/vnd.ms-excel");
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
+    },
+    jsonToXLS(data) {
+      let xlsTemp =
+        '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=ProgId content=Excel.Sheet> <meta name=Generator content="Microsoft Excel 11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>${worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><style>br {mso-data-placement: same-cell;}</style></head><body><table>${table}</table></body></html>';
+      let xlsData = "<thead>";
+      // const colspan = Object.keys(data[0]).length;
+      // let _self = this;
+      //Header
+      // const header = this.header || this.$attrs.title;
+      // if (header) {
+      //   xlsData += (
+      //   //   header,
+      //     `<tr><th colspan="' + colspan + '">${data}</th></tr>`
+      //   );
+      // }
+      //Fields
+      xlsData += "<tr>";
+      for (let key in data[0]) {
+        xlsData += "<th>" + key + "</th>";
+      }
+      xlsData += "</tr>";
+      xlsData += "</thead>";
+      //Data
+      xlsData += "<tbody>";
+      data.map(function (item) {
+        xlsData += "<tr>";
+        for (let key in item) {
+          xlsData +=
+            "<td>" +
+            // _self.preprocessLongNum(
+            //   _self.valueReformattedForMultilines(item[key])
+            // ) +
+            item[key]
+            "</td>";
+        }
+        xlsData += "</tr>";
+      });
+      xlsData += "</tbody>";
+      //Footer
+      // if (this.footer != null) {
+      //   xlsData += "<tfoot>";
+      //   xlsData += this.parseExtraData(
+      //     this.footer,
+      //     '<tr><td colspan="' + colspan + '">${data}</td></tr>'
+      //   );
+      //   xlsData += "</tfoot>";
+      // }
+      return xlsTemp
+        .replace("${table}", xlsData)
+        .replace("${worksheet}", this.worksheet);
+    },
   },
   mounted() {
     let today = this.$moment();
@@ -198,4 +317,8 @@ export default {
 };
 </script>
 <style>
+.card-chart .card-footer {
+    margin-top: 0;
+    padding-top: 0;
+}
 </style>

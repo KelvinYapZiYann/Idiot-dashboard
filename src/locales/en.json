@@ -17,6 +17,7 @@
     "inStoreTraffics": "In-Store Traffics",
     "inStoreTraffic": "In-Store Traffic",
     "traffic": "Traffic",
+    "download": "Download",
 
     "index": "Index",
     "actions": "Actions",
@@ -53,8 +54,13 @@
     "type": "Type"
   },
   "dashboard": {
-    "totalTraffics": "Total Traffics",
-    "trafficTrendChart": "Traffic Trend Chart"
+    "totalTraffics": "Total Traffics"
+  },
+  "chart": {
+    "trafficTrendChart": {
+      "title": "Traffic Trend Chart",
+      "generateTable": "Generate Table"
+    }
   },
   "date": {
     "today": "Today",
@@ -89,7 +95,10 @@
     "redirectingToLoginPage": "Redirecting to login page",
 
     "tryAgain": "Try again",
-    "contactUs": "Don't hesitate to contact us if you face any problems"
+    "contactUs": "Don't hesitate to contact us if you face any problems",
+
+    "downloadExcelConfirmation": "Are you sure to download this data to Excel file?",
+    "downloadExcelFailed": "Download Excel file is failed."
   },
   "inStoreTrafficType": {
     "ENTRANCE": "Entrance"
