@@ -59,7 +59,7 @@
   "chart": {
     "trafficTrendChart": {
       "title": "Traffic Trend Chart",
-      "generateTable": "Generate Table"
+      "generateExcel": "Generate Excel File"
     }
   },
   "date": {

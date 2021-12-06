@@ -33,9 +33,9 @@
                 :extra-options="lineChart.extraOptions"
             >
             </line-chart>
-            <base-button slot="footer" type="primary" @click="generateTable()" fill>
+            <base-button slot="footer" type="primary" @click="generateExcel()" fill>
                 <i class="fas fa-table mr-1"></i>
-                {{$t('chart.trafficTrendChart.generateTable')}}
+                {{$t('chart.trafficTrendChart.generateExcel')}}
             </base-button>
         </card>
     </div>
@@ -68,20 +68,6 @@ export default {
                 endDate: null
             }
         },
-        generateTableData: [
-          {
-            first: 'hello',
-            second: 'there'
-          },
-          {
-            first: 'hello',
-            second: 'there'
-          },
-          {
-            first: 'hello',
-            second: 'there'
-          }
-        ]
     };
   },
   props: {
@@ -148,8 +134,7 @@ export default {
       }
       return new Blob([u8arr], { type: mime });
     },
-    generateTable() {
-      console.log('generateTable');
+    generateExcel() {
       this.$swal.fire({
         title: this.$t('component.download'),
         text: this.$t('alert.downloadExcelConfirmation'),
@@ -170,10 +155,8 @@ export default {
                 passing: this.passings[i],
               });
             }
-            console.log(excelData);
-            let asd = this.jsonToXLS(excelData);
-            console.log(asd);
-            this.export(asd, "hello", "application/vnd.ms-excel");
+            let finalExcelData = this.jsonToXLS(excelData);
+            this.export(finalExcelData, "Traffic Trend Data", "application/vnd.ms-excel");
           } catch (e) {
             console.error(e);
           }
@@ -184,16 +167,6 @@ export default {
       let xlsTemp =
         '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=ProgId content=Excel.Sheet> <meta name=Generator content="Microsoft Excel 11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>${worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><style>br {mso-data-placement: same-cell;}</style></head><body><table>${table}</table></body></html>';
       let xlsData = "<thead>";
-      // const colspan = Object.keys(data[0]).length;
-      // let _self = this;
-      //Header
-      // const header = this.header || this.$attrs.title;
-      // if (header) {
-      //   xlsData += (
-      //   //   header,
-      //     `<tr><th colspan="' + colspan + '">${data}</th></tr>`
-      //   );
-      // }
       //Fields
       xlsData += "<tr>";
       for (let key in data[0]) {
@@ -206,26 +179,36 @@ export default {
       data.map(function (item) {
         xlsData += "<tr>";
         for (let key in item) {
-          xlsData +=
-            "<td>" +
-            // _self.preprocessLongNum(
-            //   _self.valueReformattedForMultilines(item[key])
-            // ) +
-            item[key]
-            "</td>";
+          xlsData += "<td>" + item[key] + "</td>";
         }
         xlsData += "</tr>";
       });
+      xlsData += "<tr></tr>";
+      xlsData += "<tr>";
+      xlsData += "<td>total</td>";
+      let tmpTotal = 0;
+      this.enters.forEach(function(count) {
+        tmpTotal += count;
+      });
+      xlsData += "<td>" + tmpTotal + "</td>";
+      tmpTotal = 0;
+      this.exits.forEach(function(count) {
+        tmpTotal += count;
+      });
+      xlsData += "<td>" + tmpTotal + "</td>";
+      tmpTotal = 0;
+      this.returns.forEach(function(count) {
+        tmpTotal += count;
+      });
+      xlsData += "<td>" + tmpTotal + "</td>";
+      tmpTotal = 0;
+      this.passings.forEach(function(count) {
+        tmpTotal += count;
+      });
+      xlsData += "<td>" + tmpTotal + "</td>";
+      xlsData += "</tr>";
+
       xlsData += "</tbody>";
-      //Footer
-      // if (this.footer != null) {
-      //   xlsData += "<tfoot>";
-      //   xlsData += this.parseExtraData(
-      //     this.footer,
-      //     '<tr><td colspan="' + colspan + '">${data}</td></tr>'
-      //   );
-      //   xlsData += "</tfoot>";
-      // }
       return xlsTemp
         .replace("${table}", xlsData)
         .replace("${worksheet}", this.worksheet);
