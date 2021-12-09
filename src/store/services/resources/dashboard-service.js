@@ -31,6 +31,15 @@ function getDailyTrafficsInMonth(param) {
         });
 }
 
+function getHourlyTrafficsInDay(param) {
+    return axios.get(`${url}/total-hourly-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&date=${param.date}`, config)
+        .then(response => {
+            return response.data;
+        });
+}
+
+
+
 function getTodayTraffics() {
     return axios.get(`${url}/total-traffics?type=today`, config)
         .then(response => {
@@ -77,6 +86,7 @@ export default {
     getTotalTraffics,
     getDailyTrafficsInCustomDateRange,
     getDailyTrafficsInMonth,
+    getHourlyTrafficsInDay,
 
     getTodayTraffics,
     getYesterdayTraffics,

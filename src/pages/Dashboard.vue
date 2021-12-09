@@ -57,12 +57,22 @@
             </div>
         </div>
         <traffic-trend-line-chart
-            :labels="lineChart.labels"
-            :enters="lineChart.enters"
-            :exits="lineChart.exits"
-            :returns="lineChart.returns"
-            :passings="lineChart.passings"
+            :labels="dailyLineChart.labels"
+            :enters="dailyLineChart.enters"
+            :exits="dailyLineChart.exits"
+            :returns="dailyLineChart.returns"
+            :passings="dailyLineChart.passings"
             @getLineChartDateRange="getLineChartDateRange"
+        >
+        </traffic-trend-line-chart>
+        <traffic-trend-line-chart
+            type="hourly"
+            :labels="hourlyLineChart.labels"
+            :enters="hourlyLineChart.enters"
+            :exits="hourlyLineChart.exits"
+            :returns="hourlyLineChart.returns"
+            :passings="hourlyLineChart.passings"
+            @getLineChartDate="getLineChartDate"
         >
         </traffic-trend-line-chart>
         <!-- <div class="row">
@@ -148,17 +158,19 @@ export default {
                 lastMonthEnter: 0,
                 lastMonthExit: 0,
             },
-            lineChart: {
-            //     extraOptions: chartConfigs.chartOptions,
+            dailyLineChart: {
                 labels: [],
                 enters: [],
                 exits: [],
                 returns: [],
                 passings: [],
-            //     dateRange: {
-            //         startDate: null,
-            //         endDate: null
-            //     }
+            },
+            hourlyLineChart: {
+                labels: [],
+                enters: [],
+                exits: [],
+                returns: [],
+                passings: [],
             },
         }
     },
@@ -272,6 +284,62 @@ export default {
                 loader.hide();
             }
         },
+        async getLineChartDate(date) {
+            if (!date) {
+                return;
+            }
+            this.hourlyLineChart.labels = [];
+            // this.hourlyLineChart.enters = [];
+            // this.hourlyLineChart.exits = [];
+            // this.hourlyLineChart.returns = [];
+            // this.hourlyLineChart.passings = [];
+
+            let tmpEnters = [];
+            let tmpExits = [];
+            let tmpReturns = [];
+            let tmpPassings = [];
+            
+            let today = this.$moment();
+            let totalHour = 24;
+            if (date == today.format('YYYY-MM-DD')) {
+                totalHour = parseInt(today.format('H')) + 1;
+            }
+            for (let i = 0; i < totalHour; i++) {
+                this.hourlyLineChart.labels.push(i + ':00');
+                tmpEnters.push(0);
+                tmpExits.push(0);
+                tmpPassings.push(0);
+                tmpReturns.push(0);
+            }
+
+            await this.$store.dispatch('store/getAll').then(() => {
+                let stores = this.$store.getters["store/models"];
+                stores.forEach((store) => {
+                    store.devices.forEach((device) => {
+                        
+                        this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: date}).then(() => {
+                            let models = this.$store.getters["dashboard/models"];
+                            for (let i = 0; i < models.length; i++) {
+                            //     this.hourlyLineChart.labels.push(models[i].hour);
+                            //     this.hourlyLineChart.enters.push(models[i].enter);
+                            //     this.hourlyLineChart.exits.push(models[i].exit);
+                            //     this.hourlyLineChart.returns.push(models[i].return);
+                            //     this.hourlyLineChart.passings.push(models[i].passing);
+                                let tmpTime = parseInt(models[i].hour) + 8;
+                                tmpEnters[tmpTime] += models[i].enter;
+                                tmpExits[tmpTime] += models[i].exit;
+                                tmpReturns[tmpTime] += models[i].return;
+                                tmpPassings[tmpTime] += models[i].passing;
+                            }
+                            this.hourlyLineChart.enters = tmpEnters;
+                            this.hourlyLineChart.exits = tmpExits;
+                            this.hourlyLineChart.returns = tmpReturns;
+                            this.hourlyLineChart.passings = tmpPassings;
+                        });
+                    });
+                });
+            });
+        },
         async getLineChartDateRange(dateRange) {
             if (!dateRange) {
                 return;
@@ -286,17 +354,37 @@ export default {
                 return;
             }
             let startDateMoment = this.$moment(dateRange.startDate);
+            let tmpStartDateMoment = startDateMoment;
             let endDateMoment = this.$moment(dateRange.endDate);
             let duration = this.$moment.duration(endDateMoment.diff(startDateMoment));
             let durationDiffDays = Math.floor(duration.asDays());
             if (duration._milliseconds <= 0) {
                 return;
             }
-            this.lineChart.labels = [];
-            this.lineChart.enters = [];
-            this.lineChart.exits = [];
-            this.lineChart.returns = [];
-            this.lineChart.passings = [];
+            this.dailyLineChart.labels = [];
+            // this.dailyLineChart.enters = [];
+            // this.dailyLineChart.exits = [];
+            // this.dailyLineChart.returns = [];
+            // this.dailyLineChart.passings = [];
+
+            let tmpEnters = [];
+            let tmpExits = [];
+            let tmpReturns = [];
+            let tmpPassings = [];
+
+            for (let i = 0; i < durationDiffDays; i++) {
+                this.dailyLineChart.labels.push(tmpStartDateMoment.format('YYYY-MM-DD (ddd)'));
+                // this.dailyLineChart.enters.push(0);
+                // this.dailyLineChart.exits.push(0);
+                // this.dailyLineChart.returns.push(0);
+                // this.dailyLineChart.passings.push(0);
+                tmpEnters.push(0);
+                tmpExits.push(0);
+                tmpReturns.push(0);
+                tmpPassings.push(0);
+                tmpStartDateMoment.add(1, 'days');
+            }
+
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
                 
@@ -304,27 +392,29 @@ export default {
                     store.devices.forEach((device) => {
                         this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: dateRange.startDate, endDate: dateRange.endDate}).then(() => {
                             let models = this.$store.getters["dashboard/models"];
-                            
+                            tmpStartDateMoment = this.$moment(dateRange.startDate);
                             mainLoop: for (let i = 0; i < durationDiffDays; i++) {
-                                let tmpDate = startDateMoment.format('YYYY-MM-DD');
+                                let tmpDate = tmpStartDateMoment.format('YYYY-MM-DD');
                                 for (let j = 0; j < models.length; j++) {
                                     if (tmpDate == models[j].date) {
-                                        this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
-                                        this.lineChart.enters.push(models[j].enter);
-                                        this.lineChart.exits.push(models[j].exit);
-                                        this.lineChart.returns.push(models[j].return);
-                                        this.lineChart.passings.push(models[j].passing);
-                                        startDateMoment.add(1, 'days');
+                                        // this.dailyLineChart.enters[i] += (models[j].enter);
+                                        // this.dailyLineChart.exits[i] += (models[j].exit);
+                                        // this.dailyLineChart.returns[i] += (models[j].return);
+                                        // this.dailyLineChart.passings[i] += (models[j].passing);
+                                        tmpEnters[i] += (models[j].enter);
+                                        tmpExits[i] += (models[j].exit);
+                                        tmpReturns[i] += (models[j].return);
+                                        tmpPassings[i] += (models[j].passing);
+                                        tmpStartDateMoment.add(1, 'days');
                                         continue mainLoop;
                                     }
                                 }
-                                this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
-                                this.lineChart.enters.push(0);
-                                this.lineChart.exits.push(0);
-                                this.lineChart.returns.push(0);
-                                this.lineChart.passings.push(0);
-                                startDateMoment.add(1, 'days');
+                                tmpStartDateMoment.add(1, 'days');
                             }
+                            this.dailyLineChart.enters = tmpEnters;
+                            this.dailyLineChart.exits = tmpExits;
+                            this.dailyLineChart.returns = tmpReturns;
+                            this.dailyLineChart.passings = tmpPassings;
                         });
                     });
                 });

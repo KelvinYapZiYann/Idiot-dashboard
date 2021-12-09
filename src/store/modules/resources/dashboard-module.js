@@ -75,6 +75,13 @@ const actions = {
             console.error(e);
         });
     },
+    getHourlyTrafficsInDay({commit}, param) {
+        return service.getHourlyTrafficsInDay(param).then((response) => {
+            commit('SET_TRAFFICS', response);
+        }).catch((e) => {
+            console.error(e);
+        });
+    },
     // getTodayTraffics({commit}) {
     //     return service.getTodayTraffics().then((response) => {
     //         commit('SET_TODAY_TRAFFICS', response);

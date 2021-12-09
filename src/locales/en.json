@@ -58,9 +58,10 @@
   },
   "chart": {
     "trafficTrendChart": {
-      "title": "Traffic Trend Chart",
-      "generateExcel": "Generate Excel File"
-    }
+      "dailyTitle": "Traffic Daily Trend Chart",
+      "hourlyTitle": "Traffic Hourly Trend Chart"
+    },
+    "generateExcel": "Generate Excel File"
   },
   "date": {
     "today": "Today",
@@ -72,6 +73,7 @@
     "thisYear": "This Year",
     "lastYear": "Last Year",
     "dateRange": "Date Range",
+    "date": "Date",
     "start": "Start",
     "end": "End"
   },

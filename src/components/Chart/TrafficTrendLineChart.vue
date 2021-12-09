@@ -4,10 +4,10 @@
         <card type="chart">
             <div slot="header">
                 <h2 class="card-title">
-                    {{ $t('chart.trafficTrendChart.title') }}
+                    {{ type == 'daily' ? $t('chart.trafficTrendChart.dailyTitle') : $t('chart.trafficTrendChart.hourlyTitle')}}
                 </h2>
             </div>
-            <div class="row">
+            <div class="row" v-if="this.type == 'daily'">
                 <div class="col-sm-6 col-12">
                     <base-input 
                         :placeholder="$t('date.start')"
@@ -27,6 +27,17 @@
                     </base-input>
                 </div>
             </div>
+            <div class="row" v-else-if="this.type == 'hourly'">
+                <div class="col-sm-6 col-12">
+                    <base-input 
+                        :placeholder="$t('date.date')"
+                        v-model="lineChart.date"
+                        type="date"
+                        @input="getLineChartDate"
+                        >
+                    </base-input>
+                </div>
+            </div>
             <line-chart
                 chart-id="green-line-chart"
                 :chart-data="chartData"
@@ -35,7 +46,7 @@
             </line-chart>
             <base-button slot="footer" type="primary" @click="generateExcel()" fill>
                 <i class="fas fa-table mr-1"></i>
-                {{$t('chart.trafficTrendChart.generateExcel')}}
+                {{$t('chart.generateExcel')}}
             </base-button>
         </card>
     </div>
@@ -66,11 +77,20 @@ export default {
             dateRange: {
                 startDate: null,
                 endDate: null
-            }
+            },
+            date: null
         },
     };
   },
   props: {
+    type: {
+      type: String,
+      required: false,
+      default: () => {
+        return "daily";
+      },
+      description: "Traffic Trend Line Type"
+    },
     labels: {
       type: Array,
       required: true,
@@ -113,6 +133,9 @@ export default {
     },
   },
   methods: {
+    getLineChartDate() {
+      this.$emit('getLineChartDate', this.lineChart.date);
+    },
     getLineChartDateRange() {
         this.$emit('getLineChartDateRange', {
             startDate: this.lineChart.dateRange.startDate,
@@ -215,88 +238,94 @@ export default {
     },
   },
   mounted() {
-    let today = this.$moment();
-    let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
-    today = this.$moment();
-    let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
+    if (this.type == 'daily') {
+      let today = this.$moment();
+      let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+      today = this.$moment();
+      let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
 
-    this.lineChart.dateRange.startDate = wholeMonthStartDateString;
-    this.lineChart.dateRange.endDate = todayDateString;
-    this.getLineChartDateRange();
+      this.lineChart.dateRange.startDate = wholeMonthStartDateString;
+      this.lineChart.dateRange.endDate = todayDateString;
+      this.getLineChartDateRange();
+    } else if (this.type == 'hourly') {
+      let todayDateString = this.$moment().format('YYYY-MM-DD');
+      this.lineChart.date = todayDateString;
+      this.getLineChartDate();
+    }
   },
   computed: {
-        chartData() {
-            return {
-                labels: this.labels,
-                datasets: [
-                    {
-                        label: this.$t('property.enter'),
-                        fill: true,
-                        borderColor: "#1d8cf8",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#1d8cf8",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#1d8cf8",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.enters
-                    },
-                    {
-                        label: this.$t('property.exit'),
-                        fill: true,
-                        borderColor: "#fd5d93",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#fd5d93",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#fd5d93",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.exits
-                    },
-                    {
-                        label: this.$t('property.return'),
-                        fill: true,
-                        borderColor: "#00f2c3",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#00f2c3",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#00f2c3",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.returns
-                    },
-                    {
-                        label: this.$t('property.passing'),
-                        fill: true,
-                        borderColor: "#ffd600",
-                        borderWidth: 2,
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        pointBackgroundColor: "#ffd600",
-                        pointBorderColor: "rgba(255,255,255,0)",
-                        pointHoverBackgroundColor: "#ffd600",
-                        pointBorderWidth: 20,
-                        pointHoverRadius: 4,
-                        pointHoverBorderWidth: 15,
-                        pointRadius: 4,
-                        data: this.passings
-                    }
-                ]
-            };
-        }
+    chartData() {
+      return {
+        labels: this.labels,
+        datasets: [
+          {
+            label: this.$t('property.enter'),
+            fill: true,
+            borderColor: "#1d8cf8",
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: "#1d8cf8",
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointHoverBackgroundColor: "#1d8cf8",
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: this.enters
+          },
+          {
+            label: this.$t('property.exit'),
+            fill: true,
+            borderColor: "#fd5d93",
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: "#fd5d93",
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointHoverBackgroundColor: "#fd5d93",
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: this.exits
+          },
+          {
+            label: this.$t('property.return'),
+            fill: true,
+            borderColor: "#00f2c3",
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: "#00f2c3",
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointHoverBackgroundColor: "#00f2c3",
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: this.returns
+          },
+          {
+            label: this.$t('property.passing'),
+            fill: true,
+            borderColor: "#ffd600",
+            borderWidth: 2,
+            borderDash: [],
+            borderDashOffset: 0.0,
+            pointBackgroundColor: "#ffd600",
+            pointBorderColor: "rgba(255,255,255,0)",
+            pointHoverBackgroundColor: "#ffd600",
+            pointBorderWidth: 20,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 15,
+            pointRadius: 4,
+            data: this.passings
+          }
+        ]
+      };
     }
+  }
 };
 </script>
 <style>
