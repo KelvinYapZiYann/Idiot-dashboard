@@ -8,37 +8,37 @@
     ></base-detail>
 
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="trafficResource.enter ? trafficResource.enter : '0'"
-                :sub-title="$t('property.enter')"
+                :title="todayTrafficResource.enter ? todayTrafficResource.enter : '0'"
+                :sub-title="$t('date.today') + ' ' + $t('property.enter')"
                 type="primary"
                 icon="fas fa-sign-in-alt"
                 >
             </stats-card>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="trafficResource.exit ? trafficResource.exit : '0'"
-                :sub-title="$t('property.exit')"
+                :title="todayTrafficResource.exit ? todayTrafficResource.exit : '0'"
+                :sub-title="$t('date.today') + ' ' + $t('property.exit')"
                 type="warning"
                 icon="fas fa-sign-out-alt"
                 >
             </stats-card>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="trafficResource.return ? trafficResource.return : '0'"
-                :sub-title="$t('property.return')"
+                :title="todayTrafficResource.return ? todayTrafficResource.return : '0'"
+                :sub-title="$t('date.today') + ' ' + $t('property.return')"
                 type="success"
                 icon="fas fa-undo-alt"
                 >
             </stats-card>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="trafficResource.passing ? trafficResource.passing : '0'"
-                :sub-title="$t('property.passing')"
+                :title="todayTrafficResource.passing ? todayTrafficResource.passing : '0'"
+                :sub-title="$t('date.today') + ' ' + $t('property.passing')"
                 type="neutral"
                 icon="fas fa-times"
                 >
@@ -46,16 +46,67 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="todayTrafficResource.enter ? todayTrafficResource.enter : '0'"
+                :sub-title="$t('date.today') + ' ' + $t('property.enter')"
+                type="primary"
+                icon="fas fa-sign-in-alt"
+                >
+            </stats-card>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="totalTrafficResource.exit ? totalTrafficResource.exit : '0'"
+                :sub-title="$t('component.total') + ' ' + $t('property.exit')"
+                type="warning"
+                icon="fas fa-sign-out-alt"
+                >
+            </stats-card>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="totalTrafficResource.return ? totalTrafficResource.return : '0'"
+                :sub-title="$t('component.total') + ' ' + $t('property.return')"
+                type="success"
+                icon="fas fa-undo-alt"
+                >
+            </stats-card>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <stats-card
+                :title="totalTrafficResource.passing ? totalTrafficResource.passing : '0'"
+                :sub-title="$t('component.total') + ' ' + $t('property.passing')"
+                type="neutral"
+                icon="fas fa-times"
+                >
+            </stats-card>
+        </div>
+    </div>
+
+    <traffic-trend-line-chart
+        type="hourly"
+        :labels="hourlyLineChart.labels"
+        :enters="hourlyLineChart.enters"
+        :exits="hourlyLineChart.exits"
+        :returns="hourlyLineChart.returns"
+        :passings="hourlyLineChart.passings"
+        @getLineChartDate="getLineChartDate"
+    >
+    </traffic-trend-line-chart>
     
     <traffic-trend-line-chart
-        :labels="lineChart.labels"
-        :enters="lineChart.enters"
-        :exits="lineChart.exits"
-        :returns="lineChart.returns"
-        :passings="lineChart.passings"
+        :labels="dailyLineChart.labels"
+        :enters="dailyLineChart.enters"
+        :exits="dailyLineChart.exits"
+        :returns="dailyLineChart.returns"
+        :passings="dailyLineChart.passings"
         @getLineChartDateRange="getLineChartDateRange"
     >
     </traffic-trend-line-chart>
+
+    
 
     <!-- <div class="row">
         <div class="col-12">
@@ -148,7 +199,13 @@ export default {
         models: [],
         data: {}
       },
-      trafficResource: {
+      todayTrafficResource: {
+        enter: 0,
+        exit: 0,
+        return: 0,
+        passing: 0
+      },
+      totalTrafficResource: {
         enter: 0,
         exit: 0,
         return: 0,
@@ -160,17 +217,19 @@ export default {
           store_address: this.$t('property.address'),
         },
       },
-      lineChart: {
-          // extraOptions: chartConfigs.chartOptions,
+      dailyLineChart: {
           labels: [],
           enters: [],
           exits: [],
           returns: [],
           passings: [],
-          // dateRange: {
-          //     startDate: null,
-          //     endDate: null
-          // }
+      },
+      hourlyLineChart: {
+          labels: [],
+          enters: [],
+          exits: [],
+          returns: [],
+          passings: [],
       },
     };
   },
@@ -194,17 +253,21 @@ export default {
         //   this.resource.data = this.$store.getters["asset/data"];
         // });
         this.inStoreTrafficResource.models = [];
-        this.trafficResource.enter = 0;
-        this.trafficResource.exit = 0;
-        this.trafficResource.return = 0;
-        this.trafficResource.passing = 0;
+        this.totalTrafficResource.enter = 0;
+        this.totalTrafficResource.exit = 0;
+        this.totalTrafficResource.return = 0;
+        this.totalTrafficResource.passing = 0;
+        this.todayTrafficResource.enter = 0;
+        this.todayTrafficResource.exit = 0;
+        this.todayTrafficResource.return = 0;
+        this.todayTrafficResource.passing = 0;
 
         // this.lineChart.labels = [];
         // this.lineChart.enters = [];
         // this.lineChart.exits = [];
 
-        // let today = this.$moment();
-        // let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+        let today = this.$moment();
+        let todayDateString = today.format('YYYY-MM-DD');
         // today = this.$moment();
         // let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
         // this.lineChart.dateRange.startDate = wholeMonthStartDateString;
@@ -223,13 +286,22 @@ export default {
                   let model = this.$store.getters["dashboard/models"][0];
                   obj.enter = model.enter;
                   obj.exit = model.exit;
-                  this.trafficResource.enter += model.enter;
-                  this.trafficResource.exit += model.exit;
-                  this.trafficResource.return += model.return;
-                  this.trafficResource.passing += model.passing;
+                  this.totalTrafficResource.enter += model.enter;
+                  this.totalTrafficResource.exit += model.exit;
+                  this.totalTrafficResource.return += model.return;
+                  this.totalTrafficResource.passing += model.passing;
                   this.inStoreTrafficResource.models.push(obj);
                 });
 
+                this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: todayDateString}).then(() => {
+                  let models = this.$store.getters["dashboard/models"];
+                  for (let i = 0; i < models.length; i++) {
+                    this.todayTrafficResource.enter += models[i].enter;
+                    this.todayTrafficResource.exit += models[i].exit;
+                    this.todayTrafficResource.return += models[i].return;
+                    this.todayTrafficResource.passing += models[i].passing;
+                  }
+                });
                 // this.getLineChartDateRange();
 
               });
@@ -272,6 +344,63 @@ export default {
         }
       });
     },
+    async getLineChartDate(date) {
+        if (!date) {
+            return;
+        }
+        this.hourlyLineChart.labels = [];
+        // this.hourlyLineChart.enters = [];
+        // this.hourlyLineChart.exits = [];
+        // this.hourlyLineChart.returns = [];
+        // this.hourlyLineChart.passings = [];
+
+        let tmpEnters = [];
+        let tmpExits = [];
+        let tmpReturns = [];
+        let tmpPassings = [];
+        
+        let today = this.$moment();
+        let totalHour = 24;
+        if (date == today.format('YYYY-MM-DD')) {
+            totalHour = parseInt(today.format('H')) + 1;
+        }
+        for (let i = 0; i < totalHour; i++) {
+            this.hourlyLineChart.labels.push(i + ':00');
+            tmpEnters.push(0);
+            tmpExits.push(0);
+            tmpPassings.push(0);
+            tmpReturns.push(0);
+        }
+
+        await this.$store.dispatch('store/getAll').then(() => {
+            let stores = this.$store.getters["store/models"];
+            stores.forEach((store) => {
+              if (store.store_id == this.storeId) {
+                store.devices.forEach((device) => {
+                    this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: date}).then(() => {
+                        let models = this.$store.getters["dashboard/models"];
+                        for (let i = 0; i < models.length; i++) {
+                        //     this.hourlyLineChart.labels.push(models[i].hour);
+                        //     this.hourlyLineChart.enters.push(models[i].enter);
+                        //     this.hourlyLineChart.exits.push(models[i].exit);
+                        //     this.hourlyLineChart.returns.push(models[i].return);
+                        //     this.hourlyLineChart.passings.push(models[i].passing);
+                            let tmpTime = parseInt(models[i].hour) + 8;
+                            tmpEnters[tmpTime] += models[i].enter;
+                            tmpExits[tmpTime] += models[i].exit;
+                            tmpReturns[tmpTime] += models[i].return;
+                            tmpPassings[tmpTime] += models[i].passing;
+                        }
+                        this.hourlyLineChart.enters = tmpEnters;
+                        this.hourlyLineChart.exits = tmpExits;
+                        this.hourlyLineChart.returns = tmpReturns;
+                        this.hourlyLineChart.passings = tmpPassings;
+                    });
+                });
+              }
+            });
+        });
+    },
     async getLineChartDateRange(dateRange) {
           if (!dateRange) {
               return;
@@ -289,47 +418,66 @@ export default {
           //     return;
           // }
           let startDateMoment = this.$moment(dateRange.startDate);
+          let tmpStartDateMoment = startDateMoment;
           let endDateMoment = this.$moment(dateRange.endDate);
           let duration = this.$moment.duration(endDateMoment.diff(startDateMoment));
           let durationDiffDays = Math.floor(duration.asDays());
           if (duration._milliseconds <= 0) {
               return;
           }
-          this.lineChart.labels = [];
-          this.lineChart.enters = [];
-          this.lineChart.exits = [];
-          this.lineChart.returns = [];
-          this.lineChart.passings = [];
+          this.dailyLineChart.labels = [];
+          // this.dailyLineChart.enters = [];
+          // this.dailyLineChart.exits = [];
+          // this.dailyLineChart.returns = [];
+          // this.dailyLineChart.passings = [];
+          let tmpEnters = [];
+          let tmpExits = [];
+          let tmpReturns = [];
+          let tmpPassings = [];
+
+          for (let i = 0; i < durationDiffDays; i++) {
+            this.dailyLineChart.labels.push(tmpStartDateMoment.format('YYYY-MM-DD (ddd)'));
+            // this.dailyLineChart.enters.push(0);
+            // this.dailyLineChart.exits.push(0);
+            // this.dailyLineChart.returns.push(0);
+            // this.dailyLineChart.passings.push(0);
+            tmpEnters.push(0);
+            tmpExits.push(0);
+            tmpReturns.push(0);
+            tmpPassings.push(0);
+            tmpStartDateMoment.add(1, 'days');
+          }
+
           await this.$store.dispatch('store/getAll').then(() => {
               let stores = this.$store.getters["store/models"];
               
               stores.forEach((store) => {
-                  store.devices.forEach((device) => {
+                  if (store.store_id == this.storeId) {
+                    store.devices.forEach((device) => {
                       this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: dateRange.startDate, endDate: dateRange.endDate}).then(() => {
                           let models = this.$store.getters["dashboard/models"];
-                          
+                          tmpStartDateMoment = this.$moment(dateRange.startDate);
                           mainLoop: for (let i = 0; i < durationDiffDays; i++) {
-                              let tmpDate = startDateMoment.format('YYYY-MM-DD');
+                              let tmpDate = tmpStartDateMoment.format('YYYY-MM-DD');
                               for (let j = 0; j < models.length; j++) {
                                   if (tmpDate == models[j].date) {
-                                      this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
-                                      this.lineChart.enters.push(models[j].enter);
-                                      this.lineChart.exits.push(models[j].exit);
-                                      this.lineChart.returns.push(models[j].return);
-                                      this.lineChart.passings.push(models[j].passing);
-                                      startDateMoment.add(1, 'days');
+                                      tmpEnters[i] += (models[j].enter);
+                                      tmpExits[i] += (models[j].exit);
+                                      tmpReturns[i] += (models[j].return);
+                                      tmpPassings[i] += (models[j].passing);
+                                      tmpStartDateMoment.add(1, 'days');
                                       continue mainLoop;
                                   }
                               }
-                              this.lineChart.labels.push(startDateMoment.format('YYYY-MM-DD (ddd)'));
-                              this.lineChart.enters.push(0);
-                              this.lineChart.exits.push(0);
-                              this.lineChart.returns.push(0);
-                              this.lineChart.passings.push(0);
-                              startDateMoment.add(1, 'days');
+                              tmpStartDateMoment.add(1, 'days');
                           }
+                          this.dailyLineChart.enters = tmpEnters;
+                          this.dailyLineChart.exits = tmpExits;
+                          this.dailyLineChart.returns = tmpReturns;
+                          this.dailyLineChart.passings = tmpPassings;
                       });
-                  });
+                    });
+                  }
               });
           });
       }

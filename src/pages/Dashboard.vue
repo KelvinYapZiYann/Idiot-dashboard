@@ -1,28 +1,85 @@
 <template>
     <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="resource.totalTrafficsEnter ? resource.totalTrafficsEnter : '0'"
-                    :sub-title="$t('dashboard.totalTraffics') + ' ' + $t('property.enter')"
+                    :title="resource.todayEnter ? resource.todayEnter : '0'"
+                    :sub-title="$t('date.today') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
                     <!-- <div slot="footer" v-html="asd"></div> -->
                 </stats-card>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="resource.totalTrafficsExit ? resource.totalTrafficsExit : '0'"
-                    :sub-title="$t('dashboard.totalTraffics') + ' ' + $t('property.exit')"
+                    :title="resource.todayExit ? resource.todayExit : '0'"
+                    :sub-title="$t('date.today') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
                     >
                 </stats-card>
             </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.todayReturn ? resource.todayReturn : '0'"
+                    :sub-title="$t('date.today') + ' ' + $t('property.return')"
+                    type="success"
+                    icon="fas fa-undo-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.todayPassing ? resource.todayPassing : '0'"
+                    :sub-title="$t('date.today') + ' ' + $t('property.passing')"
+                    type="neutral"
+                    icon="fas fa-times"
+                    >
+                </stats-card>
+            </div>
         </div>
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.totalTrafficsEnter ? resource.totalTrafficsEnter : '0'"
+                    :sub-title="$t('component.total') + ' ' + $t('property.enter')"
+                    type="primary"
+                    icon="fas fa-sign-in-alt"
+                    >
+                    <!-- <div slot="footer" v-html="asd"></div> -->
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.totalTrafficsExit ? resource.totalTrafficsExit : '0'"
+                    :sub-title="$t('component.total') + ' ' + $t('property.exit')"
+                    type="warning"
+                    icon="fas fa-sign-out-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.totalTrafficsReturn ? resource.totalTrafficsReturn : '0'"
+                    :sub-title="$t('component.total') + ' ' + $t('property.return')"
+                    type="success"
+                    icon="fas fa-undo-alt"
+                    >
+                </stats-card>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+                <stats-card
+                    :title="resource.totalTrafficsPassing ? resource.totalTrafficsPassing : '0'"
+                    :sub-title="$t('component.total') + ' ' + $t('property.passing')"
+                    type="neutral"
+                    icon="fas fa-times"
+                    >
+                </stats-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
                     :sub-title="$t('date.today')"
                     :previous-title="$t('date.yesterday')"
@@ -33,7 +90,7 @@
                     >
                 </traffics-card>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
                     :sub-title="$t('date.thisWeek')"
                     :previous-title="$t('date.lastWeek')"
@@ -44,7 +101,7 @@
                     >
                 </traffics-card>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
                     :sub-title="$t('date.thisMonth')"
                     :previous-title="$t('date.lastMonth')"
@@ -57,15 +114,6 @@
             </div>
         </div>
         <traffic-trend-line-chart
-            :labels="dailyLineChart.labels"
-            :enters="dailyLineChart.enters"
-            :exits="dailyLineChart.exits"
-            :returns="dailyLineChart.returns"
-            :passings="dailyLineChart.passings"
-            @getLineChartDateRange="getLineChartDateRange"
-        >
-        </traffic-trend-line-chart>
-        <traffic-trend-line-chart
             type="hourly"
             :labels="hourlyLineChart.labels"
             :enters="hourlyLineChart.enters"
@@ -75,6 +123,16 @@
             @getLineChartDate="getLineChartDate"
         >
         </traffic-trend-line-chart>
+        <traffic-trend-line-chart
+            :labels="dailyLineChart.labels"
+            :enters="dailyLineChart.enters"
+            :exits="dailyLineChart.exits"
+            :returns="dailyLineChart.returns"
+            :passings="dailyLineChart.passings"
+            @getLineChartDateRange="getLineChartDateRange"
+        >
+        </traffic-trend-line-chart>
+        
         <!-- <div class="row">
             <div class="col-12">
                 <card type="chart">
@@ -145,8 +203,12 @@ export default {
             resource: {
                 totalTrafficsEnter: 0,
                 totalTrafficsExit: 0,
+                totalTrafficsReturn: 0,
+                totalTrafficsPassing: 0,
                 todayEnter: 0,
                 todayExit: 0,
+                todayReturn: 0,
+                todayPassing: 0,
                 yesterdayEnter: 0,
                 yesterdayExit: 0,
                 thisWeekEnter: 0,
@@ -183,8 +245,12 @@ export default {
             try {
                 this.resource.totalTrafficsEnter = 0;
                 this.resource.totalTrafficsExit = 0;
+                this.resource.totalTrafficsReturn = 0;
+                this.resource.totalTrafficsPassing = 0;
                 this.resource.todayEnter = 0;
                 this.resource.todayExit = 0;
+                this.resource.todayReturn = 0;
+                this.resource.todayPassing = 0;
                 this.resource.yesterdayEnter = 0;
                 this.resource.yesterdayExit = 0;
                 this.resource.thisWeekEnter = 0;
@@ -227,6 +293,8 @@ export default {
                                 let model = this.$store.getters["dashboard/models"][0];
                                 this.resource.totalTrafficsEnter += model.enter;
                                 this.resource.totalTrafficsExit += model.exit;
+                                this.resource.totalTrafficsReturn += model.return;
+                                this.resource.totalTrafficsPassing += model.passing;
                             });
 
                             this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisWeekStartDateString, endDate: todayDateString}).then(() => {
@@ -238,6 +306,8 @@ export default {
                                     if (parseInt(day) == (currentDay)) {
                                         this.resource.todayEnter = model.enter;
                                         this.resource.todayExit = model.exit;
+                                        this.resource.todayReturn = model.return;
+                                        this.resource.todayPassing = model.passing;
                                     } else if (parseInt(day) == parseInt(yesterday)) {
                                         this.resource.yesterdayEnter = model.enter;
                                         this.resource.yesterdayExit = model.exit;

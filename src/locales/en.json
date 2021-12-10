@@ -34,7 +34,8 @@
     "showing": "Showing",
     "to": "To",
     "of": "Of",
-    "entries": "Entries"
+    "entries": "Entries",
+    "total": "Total"
   },
   "property": {
     "enter": "Enter",
@@ -52,9 +53,6 @@
     "macAddress": "Mac Address",
     "status": "Status",
     "type": "Type"
-  },
-  "dashboard": {
-    "totalTraffics": "Total Traffics"
   },
   "chart": {
     "trafficTrendChart": {
