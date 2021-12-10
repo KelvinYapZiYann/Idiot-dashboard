@@ -49,7 +49,7 @@
     <div class="row">
         <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
             <stats-card
-                :title="todayTrafficResource.enter ? todayTrafficResource.enter : '0'"
+                :title="totalTrafficResource.enter ? totalTrafficResource.enter : '0'"
                 :sub-title="$t('date.today') + ' ' + $t('property.enter')"
                 type="primary"
                 icon="fas fa-sign-in-alt"

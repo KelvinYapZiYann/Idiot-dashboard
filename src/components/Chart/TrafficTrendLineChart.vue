@@ -179,7 +179,8 @@ export default {
               });
             }
             let finalExcelData = this.jsonToXLS(excelData);
-            this.export(finalExcelData, "Traffic Trend Data", "application/vnd.ms-excel");
+            let fileName = `Traffic ${this.type == "daily" ? "Daily" : "Hourly"} Trend Data (${this.type == "daily" ? this.lineChart.dateRange.startDate + ' to ' + this.lineChart.dateRange.endDate : this.lineChart.date})`;
+            this.export(finalExcelData, fileName, "application/vnd.ms-excel");
           } catch (e) {
             console.error(e);
           }
