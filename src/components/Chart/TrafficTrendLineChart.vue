@@ -8,7 +8,7 @@
                 </h2>
             </div>
             <div class="row" v-if="this.type == 'daily'">
-                <div class="col-sm-6 col-12">
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                     <base-input 
                         :placeholder="$t('date.start')"
                         v-model="lineChart.dateRange.startDate"
@@ -17,7 +17,7 @@
                         >
                     </base-input>
                 </div>
-                <div class="col-sm-6 col-12">
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                     <base-input 
                         :placeholder="$t('date.end')"
                         v-model="lineChart.dateRange.endDate"
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="row" v-else-if="this.type == 'hourly'">
-                <div class="col-sm-6 col-12">
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                     <base-input 
                         :placeholder="$t('date.date')"
                         v-model="lineChart.date"

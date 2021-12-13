@@ -73,7 +73,9 @@
     "dateRange": "Date Range",
     "date": "Date",
     "start": "Start",
-    "end": "End"
+    "end": "End",
+    "am": "AM",
+    "pm": "PM"
   },
   "alert": {
     "logoutConfirmation": "Are you sure to logout?",

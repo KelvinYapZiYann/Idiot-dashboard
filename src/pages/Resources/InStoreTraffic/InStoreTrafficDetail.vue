@@ -345,8 +345,12 @@ export default {
         if (date == today.format('YYYY-MM-DD')) {
             totalHour = parseInt(today.format('H')) + 1;
         }
+        let time = this.$t('date.am');
         for (let i = 0; i < totalHour; i++) {
-            this.hourlyLineChart.labels.push(i + ':00');
+            if (i >= 12) {
+              time = this.$t('date.pm');
+            }
+            this.hourlyLineChart.labels.push(i + ':00' + time);
             tmpEnters.push(0);
             tmpExits.push(0);
             tmpPassings.push(0);
