@@ -42,13 +42,16 @@ export default {
         // });
         await this.$store.dispatch('store/getAll').then(() => {
           let stores = this.$store.getters["store/models"];
+          // this.resource.models = stores;
           // console.log(stores[0]);
           for (let i = 0; i < stores.length; i++) {
             for (let j = 0; j < stores[i].devices.length; j++) {
               this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                 let model = this.$store.getters["dashboard/models"][0];
-                stores[i].enter = model.enter;
-                stores[i].exit = model.exit;
+                if (model) {
+                  stores[i].enter = model.enter;
+                  stores[i].exit = model.exit;
+                }
                 if (i+1 == stores.length && j+1 == stores[i].devices.length) {
                   this.resource.models = stores;
                   loader.hide();
@@ -72,6 +75,8 @@ export default {
       } catch (e) {
           console.error(e);
           loader.hide();
+      } finally {
+        loader.hide();
       }
     },
   }

@@ -291,10 +291,12 @@ export default {
                         store.devices.forEach((device) => {
                             this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
                                 let model = this.$store.getters["dashboard/models"][0];
-                                this.resource.totalTrafficsEnter += model.enter;
-                                this.resource.totalTrafficsExit += model.exit;
-                                this.resource.totalTrafficsReturn += model.return;
-                                this.resource.totalTrafficsPassing += model.passing;
+                                if (model) {
+                                    this.resource.totalTrafficsEnter += model.enter;
+                                    this.resource.totalTrafficsExit += model.exit;
+                                    this.resource.totalTrafficsReturn += model.return;
+                                    this.resource.totalTrafficsPassing += model.passing;
+                                }
                             });
 
                             this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisWeekStartDateString, endDate: todayDateString}).then(() => {

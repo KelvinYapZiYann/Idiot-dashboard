@@ -254,7 +254,13 @@ export default {
                   deviceId: device.device_id,
                 };
                 this.$store.dispatch('dashboard/getTotalTraffics', param).then(() => {
-                  this.totalInStoreTrafficResource = this.$store.getters["dashboard/models"][0];
+                  let model = this.$store.getters["dashboard/models"][0];
+                  if (model) {
+                    this.totalInStoreTrafficResource.enter = model.enter;
+                    this.totalInStoreTrafficResource.exit = model.exit;
+                    this.totalInStoreTrafficResource.return = model.enter;
+                    this.totalInStoreTrafficResource.passing = model.passing;
+                  }
                 });
 
                 let today = this.$moment();

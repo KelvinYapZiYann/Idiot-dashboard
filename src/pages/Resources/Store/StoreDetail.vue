@@ -284,12 +284,14 @@ export default {
                 // this.inStoreTrafficResource.models.push(obj);
                 this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
                   let model = this.$store.getters["dashboard/models"][0];
-                  obj.enter = model.enter;
-                  obj.exit = model.exit;
-                  this.totalTrafficResource.enter += model.enter;
-                  this.totalTrafficResource.exit += model.exit;
-                  this.totalTrafficResource.return += model.return;
-                  this.totalTrafficResource.passing += model.passing;
+                  if (model) {
+                    obj.enter = model.enter;
+                    obj.exit = model.exit;
+                    this.totalTrafficResource.enter += model.enter;
+                    this.totalTrafficResource.exit += model.exit;
+                    this.totalTrafficResource.return += model.return;
+                    this.totalTrafficResource.passing += model.passing;
+                  }
                   this.inStoreTrafficResource.models.push(obj);
                 });
 
