@@ -46,7 +46,7 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                {{ row.store_address ? row.store_address : '-' }}
+                {{ row.store_name ? row.store_name : '-' }}
               </td>
               <td
                 @click="showDetails(row.id)"

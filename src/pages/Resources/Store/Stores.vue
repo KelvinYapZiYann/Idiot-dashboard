@@ -45,12 +45,14 @@ export default {
           // this.resource.models = stores;
           // console.log(stores[0]);
           for (let i = 0; i < stores.length; i++) {
+            stores[i].enter = 0;
+            stores[i].exit = 0;
             for (let j = 0; j < stores[i].devices.length; j++) {
               this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                 let model = this.$store.getters["dashboard/models"][0];
                 if (model) {
-                  stores[i].enter = model.enter;
-                  stores[i].exit = model.exit;
+                  stores[i].enter += model.enter;
+                  stores[i].exit += model.exit;
                 }
                 if (i+1 == stores.length && j+1 == stores[i].devices.length) {
                   this.resource.models = stores;

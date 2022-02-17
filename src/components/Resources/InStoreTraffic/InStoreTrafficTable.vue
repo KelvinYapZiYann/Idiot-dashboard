@@ -69,6 +69,17 @@
                   {{$t('component.online')}}
                 </span>
               </td>
+              <!-- <td
+                @click="showDetails(row.id)"
+                @mousedown="startLongClick(row.id)" 
+                @mouseleave="stopLongClick"
+                @mouseup="stopLongClick"
+                @touchstart="startLongClick(row.id)"
+                @touchend="stopLongClick"
+                @touchcancel="stopLongClick"
+              >
+                {{ row.device_mac_address }}
+              </td> -->
               <td
                 @click="showDetails(row.id)"
                 @mousedown="startLongClick(row.id)" 
