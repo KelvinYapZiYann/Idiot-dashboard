@@ -508,6 +508,22 @@ export default {
                             this.hourlyLineChart.exits = tmpExits;
                             this.hourlyLineChart.returns = tmpReturns;
                             this.hourlyLineChart.passings = tmpPassings;
+                            if (date == today.format('YYYY-MM-DD')) {
+                                let tmpEnter = 0;
+                                let tmpExit = 0;
+                                let tmpReturn = 0;
+                                let tmpPassing = 0;
+                                for (let i = 0; i < models.length; i++) {
+                                    tmpEnter += models[i].enter;
+                                    tmpExit += models[i].exit;
+                                    tmpReturn += models[i].return;
+                                    tmpPassing += models[i].passing;
+                                }
+                                this.resource.todayEnter = tmpEnter;
+                                this.resource.todayExit = tmpExit;
+                                this.resource.todayReturn = tmpReturn;
+                                this.resource.todayPassing = tmpPassing;
+                            }
                         });
                     });
                 });
