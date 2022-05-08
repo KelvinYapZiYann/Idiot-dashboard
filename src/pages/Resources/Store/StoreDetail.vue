@@ -86,6 +86,17 @@
     </div>
 
     <traffic-trend-line-chart
+        type="15min"
+        :labels="minuteLineChart.labels"
+        :enters="minuteLineChart.enters"
+        :exits="minuteLineChart.exits"
+        :returns="minuteLineChart.returns"
+        :passings="minuteLineChart.passings"
+        @getLineChartTimeRange="getLineChartTimeRange"
+    >
+    </traffic-trend-line-chart>
+
+    <traffic-trend-line-chart
         type="hourly"
         :labels="hourlyLineChart.labels"
         :enters="hourlyLineChart.enters"
@@ -231,6 +242,13 @@ export default {
           returns: [],
           passings: [],
       },
+      minuteLineChart: {
+        labels: [],
+        enters: [],
+        exits: [],
+        returns: [],
+        passings: [],
+      },
     };
   },
   props: {
@@ -346,6 +364,80 @@ export default {
         }
       });
     },
+    async getLineChartTimeRange(date) {
+            if (!date) {
+                return;
+            }
+            this.minuteLineChart.labels = [];
+            // this.hourlyLineChart.enters = [];
+            // this.hourlyLineChart.exits = [];
+            // this.hourlyLineChart.returns = [];
+            // this.hourlyLineChart.passings = [];
+
+            let tmpLabels = [];
+            let tmpEnters = [];
+            let tmpExits = [];
+            let tmpReturns = [];
+            let tmpPassings = [];
+            
+            // let today = this.$moment();
+            // let totalHour = 24;
+            // if (date == today.format('YYYY-MM-DD')) {
+            //     totalHour = parseInt(today.format('H')) + 1;
+            // }
+            // let time = this.$t('date.am');
+            // for (let i = 0; i < totalHour; i++) {
+            //     if (i >= 12) {
+            //         time = this.$t('date.pm');
+            //     }
+            //     this.minuteLineChart.labels.push(i + ':00' + time);
+            //     tmpEnters.push(0);
+            //     tmpExits.push(0);
+            //     tmpPassings.push(0);
+            //     tmpReturns.push(0);
+            // }
+
+            await this.$store.dispatch('store/getAll').then(() => {
+                let stores = this.$store.getters["store/models"];
+                stores.forEach((store) => {
+                    store.devices.forEach((device) => {
+                    // if (device.device_id == this.inStoreTrafficId) {
+                        this.$store.dispatch('dashboard/getMinuteTrafficsInDay', {
+              storeId: store.store_id, 
+              deviceId: device.device_id, 
+              date: date, 
+              interval: 15
+            }).then(() => {
+                            let models = this.$store.getters["dashboard/models"];
+                            for (let i = 0; i < models.length; i++) {
+                            //     let tmpTime = parseInt(models[i].hour);
+                            //     tmpEnters[tmpTime] += models[i].enter;
+                            //     tmpExits[tmpTime] += models[i].exit;
+                            //     tmpReturns[tmpTime] += models[i].return;
+                            //     tmpPassings[tmpTime] += models[i].passing;
+                              tmpLabels.push(models[i].end_time);
+                              tmpEnters.push(models[i].enter);
+                              tmpExits.push(models[i].exit);
+                              tmpReturns.push(models[i].return);
+                              tmpPassings.push(models[i].passing);
+                            }
+                            this.minuteLineChart.labels = tmpLabels;
+                            this.minuteLineChart.enters = tmpEnters;
+                            this.minuteLineChart.exits = tmpExits;
+                            this.minuteLineChart.returns = tmpReturns;
+                            this.minuteLineChart.passings = tmpPassings;
+                        }).catch(() => {
+                            this.minuteLineChart.labels = [];
+                            this.minuteLineChart.enters = [];
+                            this.minuteLineChart.exits = [];
+                            this.minuteLineChart.returns = [];
+                            this.minuteLineChart.passings = [];
+            });
+                    // }
+                    });
+                });
+            });
+        },
     async getLineChartDate(date) {
         if (!date) {
             return;

@@ -405,7 +405,13 @@ export default {
                             this.minuteLineChart.exits = tmpExits;
                             this.minuteLineChart.returns = tmpReturns;
                             this.minuteLineChart.passings = tmpPassings;
-                        });
+                        }).catch(() => {
+							this.minuteLineChart.labels = [];
+                            this.minuteLineChart.enters = [];
+                            this.minuteLineChart.exits = [];
+                            this.minuteLineChart.returns = [];
+                            this.minuteLineChart.passings = [];
+						});
                     }
                     });
                 });
