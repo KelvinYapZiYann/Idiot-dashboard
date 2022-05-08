@@ -401,7 +401,7 @@ export default {
                             //     this.hourlyLineChart.exits.push(models[i].exit);
                             //     this.hourlyLineChart.returns.push(models[i].return);
                             //     this.hourlyLineChart.passings.push(models[i].passing);
-                                let tmpTime = parseInt(models[i].hour) + 8;
+                                let tmpTime = parseInt(models[i].hour);
                                 tmpEnters[tmpTime] += models[i].enter;
                                 tmpExits[tmpTime] += models[i].exit;
                                 tmpReturns[tmpTime] += models[i].return;
