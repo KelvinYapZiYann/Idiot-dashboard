@@ -3,8 +3,14 @@
     <div class="col-12">
         <card type="chart">
             <div slot="header">
-                <h2 class="card-title">
-                    {{ type == 'daily' ? $t('chart.trafficTrendChart.dailyTitle') : $t('chart.trafficTrendChart.hourlyTitle')}}
+                <h2 class="card-title" v-if="type == 'daily'">
+                    {{  $t('chart.trafficTrendChart.dailyTitle') }}
+                </h2>
+                <h2 class="card-title" v-if="type == 'hourly'">
+                    {{  $t('chart.trafficTrendChart.hourlyTitle') }}
+                </h2>
+                <h2 class="card-title" v-if="type == '15min'">
+                    {{  $t('chart.trafficTrendChart.15MinuteTitle') }}
                 </h2>
             </div>
             <div class="row" v-if="this.type == 'daily'">
@@ -34,6 +40,17 @@
                         v-model="lineChart.date"
                         type="date"
                         @input="getLineChartDate"
+                        >
+                    </base-input>
+                </div>
+            </div>
+            <div class="row" v-else-if="this.type == '15min'">
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                    <base-input 
+                        :placeholder="$t('date.date')"
+                        v-model="lineChart.date"
+                        type="date"
+                        @input="getLineChartTimeRange"
                         >
                     </base-input>
                 </div>
@@ -133,6 +150,9 @@ export default {
     },
   },
   methods: {
+    getLineChartTimeRange() {
+      this.$emit('getLineChartTimeRange', this.lineChart.date);
+    },
     getLineChartDate() {
       this.$emit('getLineChartDate', this.lineChart.date);
     },
@@ -179,7 +199,14 @@ export default {
               });
             }
             let finalExcelData = this.jsonToXLS(excelData);
-            let fileName = `Traffic ${this.type == "daily" ? "Daily" : "Hourly"} Trend Data (${this.type == "daily" ? this.lineChart.dateRange.startDate + ' to ' + this.lineChart.dateRange.endDate : this.lineChart.date})`;
+            let fileName;
+            if (this.type == "daily") {
+              fileName = `Traffic Daily Trend Data (${this.lineChart.dateRange.startDate + ' to ' + this.lineChart.dateRange.endDate})`;
+            } else if (this.type == "hourly") {
+              fileName = `Traffic Hourly Trend Data (${this.lineChart.date})`;
+            } else if (this.type == "15min") {
+              fileName = `Traffic 15 Minute Trend Data (${this.lineChart.date})`;
+            }
             this.export(finalExcelData, fileName, "application/vnd.ms-excel");
           } catch (e) {
             console.error(e);
@@ -252,6 +279,10 @@ export default {
       let todayDateString = this.$moment().format('YYYY-MM-DD');
       this.lineChart.date = todayDateString;
       this.getLineChartDate();
+    } else if (this.type == '15min') {
+      let todayDateString = this.$moment().format('YYYY-MM-DD');
+      this.lineChart.date = todayDateString;
+      this.getLineChartTimeRange();
     }
   },
   computed: {

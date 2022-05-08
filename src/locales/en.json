@@ -57,7 +57,8 @@
   "chart": {
     "trafficTrendChart": {
       "dailyTitle": "Traffic Daily Trend Chart",
-      "hourlyTitle": "Traffic Hourly Trend Chart"
+      "hourlyTitle": "Traffic Hourly Trend Chart",
+      "15MinuteTitle": "Traffic 15 Minute Trend Chart"
     },
     "generateExcel": "Generate Excel File"
   },

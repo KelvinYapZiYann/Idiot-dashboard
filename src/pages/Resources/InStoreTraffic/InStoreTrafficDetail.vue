@@ -87,6 +87,17 @@
         </div>
 
         <traffic-trend-line-chart
+            type="15min"
+            :labels="minuteLineChart.labels"
+            :enters="minuteLineChart.enters"
+            :exits="minuteLineChart.exits"
+            :returns="minuteLineChart.returns"
+            :passings="minuteLineChart.passings"
+            @getLineChartTimeRange="getLineChartTimeRange"
+        >
+        </traffic-trend-line-chart>
+
+        <traffic-trend-line-chart
             type="hourly"
             :labels="hourlyLineChart.labels"
             :enters="hourlyLineChart.enters"
@@ -180,48 +191,55 @@ export default {
     },
     data() {
         return {
-        inStoreTrafficId: this.$route.params.inStoreTrafficId,
-        resource: {
-            model: {},
-            data: {}
-        },
-        todayInStoreTrafficResource: {
-            enter: 0,
-            exit: 0,
-            return: 0,
-            passing: 0
-        },
-        totalInStoreTrafficResource: {
-            enter: 0,
-            exit: 0,
-            return: 0,
-            passing: 0
-        },
-        detail: {
-            detailHeaders: {
-            device_description: this.$t('property.name'),
-            device_mac_address: this.$t('property.macAddress'),
-            // status: this.$t('property.status'),
-            device_type: this.$t('property.type'),
-            },
-            detailDisplayValue: {
-            device_type: this.$t('inStoreTrafficType')
-            }
-        },
-        dailyLineChart: {
-            labels: [],
-            enters: [],
-            exits: [],
-            returns: [],
-            passings: [],
-        },
-        hourlyLineChart: {
-            labels: [],
-            enters: [],
-            exits: [],
-            returns: [],
-            passings: [],
-        },
+			inStoreTrafficId: this.$route.params.inStoreTrafficId,
+			resource: {
+				model: {},
+				data: {}
+			},
+			todayInStoreTrafficResource: {
+				enter: 0,
+				exit: 0,
+				return: 0,
+				passing: 0
+			},
+			totalInStoreTrafficResource: {
+				enter: 0,
+				exit: 0,
+				return: 0,
+				passing: 0
+			},
+			detail: {
+				detailHeaders: {
+				device_description: this.$t('property.name'),
+				device_mac_address: this.$t('property.macAddress'),
+				// status: this.$t('property.status'),
+				device_type: this.$t('property.type'),
+				},
+				detailDisplayValue: {
+				device_type: this.$t('inStoreTrafficType')
+				}
+			},
+			dailyLineChart: {
+				labels: [],
+				enters: [],
+				exits: [],
+				returns: [],
+				passings: [],
+			},
+			hourlyLineChart: {
+				labels: [],
+				enters: [],
+				exits: [],
+				returns: [],
+				passings: [],
+			},
+			minuteLineChart: {
+				labels: [],
+				enters: [],
+				exits: [],
+				returns: [],
+				passings: [],
+			},
         };
     },
     props: {
@@ -237,93 +255,161 @@ export default {
     },
     methods: {
         async getResource() {
-        let loader = this.$loading.show();
-        try {
-            // await this.$store.dispatch('inStoreTraffic/getById', this.storeId).then(() => {
-            //   this.resource.model = this.$store.getters["store/models"][0];
-            //   this.resource.data = this.$store.getters["asset/data"];
-            // });
-            await this.$store.dispatch('store/getAll').then(() => {
-            let tmp = this.$store.getters["store/models"];
-            tmp.forEach((store) => {
-                store.devices.forEach((device) => {
-                if (device.device_id == this.inStoreTrafficId) {
-                    this.resource.model = device;
-                    let param = {
-                    storeId: store.store_id,
-                    deviceId: device.device_id,
-                    };
-                    this.$store.dispatch('dashboard/getTotalTraffics', param).then(() => {
-                    let model = this.$store.getters["dashboard/models"][0];
-                    if (model) {
-                        this.totalInStoreTrafficResource.enter = model.enter;
-                        this.totalInStoreTrafficResource.exit = model.exit;
-                        this.totalInStoreTrafficResource.return = model.enter;
-                        this.totalInStoreTrafficResource.passing = model.passing;
-                    }
-                    });
+			let loader = this.$loading.show();
+			try {
+				// await this.$store.dispatch('inStoreTraffic/getById', this.storeId).then(() => {
+				//   this.resource.model = this.$store.getters["store/models"][0];
+				//   this.resource.data = this.$store.getters["asset/data"];
+				// });
+				await this.$store.dispatch('store/getAll').then(() => {
+				let tmp = this.$store.getters["store/models"];
+				tmp.forEach((store) => {
+					store.devices.forEach((device) => {
+					if (device.device_id == this.inStoreTrafficId) {
+						this.resource.model = device;
+						let param = {
+						storeId: store.store_id,
+						deviceId: device.device_id,
+						};
+						this.$store.dispatch('dashboard/getTotalTraffics', param).then(() => {
+						let model = this.$store.getters["dashboard/models"][0];
+						if (model) {
+							this.totalInStoreTrafficResource.enter = model.enter;
+							this.totalInStoreTrafficResource.exit = model.exit;
+							this.totalInStoreTrafficResource.return = model.enter;
+							this.totalInStoreTrafficResource.passing = model.passing;
+						}
+						});
 
-                    let today = this.$moment();
-                    let todayDateString = today.format('YYYY-MM-DD');
+						let today = this.$moment();
+						let todayDateString = today.format('YYYY-MM-DD');
 
-                    this.todayInStoreTrafficResource.enter = 0;
-                    this.todayInStoreTrafficResource.exit = 0;
-                    this.todayInStoreTrafficResource.return = 0;
-                    this.todayInStoreTrafficResource.passing = 0;
+						this.todayInStoreTrafficResource.enter = 0;
+						this.todayInStoreTrafficResource.exit = 0;
+						this.todayInStoreTrafficResource.return = 0;
+						this.todayInStoreTrafficResource.passing = 0;
 
-                    this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: todayDateString}).then(() => {
-                    let models = this.$store.getters["dashboard/models"];
-                    for (let i = 0; i < models.length; i++) {
-                        this.todayInStoreTrafficResource.enter += models[i].enter;
-                        this.todayInStoreTrafficResource.exit += models[i].exit;
-                        this.todayInStoreTrafficResource.return += models[i].return;
-                        this.todayInStoreTrafficResource.passing += models[i].passing;
-                    }
-                    });
+						this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: todayDateString}).then(() => {
+						let models = this.$store.getters["dashboard/models"];
+						for (let i = 0; i < models.length; i++) {
+							this.todayInStoreTrafficResource.enter += models[i].enter;
+							this.todayInStoreTrafficResource.exit += models[i].exit;
+							this.todayInStoreTrafficResource.return += models[i].return;
+							this.todayInStoreTrafficResource.passing += models[i].passing;
+						}
+						});
 
-                    // this.lineChart.labels = [];
-                    // this.lineChart.enters = [];
-                    // this.lineChart.exits = [];
-                    
-                    // let today = this.$moment();
-                    // let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
-                    // today = this.$moment();
-                    // let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
-                    // this.lineChart.dateRange.startDate = wholeMonthStartDateString;
-                    // this.lineChart.dateRange.endDate = todayDateString;
+						// this.lineChart.labels = [];
+						// this.lineChart.enters = [];
+						// this.lineChart.exits = [];
+						
+						// let today = this.$moment();
+						// let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+						// today = this.$moment();
+						// let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
+						// this.lineChart.dateRange.startDate = wholeMonthStartDateString;
+						// this.lineChart.dateRange.endDate = todayDateString;
 
-                    // this.getLineChartDateRange();
-                }
-                });
-            });
-            // this.resource.data = this.$store.getters["asset/data"];
-            });
-        } catch (e) {
-            console.error(e);
-        } finally {
-            loader.hide();
-        }
+						// this.getLineChartDateRange();
+					}
+					});
+				});
+				// this.resource.data = this.$store.getters["asset/data"];
+				});
+			} catch (e) {
+				console.error(e);
+			} finally {
+				loader.hide();
+			}
         },
         async handleBack() {
-        if (this.previousRoute) {
-            router.push({
-            name: this.previousRoute, 
-            params: {
-                previousRouteParam: this.previousRouteParam
-            }
-            });
-        } else {
-            router.go(-1);
-        }
+			if (this.previousRoute) {
+				router.push({
+				name: this.previousRoute, 
+				params: {
+					previousRouteParam: this.previousRouteParam
+				}
+				});
+			} else {
+				router.go(-1);
+			}
         },
         async handleEdit() {
-        router.push({
-            name: "Edit In Store Traffic",
-            params: {
-            inStoreTrafficId: this.inStoreTrafficId,
-            previousRoute: router.currentRoute.name,
+			router.push({
+				name: "Edit In Store Traffic",
+				params: {
+				inStoreTrafficId: this.inStoreTrafficId,
+				previousRoute: router.currentRoute.name,
+				}
+			});
+        },
+		async getLineChartTimeRange(date) {
+            if (!date) {
+                return;
             }
-        });
+            this.minuteLineChart.labels = [];
+            // this.hourlyLineChart.enters = [];
+            // this.hourlyLineChart.exits = [];
+            // this.hourlyLineChart.returns = [];
+            // this.hourlyLineChart.passings = [];
+
+            let tmpLabels = [];
+            let tmpEnters = [];
+            let tmpExits = [];
+            let tmpReturns = [];
+            let tmpPassings = [];
+            
+            // let today = this.$moment();
+            // let totalHour = 24;
+            // if (date == today.format('YYYY-MM-DD')) {
+            //     totalHour = parseInt(today.format('H')) + 1;
+            // }
+            // let time = this.$t('date.am');
+            // for (let i = 0; i < totalHour; i++) {
+            //     if (i >= 12) {
+            //         time = this.$t('date.pm');
+            //     }
+            //     this.minuteLineChart.labels.push(i + ':00' + time);
+            //     tmpEnters.push(0);
+            //     tmpExits.push(0);
+            //     tmpPassings.push(0);
+            //     tmpReturns.push(0);
+            // }
+
+            await this.$store.dispatch('store/getAll').then(() => {
+                let stores = this.$store.getters["store/models"];
+                stores.forEach((store) => {
+                    store.devices.forEach((device) => {
+                    if (device.device_id == this.inStoreTrafficId) {
+                        this.$store.dispatch('dashboard/getMinuteTrafficsInDay', {
+							storeId: store.store_id, 
+							deviceId: device.device_id, 
+							date: date, 
+							interval: 15
+						}).then(() => {
+                            let models = this.$store.getters["dashboard/models"];
+                            for (let i = 0; i < models.length; i++) {
+                            //     let tmpTime = parseInt(models[i].hour);
+                            //     tmpEnters[tmpTime] += models[i].enter;
+                            //     tmpExits[tmpTime] += models[i].exit;
+                            //     tmpReturns[tmpTime] += models[i].return;
+                            //     tmpPassings[tmpTime] += models[i].passing;
+								tmpLabels.push(models[i].end_time);
+								tmpEnters.push(models[i].enter);
+								tmpExits.push(models[i].exit);
+								tmpReturns.push(models[i].return);
+								tmpPassings.push(models[i].passing);
+                            }
+                            this.minuteLineChart.labels = tmpLabels;
+                            this.minuteLineChart.enters = tmpEnters;
+                            this.minuteLineChart.exits = tmpExits;
+                            this.minuteLineChart.returns = tmpReturns;
+                            this.minuteLineChart.passings = tmpPassings;
+                        });
+                    }
+                    });
+                });
+            });
         },
         async getLineChartDate(date) {
             if (!date) {
