@@ -415,7 +415,12 @@ export default {
                             //     tmpExits[tmpTime] += models[i].exit;
                             //     tmpReturns[tmpTime] += models[i].return;
                             //     tmpPassings[tmpTime] += models[i].passing;
-                              tmpLabels.push(models[i].end_time);
+                              if (parseInt(models[i].end_time.substring(0, 2)) <= 12) {
+                                tmpLabels.push(models[i].end_time.substring(0, 5) + "AM");
+                              } else {
+                                tmpLabels.push(models[i].end_time.substring(0, 5) + "PM");
+                              }
+                              // tmpLabels.push(models[i].end_time);
                               tmpEnters.push(models[i].enter);
                               tmpExits.push(models[i].exit);
                               tmpReturns.push(models[i].return);
