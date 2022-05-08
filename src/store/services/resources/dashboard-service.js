@@ -11,28 +11,28 @@ const config = {
 };
 
 function getTotalTraffics(param) {
-    return axios.get(`${url}/total-traffics?store_id=${param.storeId}&device_id=${param.deviceId}`, config)
+    return axios.get(`${url}/device/total-traffics?store_id=${param.storeId}&device_id=${param.deviceId}`, config)
         .then(response => {
             return response.data;
         });
 }
 
 function getDailyTrafficsInCustomDateRange(param) {
-    return axios.get(`${url}/total-custom-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&start_date=${param.startDate}&end_date=${param.endDate}`, config)
+    return axios.get(`${url}/device/custom-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&start_date=${param.startDate}&end_date=${param.endDate}`, config)
         .then(response => {
             return response.data;
         });
 }
 
 function getDailyTrafficsInMonth(param) {
-    return axios.get(`${url}/total-daily-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&month=${param.month}`, config)
+    return axios.get(`${url}/device/daily-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&month=${param.month}`, config)
         .then(response => {
             return response.data;
         });
 }
 
 function getHourlyTrafficsInDay(param) {
-    return axios.get(`${url}/total-hourly-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&date=${param.date}`, config)
+    return axios.get(`${url}/device/hourly-traffics?store_id=${param.storeId}&device_id=${param.deviceId}&date=${param.date}`, config)
         .then(response => {
             return response.data;
         });
