@@ -6,7 +6,14 @@ const config = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
     }
-  };
+};
+const logoutConfig = {
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("classmateamy.access_token"),
+    }
+};
 
 function login(payload) {
     return axios.post(`${url}/login`, payload, config).then(response => {
@@ -23,7 +30,7 @@ function register(payload) {
 }
 
 function logout() {
-    return axios.post(`${url}/logout`, config).then(response => {
+    return axios.post(`${url}/logout`, {}, logoutConfig).then(response => {
         localStorage.removeItem("vue-authenticate.vueauth_access_token");
         return response.data;
     }).catch((e) => {

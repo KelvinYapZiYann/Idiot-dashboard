@@ -87,9 +87,7 @@ export default {
       let loader = this.$loading.show();
       try {
         await this.$store.dispatch("auth/login", payload).then(() => {
-            router.push({
-                name: 'Dashboard'
-            });
+            router.go("/dashboard");
         });
       } catch (e) {
         console.error(e);
