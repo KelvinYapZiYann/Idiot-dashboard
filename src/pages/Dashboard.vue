@@ -117,6 +117,45 @@
                     </div>
                 </category-card>
             </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <category-card
+                    :title="$t('dashboard.byBrand')"
+                >
+                    <div class="row">
+                        <base-selector-input
+                            :label="$t('dashboard.type')"
+                            v-model="byBrandSelectedType"
+                            :options="$t('typeOptions')"
+                            class="col-6"
+                            @input="byBrandSelectorChange"
+                        ></base-selector-input>
+                        <base-selector-input
+                            :label="$t('dashboard.timeRange')"
+                            v-model="byBrandSelectedTimeRange"
+                            :options="$t('timeRangeOptions')"
+                            class="col-6"
+                            @input="byBrandTimeRangeSelectorChange"
+                            v-show="false"
+                        ></base-selector-input>
+                    </div>
+                    <div class="row">
+                        <div 
+                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
+                            v-for="(value, i) in byBrand"
+                            :key="i"
+                        >
+                            <div class="mb-1 font-weight-bold">
+                                <span>{{ value.name }}: </span>
+                                <span class="font-italic">{{ value.count }}</span>
+                            </div>
+                            <div class="mb-1">
+                                <i class="card-category-icon danger" :class="value.icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </category-card>
+            </div>
         </div>
         <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -293,6 +332,10 @@ export default {
             byFloorSelectedTimeRange: "today",
             byFloor: [],
 
+            byBrandSelectedType: "enter",
+            byBrandSelectedTimeRange: "today",
+            byBrand: [],
+
             totalTrafficsEnter: 0,
             totalTrafficsExit: 0,
             totalTrafficsReturn: 0,
@@ -341,6 +384,7 @@ export default {
         this.getResource();
         this.getByBusinessType();
         this.getByFloor();
+        this.getByBrand();
     },
     methods: {
         async getResource() {
@@ -574,6 +618,52 @@ export default {
                     }
                 }
                 this.byFloor = tmpByFloor;
+            });
+        },
+        byBrandSelectorChange() {
+            this.getByBrand();
+        },
+        byBrandTimeRangeSelectorChange() {
+            this.getByBrand();
+        },
+        async getByBrand() {
+            this.byBrand = [];
+            let tmpByBrand = [];
+            await this.$store.dispatch('store/getAll').then(() => {
+                let stores = this.$store.getters["store/models"];
+                for (let i = 0; i < stores.length; i++) {
+                    for (let j = 0; j < stores[i].devices.length; j++) {
+                        this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
+                            let model = this.$store.getters["dashboard/models"][0];
+                            if (this.byFloorSelectedType == 'enter') {
+                                tmpByBrand.push({
+                                    name: this.$t("dashboard.all"),
+                                    count: model.enter,
+                                    icon: "fa-solid fa-tags",
+                                });
+                            } else if (this.byFloorSelectedType == 'exit') {
+                                tmpByBrand.push({
+                                    name: this.$t("dashboard.all"),
+                                    count: model.exit,
+                                    icon: "fa-solid fa-tags",
+                                });
+                            } else if (this.byFloorSelectedType == 'return') {
+                                tmpByBrand.push({
+                                    name: this.$t("dashboard.all"),
+                                    count: model.return,
+                                    icon: "fa-solid fa-tags",
+                                });
+                            } else if (this.byFloorSelectedType == 'passing') {
+                                tmpByBrand.push({
+                                    name: this.$t("dashboard.all"),
+                                    count: model.passing,
+                                    icon: "fa-solid fa-tags",
+                                });
+                            }
+                        });
+                    }
+                }
+                this.byBrand = tmpByBrand;
             });
         },
 
