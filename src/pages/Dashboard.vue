@@ -5,7 +5,21 @@
                 <category-card
                     :title="$t('dashboard.byShop')"
                 >
-                    
+                    <div class="row">
+                        <div 
+                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
+                            v-for="(value, i) in byShop"
+                            :key="i"
+                        >
+                            <div class="mb-1 font-weight-bold">
+                                <span>{{ value.name }}: </span>
+                                <span class="font-italic">{{ value.count }}</span>
+                            </div>
+                            <div class="mb-1">
+                                <i class="fa-solid fa-shop card-category-icon"></i>
+                            </div>
+                        </div>
+                    </div>
                 </category-card>
             </div>
         </div>
@@ -22,7 +36,7 @@ export default {
     },
     data() {
         return {
-            
+            byShop: [],
         }
     },
     mounted() {
@@ -33,6 +47,12 @@ export default {
             let loader = this.$loading.show();
             try {
                 console.log('asd');
+                this.byShop = [
+                    {
+                        name: "asd",
+                        count: 123
+                    },
+                ]
             } catch (e) {
                 console.error(e);
             } finally {
