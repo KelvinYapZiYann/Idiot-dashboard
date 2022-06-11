@@ -105,5 +105,8 @@
   },
   "inStoreTrafficType": {
     "ENTRANCE": "Entrance"
+  },
+  "dashboard": {
+    "byShop": "By Shop"
   }
 }
