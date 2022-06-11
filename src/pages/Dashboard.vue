@@ -33,7 +33,46 @@
                                 <span class="font-italic">{{ value.count }}</span>
                             </div>
                             <div class="mb-1">
-                                <i class="fa-solid fa-shop card-category-icon"></i>
+                                <i class="fa-solid fa-shop card-category-icon warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </category-card>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <category-card
+                    :title="$t('dashboard.byBusinessType')"
+                >
+                    <div class="row">
+                        <base-selector-input
+                            :label="$t('dashboard.type')"
+                            v-model="byBusinessTypeSelectedType"
+                            :options="$t('typeOptions')"
+                            class="col-6"
+                            @input="byBusinessTypeSelectorChange"
+                        ></base-selector-input>
+                        <base-selector-input
+                            :label="$t('dashboard.timeRange')"
+                            v-model="byBusinessTypeSelectedTimeRange"
+                            :options="$t('timeRangeOptions')"
+                            class="col-6"
+                            @input="byBusinessTypeTimeRangeSelectorChange"
+                            v-show="false"
+                        ></base-selector-input>
+                    </div>
+                    <div class="row">
+                        <div 
+                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
+                            v-for="(value, i) in byBusinessType"
+                            :key="i"
+                        >
+                            <div class="mb-1 font-weight-bold">
+                                <span>{{ value.name }}: </span>
+                                <span class="font-italic">{{ value.count }}</span>
+                            </div>
+                            <div class="mb-1">
+                                <i class="card-category-icon primary" :class="value.icon"></i>
                             </div>
                         </div>
                     </div>
@@ -207,6 +246,10 @@ export default {
             byShopSelectedTimeRange: "today",
             byShop: [],
 
+            byBusinessTypeSelectedType: "enter",
+            byBusinessTypeSelectedTimeRange: "today",
+            byBusinessType: [],
+
             totalTrafficsEnter: 0,
             totalTrafficsExit: 0,
             totalTrafficsReturn: 0,
@@ -253,6 +296,7 @@ export default {
         this.initResource();
         this.getByShop();
         this.getResource();
+        this.getByBusinessType();
     },
     methods: {
         async getResource() {
@@ -393,6 +437,53 @@ export default {
                     
                 }
                 this.byShop = tmpByShop;
+            });
+        },
+        byBusinessTypeSelectorChange() {
+            this.getByBusinessType();
+        },
+        byBusinessTypeTimeRangeSelectorChange() {
+            this.getByBusinessType();
+        },
+        async getByBusinessType() {
+            this.byBusinessType = [];
+            let tmpByBusinessType = [];
+            await this.$store.dispatch('store/getAll').then(() => {
+                let stores = this.$store.getters["store/models"];
+                for (let i = 0; i < stores.length; i++) {
+                    for (let j = 0; j < stores[i].devices.length; j++) {
+                        this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
+                            let model = this.$store.getters["dashboard/models"][0];
+                            if (this.byBusinessTypeSelectedType == 'enter') {
+                                tmpByBusinessType.push({
+                                    name: this.$t("dashboard.phoneRepair"),
+                                    count: model.enter,
+                                    icon: "fa-solid fa-screwdriver-wrench",
+                                });
+                            } else if (this.byBusinessTypeSelectedType == 'exit') {
+                                tmpByBusinessType.push({
+                                    name: this.$t("dashboard.phoneRepair"),
+                                    count: model.exit,
+                                    icon: "fa-solid fa-screwdriver-wrench",
+                                });
+                            } else if (this.byBusinessTypeSelectedType == 'return') {
+                                tmpByBusinessType.push({
+                                    name: this.$t("dashboard.phoneRepair"),
+                                    count: model.return,
+                                    icon: "fa-solid fa-screwdriver-wrench",
+                                });
+                            } else if (this.byBusinessTypeSelectedType == 'passing') {
+                                tmpByBusinessType.push({
+                                    name: this.$t("dashboard.phoneRepair"),
+                                    count: model.passing,
+                                    icon: "fa-solid fa-screwdriver-wrench",
+                                });
+                            }
+                        });
+                    }
+                    
+                }
+                this.byBusinessType = tmpByBusinessType;
             });
         },
 

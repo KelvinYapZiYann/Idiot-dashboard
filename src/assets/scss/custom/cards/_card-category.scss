@@ -4,5 +4,13 @@
 
 .card-category .card-category-icon {
     font-size: 3em;
+    color: $primary;
+}
+
+.card-category .card-category-icon.primary {
+    color: $primary;
+}
+
+.card-category .card-category-icon.warning {
     color: $warning;
 }
