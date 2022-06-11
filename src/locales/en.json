@@ -1,6 +1,6 @@
 {
   "company": {
-    "name": "ID-IOT"
+    "name": "My Track Success"
   },
   "route": {
     "dashboard": "Dashboard",
@@ -107,6 +107,7 @@
     "ENTRANCE": "Entrance"
   },
   "dashboard": {
-    "byShop": "By Shop"
+    "byShop": "By Shop",
+    "type": "Type"
   }
 }

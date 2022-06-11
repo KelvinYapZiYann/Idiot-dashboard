@@ -5,6 +5,9 @@
                 <category-card
                     :title="$t('dashboard.byShop')"
                 >
+                    <div>
+                        
+                    </div>
                     <div class="row">
                         <div 
                             class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"

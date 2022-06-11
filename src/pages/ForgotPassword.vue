@@ -4,7 +4,7 @@
       <form @submit.prevent="forgotPassword">
         <card class="card-forgot-password">
           <template slot="header">
-            <img src="img/main_propster_logo.svg" class="card-img" alt=""/>
+            <img src="img/company_logo.png" class="card-img" alt=""/>
             <h1 class="card-title text-center">{{$t('company.name')}}</h1>
           </template>
 
