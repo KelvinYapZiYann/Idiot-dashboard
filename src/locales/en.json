@@ -108,6 +108,21 @@
   },
   "dashboard": {
     "byShop": "By Shop",
-    "type": "Type"
-  }
+    "type": "Type",
+    "timeRange": "Time Range"
+  },
+  "typeOptions": [
+    { "id": "enter", "name": "Enter" },
+    { "id": "exit", "name": "Exit" },
+    { "id": "return", "name": "Return" },
+    { "id": "passing", "name": "Passing" }
+  ],
+  "timeRangeOptions": [
+    { "id": "all", "name": "All" },
+    { "id": "today", "name": "Today" },
+    { "id": "yesterday", "name": "Yesterday" },
+    { "id": "weekTillDate", "name": "Week Till Date" },
+    { "id": "monthTillDate", "name": "Month Till Date" },
+    { "id": "yearTillDate", "name": "Year Till Date" }
+  ]
 }

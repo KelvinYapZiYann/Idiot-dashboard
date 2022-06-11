@@ -1,57 +1,19 @@
 <template>
     <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto">
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                <category-card
-                    :title="$t('dashboard.byShop')"
-                >
-                    <div class="row">
-                        <base-selector-input
-                            :label="$t('dashboard.type')"
-                            v-model="byShopSelectedType"
-                            :options="$t('typeOptions')"
-                            class="col-6"
-                            @input="byShopTypeSelectorChange"
-                        ></base-selector-input>
-                        <base-selector-input
-                            :label="$t('dashboard.timeRange')"
-                            v-model="byShopSelectedTimeRange"
-                            :options="$t('timeRangeOptions')"
-                            class="col-6"
-                            @input="byShopTimeRangeSelectorChange"
-                            v-show="false"
-                        ></base-selector-input>
-                    </div>
-                    <div class="row">
-                        <div 
-                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
-                            v-for="(value, i) in byShop"
-                            :key="i"
-                        >
-                            <div class="mb-1 font-weight-bold">
-                                <span>{{ value.name }}: </span>
-                                <span class="font-italic">{{ value.count }}</span>
-                            </div>
-                            <div class="mb-1">
-                                <i class="fa-solid fa-shop card-category-icon"></i>
-                            </div>
-                        </div>
-                    </div>
-                </category-card>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="todayEnter ? todayEnter : '0'"
+                    :title="resource.todayEnter ? resource.todayEnter : '0'"
                     :sub-title="$t('date.today') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
-                ></stats-card>
+                    >
+                    <!-- <div slot="footer" v-html="asd"></div> -->
+                </stats-card>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="todayExit ? todayExit : '0'"
+                    :title="resource.todayExit ? resource.todayExit : '0'"
                     :sub-title="$t('date.today') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
@@ -60,7 +22,7 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="todayReturn ? todayReturn : '0'"
+                    :title="resource.todayReturn ? resource.todayReturn : '0'"
                     :sub-title="$t('date.today') + ' ' + $t('property.return')"
                     type="success"
                     icon="fas fa-undo-alt"
@@ -69,7 +31,7 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="todayPassing ? todayPassing : '0'"
+                    :title="resource.todayPassing ? resource.todayPassing : '0'"
                     :sub-title="$t('date.today') + ' ' + $t('property.passing')"
                     type="neutral"
                     icon="fas fa-times"
@@ -80,7 +42,7 @@
         <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsEnter ? totalTrafficsEnter : '0'"
+                    :title="resource.totalTrafficsEnter ? resource.totalTrafficsEnter : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
@@ -90,7 +52,7 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsExit ? totalTrafficsExit : '0'"
+                    :title="resource.totalTrafficsExit ? resource.totalTrafficsExit : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
@@ -99,7 +61,7 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsReturn ? totalTrafficsReturn : '0'"
+                    :title="resource.totalTrafficsReturn ? resource.totalTrafficsReturn : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.return')"
                     type="success"
                     icon="fas fa-undo-alt"
@@ -108,7 +70,7 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsPassing ? totalTrafficsPassing : '0'"
+                    :title="resource.totalTrafficsPassing ? resource.totalTrafficsPassing : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.passing')"
                     type="neutral"
                     icon="fas fa-times"
@@ -116,16 +78,15 @@
                 </stats-card>
             </div>
         </div>
-
         <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
                     :sub-title="$t('date.today')"
                     :previous-title="$t('date.yesterday')"
-                    :enter="todayEnter ? todayEnter : 0"
-                    :exit="todayExit ? todayExit : 0"
-                    :previous-enter="yesterdayEnter ? yesterdayEnter : 0"
-                    :previous-exit="yesterdayExit ? yesterdayExit : 0"
+                    :enter="resource.todayEnter ? resource.todayEnter : 0"
+                    :exit="resource.todayExit ? resource.todayExit : 0"
+                    :previous-enter="resource.yesterdayEnter ? resource.yesterdayEnter : 0"
+                    :previous-exit="resource.yesterdayExit ? resource.yesterdayExit : 0"
                     >
                 </traffics-card>
             </div>
@@ -133,10 +94,10 @@
                 <traffics-card
                     :sub-title="$t('date.thisWeek')"
                     :previous-title="$t('date.lastWeek')"
-                    :enter="thisWeekEnter ? thisWeekEnter : 0"
-                    :exit="thisWeekExit ? thisWeekExit : 0"
-                    :previous-enter="lastWeekEnter ? lastWeekEnter : 0"
-                    :previous-exit="lastWeekExit ? lastWeekExit : 0"
+                    :enter="resource.thisWeekEnter ? resource.thisWeekEnter : 0"
+                    :exit="resource.thisWeekExit ? resource.thisWeekExit : 0"
+                    :previous-enter="resource.lastWeekEnter ? resource.lastWeekEnter : 0"
+                    :previous-exit="resource.lastWeekExit ? resource.lastWeekExit : 0"
                     >
                 </traffics-card>
             </div>
@@ -144,15 +105,21 @@
                 <traffics-card
                     :sub-title="$t('date.thisMonth')"
                     :previous-title="$t('date.lastMonth')"
-                    :enter="thisMonthEnter ? thisMonthEnter : 0"
-                    :exit="thisMonthExit ? thisMonthExit : 0"
-                    :previous-enter="lastMonthEnter ? lastMonthEnter : 0"
-                    :previous-exit="lastMonthExit ? lastMonthExit : 0"
+                    :enter="resource.thisMonthEnter ? resource.thisMonthEnter : 0"
+                    :exit="resource.thisMonthExit ? resource.thisMonthExit : 0"
+                    :previous-enter="resource.lastMonthEnter ? resource.lastMonthEnter : 0"
+                    :previous-exit="resource.lastMonthExit ? resource.lastMonthExit : 0"
                     >
                 </traffics-card>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                <category-card
+                    :title="$t('dashboard.byShop')"
+                >
+                    
+                </category-card>
             </div>
         </div>
-
+        
         <traffic-trend-line-chart
             type="15min"
             :labels="minuteLineChart.labels"
@@ -182,50 +149,96 @@
             @getLineChartDateRange="getLineChartDateRange"
         >
         </traffic-trend-line-chart>
+        
+        <!-- <div class="row">
+            <div class="col-12">
+                <card type="chart">
+                    <div slot="header">
+                        <h2 class="card-title">
+                            {{ $t('dashboard.trafficTrendChart') }}
+                        </h2>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <base-input 
+                                    :placeholder="$t('date.start')"
+                                    v-model="lineChart.dateRange.startDate"
+                                    type="date"
+                                    @input="getLineChartDateRange"
+                                    >
+                                </base-input>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <base-input 
+                                    :placeholder="$t('date.end')"
+                                    v-model="lineChart.dateRange.endDate"
+                                    type="date"
+                                    @input="getLineChartDateRange"
+                                    >
+                                </base-input>
+                            </div>
+                        </div>
+                    </div>
+                    <line-chart
+                        chart-id="green-line-chart"
+                        :chart-data="chartData"
+                        :extra-options="lineChart.extraOptions"
+                    >
+                    </line-chart>
+                </card>
+            </div>
+        </div> -->
     </div>
 </template>
 <script>
 import {
-    CategoryCard,
-    BaseSelectorInput,
+    // BaseButton,
+    // BaseInput,
+    // Card,
     StatsCard,
     TrafficsCard,
-    TrafficTrendLineChart,
+    // LineChart
+    TrafficTrendLineChart
+    CategoryCard,
 } from "@/components/index";
+// import * as chartConfigs from "@/components/Chart/ChartConfig";
+// import TrafficTrendLineChart from '../components/Chart/TrafficTrendLineChart.vue';
+// import DateRangePicker from 'vue2-daterange-picker';
+// import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 
 export default {
     components: {
-        CategoryCard,
-        BaseSelectorInput,
+        // BaseButton,
+        // BaseInput,
+        // Card,
         StatsCard,
         TrafficsCard,
-        TrafficTrendLineChart,
+        // LineChart,
+        // DateRangePicker,
+        TrafficTrendLineChart
+        CategoryCard,
     },
     data() {
         return {
-            byShopSelectedType: "enter",
-            byShopSelectedTimeRange: "today",
-            byShop: [],
-
-            totalTrafficsEnter: 0,
-            totalTrafficsExit: 0,
-            totalTrafficsReturn: 0,
-            totalTrafficsPassing: 0,
-            todayEnter: 0,
-            todayExit: 0,
-            todayReturn: 0,
-            todayPassing: 0,
-            yesterdayEnter: 0,
-            yesterdayExit: 0,
-            thisWeekEnter: 0,
-            thisWeekExit: 0,
-            lastWeekEnter: 0,
-            lastWeekExit: 0,
-            thisMonthEnter: 0,
-            thisMonthExit: 0,
-            lastMonthEnter: 0,
-            lastMonthExit: 0,
-
+            resource: {
+                totalTrafficsEnter: 0,
+                totalTrafficsExit: 0,
+                totalTrafficsReturn: 0,
+                totalTrafficsPassing: 0,
+                todayEnter: 0,
+                todayExit: 0,
+                todayReturn: 0,
+                todayPassing: 0,
+                yesterdayEnter: 0,
+                yesterdayExit: 0,
+                thisWeekEnter: 0,
+                thisWeekExit: 0,
+                lastWeekEnter: 0,
+                lastWeekExit: 0,
+                thisMonthEnter: 0,
+                thisMonthExit: 0,
+                lastMonthEnter: 0,
+                lastMonthExit: 0,
+            },
             dailyLineChart: {
                 labels: [],
                 enters: [],
@@ -247,17 +260,39 @@ export default {
 				returns: [],
 				passings: [],
 			},
+            
         }
     },
     mounted() {
-        this.initResource();
-        this.getByShop();
         this.getResource();
     },
     methods: {
         async getResource() {
             let loader = this.$loading.show();
             try {
+                this.resource.totalTrafficsEnter = 0;
+                this.resource.totalTrafficsExit = 0;
+                this.resource.totalTrafficsReturn = 0;
+                this.resource.totalTrafficsPassing = 0;
+                this.resource.todayEnter = 0;
+                this.resource.todayExit = 0;
+                this.resource.todayReturn = 0;
+                this.resource.todayPassing = 0;
+                this.resource.yesterdayEnter = 0;
+                this.resource.yesterdayExit = 0;
+                this.resource.thisWeekEnter = 0;
+                this.resource.thisWeekExit = 0;
+                this.resource.lastWeekEnter = 0;
+                this.resource.lastWeekExit = 0;
+                this.resource.thisMonthEnter = 0;
+                this.resource.thisMonthExit = 0;
+                this.resource.lastMonthEnter = 0;
+                this.resource.lastMonthExit = 0;
+
+                // this.lineChart.labels = [];
+                // this.lineChart.enters = [];
+                // this.lineChart.exits = [];
+
                 let today = this.$moment();
                 let currentDay = parseInt(today.format('D'));
                 let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
@@ -270,6 +305,11 @@ export default {
                 let thisMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
                 let lastMonthStartDateString = today.subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
                 let lastMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
+                // today = this.$moment();
+                // let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
+
+                // this.lineChart.dateRange.startDate = wholeMonthStartDateString;
+                // this.lineChart.dateRange.endDate = todayDateString;
 
                 await this.$store.dispatch('store/getAll').then(() => {
                     let stores = this.$store.getters["store/models"];
@@ -279,27 +319,27 @@ export default {
                             this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
                                 let model = this.$store.getters["dashboard/models"][0];
                                 if (model) {
-                                    this.totalTrafficsEnter += model.enter;
-                                    this.totalTrafficsExit += model.exit;
-                                    this.totalTrafficsReturn += model.return;
-                                    this.totalTrafficsPassing += model.passing;
+                                    this.resource.totalTrafficsEnter += model.enter;
+                                    this.resource.totalTrafficsExit += model.exit;
+                                    this.resource.totalTrafficsReturn += model.return;
+                                    this.resource.totalTrafficsPassing += model.passing;
                                 }
                             });
 
                             this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisWeekStartDateString, endDate: todayDateString}).then(() => {
                                 let models = this.$store.getters["dashboard/models"];
                                 models.forEach((model) => {
-                                    this.thisWeekEnter += model.enter;
-                                    this.thisWeekExit += model.exit;
+                                    this.resource.thisWeekEnter += model.enter;
+                                    this.resource.thisWeekExit += model.exit;
                                     let day = model.date.substring(8, 10);
                                     if (parseInt(day) == (currentDay)) {
-                                        this.todayEnter = model.enter;
-                                        this.todayExit = model.exit;
-                                        this.todayReturn = model.return;
-                                        this.todayPassing = model.passing;
+                                        this.resource.todayEnter = model.enter;
+                                        this.resource.todayExit = model.exit;
+                                        this.resource.todayReturn = model.return;
+                                        this.resource.todayPassing = model.passing;
                                     } else if (parseInt(day) == parseInt(yesterday)) {
-                                        this.yesterdayEnter = model.enter;
-                                        this.yesterdayExit = model.exit;
+                                        this.resource.yesterdayEnter = model.enter;
+                                        this.resource.yesterdayExit = model.exit;
                                     }
                                 });
                             });
@@ -307,20 +347,20 @@ export default {
                             this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastWeekStartDateString, endDate: lastWeekEndDateString}).then(() => {
                                 let models = this.$store.getters["dashboard/models"];
                                 models.forEach((model) => {
-                                    this.lastWeekEnter += model.enter;
-                                    this.lastWeekExit += model.exit;
+                                    this.resource.lastWeekEnter += model.enter;
+                                    this.resource.lastWeekExit += model.exit;
                                 });
                             });
 
                             if ((currentDay) == 1) {
-                                this.thisMonthEnter = this.todayEnter;
-                                this.thisMonthExit = this.todayExit;
+                                this.resource.thisMonthEnter = this.resource.todayEnter;
+                                this.resource.thisMonthExit = this.resource.todayExit;
                             } else {
                                 this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisMonthStartDateString, endDate: thisMonthEndDateString}).then(() => {
                                     let models = this.$store.getters["dashboard/models"];
                                     models.forEach((model) => {
-                                        this.thisMonthEnter += model.enter;
-                                        this.thisMonthExit += model.exit;
+                                        this.resource.thisMonthEnter += model.enter;
+                                        this.resource.thisMonthExit += model.exit;
                                     });
                                 });
                             }
@@ -328,90 +368,60 @@ export default {
                             this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastMonthStartDateString, endDate: lastMonthEndDateString}).then(() => {
                                 let models = this.$store.getters["dashboard/models"];
                                 models.forEach((model) => {
-                                    this.lastMonthEnter += model.enter;
-                                    this.lastMonthExit += model.exit;
+                                    this.resource.lastMonthEnter += model.enter;
+                                    this.resource.lastMonthExit += model.exit;
                                 });
                             });
+
+                            // this.getLineChartDateRange();
                         });
                     });
                 });
+                console.log('asd');
             } catch (e) {
                 console.error(e);
             } finally {
                 loader.hide();
             }
         },
-        initResource() {
-            this.totalTrafficsEnter = 0;
-            this.totalTrafficsExit = 0;
-            this.totalTrafficsReturn = 0;
-            this.totalTrafficsPassing = 0;
-            this.todayEnter = 0;
-            this.todayExit = 0;
-            this.todayReturn = 0;
-            this.todayPassing = 0;
-        },
-
-        byShopTypeSelectorChange() {
-            this.getByShop();
-        },
-        byShopTimeRangeSelectorChange() {
-            this.getByShop();
-        },
-        async getByShop() {
-            this.byShop = [];
-            let tmpByShop = [];
-            await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                for (let i = 0; i < stores.length; i++) {
-                    for (let j = 0; j < stores[i].devices.length; j++) {
-                        this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
-                            let model = this.$store.getters["dashboard/models"][0];
-                            if (this.byShopSelectedType == 'enter') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.enter
-                                });
-                            } else if (this.byShopSelectedType == 'exit') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.exit
-                                });
-                            } else if (this.byShopSelectedType == 'return') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.return
-                                });
-                            } else if (this.byShopSelectedType == 'passing') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.passing
-                                });
-                            }
-                        });
-                    }
-                    
-                }
-                this.byShop = tmpByShop;
-            });
-        },
-
         async getLineChartTimeRange(date) {
             if (!date) {
                 return;
             }
             this.minuteLineChart.labels = [];
+            // this.hourlyLineChart.enters = [];
+            // this.hourlyLineChart.exits = [];
+            // this.hourlyLineChart.returns = [];
+            // this.hourlyLineChart.passings = [];
 
             let tmpLabels = [];
             let tmpEnters = [];
             let tmpExits = [];
             let tmpReturns = [];
             let tmpPassings = [];
+            
+            // let today = this.$moment();
+            // let totalHour = 24;
+            // if (date == today.format('YYYY-MM-DD')) {
+            //     totalHour = parseInt(today.format('H')) + 1;
+            // }
+            // let time = this.$t('date.am');
+            // for (let i = 0; i < totalHour; i++) {
+            //     if (i >= 12) {
+            //         time = this.$t('date.pm');
+            //     }
+            //     this.minuteLineChart.labels.push(i + ':00' + time);
+            //     tmpEnters.push(0);
+            //     tmpExits.push(0);
+            //     tmpPassings.push(0);
+            //     tmpReturns.push(0);
+            // }
 
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
                 stores.forEach((store) => {
                     store.devices.forEach((device) => {
+                    // if (device.device_id == this.inStoreTrafficId) {
                         this.$store.dispatch('dashboard/getMinuteTrafficsInDay', {
 							storeId: store.store_id, 
 							deviceId: device.device_id, 
@@ -420,6 +430,12 @@ export default {
 						}).then(() => {
                             let models = this.$store.getters["dashboard/models"];
                             for (let i = 0; i < models.length; i++) {
+                            //     let tmpTime = parseInt(models[i].hour);
+                            //     tmpEnters[tmpTime] += models[i].enter;
+                            //     tmpExits[tmpTime] += models[i].exit;
+                            //     tmpReturns[tmpTime] += models[i].return;
+                            //     tmpPassings[tmpTime] += models[i].passing;
+                            //   tmpLabels.push(models[i].end_time);
                               if (parseInt(models[i].end_time.substring(0, 2)) <= 12) {
                                 tmpLabels.push(models[i].end_time.substring(0, 5) + "AM");
                               } else {
@@ -442,6 +458,7 @@ export default {
                             this.minuteLineChart.returns = [];
                             this.minuteLineChart.passings = [];
                         });
+                    // }
                     });
                 });
             });
@@ -451,6 +468,10 @@ export default {
                 return;
             }
             this.hourlyLineChart.labels = [];
+            // this.hourlyLineChart.enters = [];
+            // this.hourlyLineChart.exits = [];
+            // this.hourlyLineChart.returns = [];
+            // this.hourlyLineChart.passings = [];
 
             let tmpEnters = [];
             let tmpExits = [];
@@ -482,6 +503,11 @@ export default {
                         this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: date}).then(() => {
                             let models = this.$store.getters["dashboard/models"];
                             for (let i = 0; i < models.length; i++) {
+                            //     this.hourlyLineChart.labels.push(models[i].hour);
+                            //     this.hourlyLineChart.enters.push(models[i].enter);
+                            //     this.hourlyLineChart.exits.push(models[i].exit);
+                            //     this.hourlyLineChart.returns.push(models[i].return);
+                            //     this.hourlyLineChart.passings.push(models[i].passing);
                                 let tmpTime = parseInt(models[i].hour);
                                 tmpEnters[tmpTime] += models[i].enter;
                                 tmpExits[tmpTime] += models[i].exit;
@@ -503,10 +529,10 @@ export default {
                                     tmpReturn += models[i].return;
                                     tmpPassing += models[i].passing;
                                 }
-                                this.todayEnter = tmpEnter;
-                                this.todayExit = tmpExit;
-                                this.todayReturn = tmpReturn;
-                                this.todayPassing = tmpPassing;
+                                this.resource.todayEnter = tmpEnter;
+                                this.resource.todayExit = tmpExit;
+                                this.resource.todayReturn = tmpReturn;
+                                this.resource.todayPassing = tmpPassing;
                             }
                         });
                     });
@@ -535,6 +561,10 @@ export default {
                 return;
             }
             this.dailyLineChart.labels = [];
+            // this.dailyLineChart.enters = [];
+            // this.dailyLineChart.exits = [];
+            // this.dailyLineChart.returns = [];
+            // this.dailyLineChart.passings = [];
 
             let tmpEnters = [];
             let tmpExits = [];
@@ -543,6 +573,10 @@ export default {
 
             for (let i = 0; i < durationDiffDays; i++) {
                 this.dailyLineChart.labels.push(tmpStartDateMoment.format('YYYY-MM-DD (ddd)'));
+                // this.dailyLineChart.enters.push(0);
+                // this.dailyLineChart.exits.push(0);
+                // this.dailyLineChart.returns.push(0);
+                // this.dailyLineChart.passings.push(0);
                 tmpEnters.push(0);
                 tmpExits.push(0);
                 tmpReturns.push(0);
@@ -562,6 +596,10 @@ export default {
                                 let tmpDate = tmpStartDateMoment.format('YYYY-MM-DD');
                                 for (let j = 0; j < models.length; j++) {
                                     if (tmpDate == models[j].date) {
+                                        // this.dailyLineChart.enters[i] += (models[j].enter);
+                                        // this.dailyLineChart.exits[i] += (models[j].exit);
+                                        // this.dailyLineChart.returns[i] += (models[j].return);
+                                        // this.dailyLineChart.passings[i] += (models[j].passing);
                                         tmpEnters[i] += (models[j].enter);
                                         tmpExits[i] += (models[j].exit);
                                         tmpReturns[i] += (models[j].return);
@@ -581,6 +619,48 @@ export default {
                 });
             });
         }
+    },
+    // computed: {
+    //     chartData() {
+    //         return {
+    //             labels: this.lineChart.labels,
+    //             datasets: [
+    //                 {
+    //                     label: this.$t('property.enter'),
+    //                     fill: true,
+    //                     borderColor: "#00f2c3",
+    //                     borderWidth: 2,
+    //                     borderDash: [],
+    //                     borderDashOffset: 0.0,
+    //                     pointBackgroundColor: "#00f2c3",
+    //                     pointBorderColor: "rgba(255,255,255,0)",
+    //                     pointHoverBackgroundColor: "#00f2c3",
+    //                     pointBorderWidth: 20,
+    //                     pointHoverRadius: 4,
+    //                     pointHoverBorderWidth: 15,
+    //                     pointRadius: 4,
+    //                     data: this.lineChart.enters
+    //                 },
+    //                 {
+    //                     label: this.$t('property.exit'),
+    //                     fill: true,
+    //                     borderColor: "#fd5d93",
+    //                     borderWidth: 2,
+    //                     borderDash: [],
+    //                     borderDashOffset: 0.0,
+    //                     pointBackgroundColor: "#fd5d93",
+    //                     pointBorderColor: "rgba(255,255,255,0)",
+    //                     pointHoverBackgroundColor: "#fd5d93",
+    //                     pointBorderWidth: 20,
+    //                     pointHoverRadius: 4,
+    //                     pointHoverBorderWidth: 15,
+    //                     pointRadius: 4,
+    //                     data: this.lineChart.exits
+    //                 }
+    //             ]
+    //         };
+    //     }
+    // }
     }
 };
 

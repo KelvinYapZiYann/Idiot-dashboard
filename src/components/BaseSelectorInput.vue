@@ -128,7 +128,6 @@ export default {
           return this.value;
         },
         set: function(newVal) {
-            console.log(newVal);
           this.$emit("input", newVal);
         }
     }
