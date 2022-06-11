@@ -113,7 +113,8 @@
     "byBrand": "By Brand",
     "type": "Type",
     "timeRange": "Time Range",
-    "phoneRepair": "Phone Repair"
+    "phoneRepair": "Phone Repair",
+    "all": "All"
   },
   "typeOptions": [
     { "id": "enter", "name": "Enter" },
