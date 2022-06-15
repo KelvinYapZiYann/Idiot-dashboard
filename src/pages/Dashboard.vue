@@ -599,32 +599,51 @@ export default {
                 let stores = this.$store.getters["store/models"];
                 for (let i = 0; i < stores.length; i++) {
                     for (let j = 0; j < stores[i].devices.length; j++) {
+                        let subtype = JSON.parse(stores[i].devices[j].subtype);
                         this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                             let model = this.$store.getters["dashboard/models"][0];
-                            if (this.byFloorSelectedType == 'enter') {
-                                tmpByFloor.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.enter,
-                                    icon: "fa-solid fa-layer-group",
-                                });
-                            } else if (this.byFloorSelectedType == 'exit') {
-                                tmpByFloor.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.exit,
-                                    icon: "fa-solid fa-layer-group",
-                                });
-                            } else if (this.byFloorSelectedType == 'return') {
-                                tmpByFloor.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.return,
-                                    icon: "fa-solid fa-layer-group",
-                                });
-                            } else if (this.byFloorSelectedType == 'passing') {
-                                tmpByFloor.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.passing,
-                                    icon: "fa-solid fa-layer-group",
-                                });
+                            let doesByFloorExist = false;
+                            for (let k = 0; k < tmpByFloor.length; k++) {
+                                if (tmpByFloor[k].name == subtype.floor) {
+                                    if (this.byFloorSelectedType == 'enter') {
+                                        tmpByFloor[k].count += model.enter;
+                                    } else if (this.byFloorSelectedType == 'exit') {
+                                        tmpByFloor[k].count += model.exit;
+                                    } else if (this.byFloorSelectedType == 'return') {
+                                        tmpByFloor[k].count += model.return;
+                                    } else if (this.byFloorSelectedType == 'passing') {
+                                        tmpByFloor[k].count += model.passing;
+                                    }
+                                    doesByFloorExist = true;
+                                    break;
+                                }
+                            }
+                            if (!doesByFloorExist) {
+                                if (this.byFloorSelectedType == 'enter') {
+                                    tmpByFloor.push({
+                                        name: subtype.floor,
+                                        count: model.enter,
+                                        icon: "fa-solid fa-layer-group",
+                                    });
+                                } else if (this.byFloorSelectedType == 'exit') {
+                                    tmpByFloor.push({
+                                        name: subtype.floor,
+                                        count: model.exit,
+                                        icon: "fa-solid fa-layer-group",
+                                    });
+                                } else if (this.byFloorSelectedType == 'return') {
+                                    tmpByFloor.push({
+                                        name: subtype.floor,
+                                        count: model.return,
+                                        icon: "fa-solid fa-layer-group",
+                                    });
+                                } else if (this.byFloorSelectedType == 'passing') {
+                                    tmpByFloor.push({
+                                        name: subtype.floor,
+                                        count: model.passing,
+                                        icon: "fa-solid fa-layer-group",
+                                    });
+                                }
                             }
                         });
                     }
