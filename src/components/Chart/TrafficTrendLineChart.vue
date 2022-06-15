@@ -32,6 +32,14 @@
                         >
                     </base-input>
                 </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                    <base-selector-input
+                        v-model="option"
+                        :options="options"
+                        @input="optionChange"
+                        v-show="!disableOption"
+                    ></base-selector-input>
+                </div>
             </div>
             <div class="row" v-else-if="this.type == 'hourly'">
                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
@@ -43,6 +51,14 @@
                         >
                     </base-input>
                 </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                    <base-selector-input
+                        v-model="option"
+                        :options="options"
+                        @input="optionChange"
+                        v-show="!disableOption"
+                    ></base-selector-input>
+                </div>
             </div>
             <div class="row" v-else-if="this.type == '15min'">
                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
@@ -53,6 +69,14 @@
                         @input="getLineChartTimeRange"
                         >
                     </base-input>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                    <base-selector-input
+                        v-model="option"
+                        :options="options"
+                        @input="optionChange"
+                        v-show="!disableOption"
+                    ></base-selector-input>
                 </div>
             </div>
             <line-chart
@@ -73,6 +97,7 @@
 import { 
   BaseButton,
   BaseInput,
+  BaseSelectorInput,
   Card,
   LineChart
 } from "@/components/index";
@@ -83,21 +108,10 @@ export default {
   components: {
     BaseButton,
     BaseInput,
+    BaseSelectorInput,
     Card,
     LineChart,
     // JsonExcel
-  },
-  data() {
-    return {
-        lineChart: {
-            extraOptions: chartConfigs.chartOptions,
-            dateRange: {
-                startDate: null,
-                endDate: null
-            },
-            date: null
-        },
-    };
   },
   props: {
     type: {
@@ -148,18 +162,50 @@ export default {
       },
       description: "Traffic Trend Line Passings"
     },
+    disableOption: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    options: {
+      type: Array,
+      required: false,
+      default: () => {
+        return [];
+      },
+    },
+  },
+  data() {
+    return {
+        lineChart: {
+            extraOptions: chartConfigs.chartOptions,
+            dateRange: {
+                startDate: null,
+                endDate: null
+            },
+            date: null
+        },
+        option: "all"
+    };
   },
   methods: {
     getLineChartTimeRange() {
-      this.$emit('getLineChartTimeRange', this.lineChart.date);
+      this.$emit('getLineChartTimeRange', {
+        date: this.lineChart.date,
+        option: this.option
+      });
     },
     getLineChartDate() {
-      this.$emit('getLineChartDate', this.lineChart.date);
+      this.$emit('getLineChartDate', {
+        date: this.lineChart.date,
+        option: this.option
+      });
     },
     getLineChartDateRange() {
         this.$emit('getLineChartDateRange', {
             startDate: this.lineChart.dateRange.startDate,
             endDate: this.lineChart.dateRange.endDate,
+            option: this.option
         });
     },
     async export(data, filename, mime) {
@@ -263,6 +309,14 @@ export default {
       return xlsTemp
         .replace("${table}", xlsData)
         .replace("${worksheet}", this.worksheet);
+    },
+    optionChange(value) {
+      this.$emit('optionChange', {
+          date: this.lineChart.date,
+          startDate: this.lineChart.dateRange.startDate,
+          endDate: this.lineChart.dateRange.endDate,
+          option: value
+      });
     },
   },
   mounted() {
