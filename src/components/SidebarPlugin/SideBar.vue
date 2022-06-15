@@ -45,7 +45,7 @@ export default {
     // },
     title: {
       type: String,
-      default: "ID-IOT",
+      default: "My Track Success",
       description: "Sidebar title"
     },
     backgroundColor: {
