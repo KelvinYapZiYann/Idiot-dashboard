@@ -533,34 +533,52 @@ export default {
                 for (let i = 0; i < stores.length; i++) {
                     for (let j = 0; j < stores[i].devices.length; j++) {
                         let subtype = JSON.parse(stores[i].devices[j].subtype);
-                        console.log(subtype);
                         this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                             let model = this.$store.getters["dashboard/models"][0];
-                            if (this.byBusinessTypeSelectedType == 'enter') {
-                                tmpByBusinessType.push({
-                                    name: this.$t("dashboard.phoneRepair"),
-                                    count: model.enter,
-                                    icon: "fa-solid fa-screwdriver-wrench",
-                                });
-                            } else if (this.byBusinessTypeSelectedType == 'exit') {
-                                tmpByBusinessType.push({
-                                    name: this.$t("dashboard.phoneRepair"),
-                                    count: model.exit,
-                                    icon: "fa-solid fa-screwdriver-wrench",
-                                });
-                            } else if (this.byBusinessTypeSelectedType == 'return') {
-                                tmpByBusinessType.push({
-                                    name: this.$t("dashboard.phoneRepair"),
-                                    count: model.return,
-                                    icon: "fa-solid fa-screwdriver-wrench",
-                                });
-                            } else if (this.byBusinessTypeSelectedType == 'passing') {
-                                tmpByBusinessType.push({
-                                    name: this.$t("dashboard.phoneRepair"),
-                                    count: model.passing,
-                                    icon: "fa-solid fa-screwdriver-wrench",
-                                });
+                            let doesBusinessTypeExist = false;
+                            for (let k = 0; k < tmpByBusinessType.length; k++) {
+                                if (tmpByBusinessType[k].name == subtype.businessType) {
+                                    if (this.byBusinessTypeSelectedType == 'enter') {
+                                        tmpByBusinessType[k].count += model.enter;
+                                    } else if (this.byBusinessTypeSelectedType == 'exit') {
+                                        tmpByBusinessType[k].count += model.exit;
+                                    } else if (this.byBusinessTypeSelectedType == 'return') {
+                                        tmpByBusinessType[k].count += model.return;
+                                    } else if (this.byBusinessTypeSelectedType == 'passing') {
+                                        tmpByBusinessType[k].count += model.passing;
+                                    }
+                                    doesBusinessTypeExist = true;
+                                    break;
+                                }
                             }
+                            if (!doesBusinessTypeExist) {
+                                if (this.byBusinessTypeSelectedType == 'enter') {
+                                    tmpByBusinessType.push({
+                                        name: subtype.businessType,
+                                        count: model.enter,
+                                        icon: subtype.businessTypeIcon,
+                                    });
+                                } else if (this.byBusinessTypeSelectedType == 'exit') {
+                                    tmpByBusinessType.push({
+                                        name: subtype.businessType,
+                                        count: model.exit,
+                                        icon: subtype.businessTypeIcon,
+                                    });
+                                } else if (this.byBusinessTypeSelectedType == 'return') {
+                                    tmpByBusinessType.push({
+                                        name: subtype.businessType,
+                                        count: model.return,
+                                        icon: subtype.businessTypeIcon,
+                                    });
+                                } else if (this.byBusinessTypeSelectedType == 'passing') {
+                                    tmpByBusinessType.push({
+                                        name: subtype.businessType,
+                                        count: model.passing,
+                                        icon: subtype.businessTypeIcon,
+                                    });
+                                }
+                            }
+                            
                         });
                     }
                     
