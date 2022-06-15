@@ -40,7 +40,7 @@
                 </category-card>
             </div>
 
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <category-card
                     :title="$t('dashboard.byBusinessType')"
                 >
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </category-card>
-            </div>
+            </div> -->
 
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <category-card
@@ -118,7 +118,7 @@
                 </category-card>
             </div>
 
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <category-card
                     :title="$t('dashboard.byBrand')"
                 >
@@ -155,7 +155,7 @@
                         </div>
                     </div>
                 </category-card>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -382,9 +382,9 @@ export default {
         this.initResource();
         this.getByShop();
         this.getResource();
-        this.getByBusinessType();
+        // this.getByBusinessType();
         this.getByFloor();
-        this.getByBrand();
+        // this.getByBrand();
     },
     methods: {
         async getResource() {
@@ -425,13 +425,13 @@ export default {
                                     this.thisWeekExit += model.exit;
                                     let day = model.date.substring(8, 10);
                                     if (parseInt(day) == (currentDay)) {
-                                        this.todayEnter = model.enter;
-                                        this.todayExit = model.exit;
-                                        this.todayReturn = model.return;
-                                        this.todayPassing = model.passing;
+                                        this.todayEnter += model.enter;
+                                        this.todayExit += model.exit;
+                                        this.todayReturn += model.return;
+                                        this.todayPassing += model.passing;
                                     } else if (parseInt(day) == parseInt(yesterday)) {
-                                        this.yesterdayEnter = model.enter;
-                                        this.yesterdayExit = model.exit;
+                                        this.yesterdayEnter += model.enter;
+                                        this.yesterdayExit += model.exit;
                                     }
                                 });
                             });
@@ -813,22 +813,22 @@ export default {
                             this.hourlyLineChart.exits = tmpExits;
                             this.hourlyLineChart.returns = tmpReturns;
                             this.hourlyLineChart.passings = tmpPassings;
-                            if (date == today.format('YYYY-MM-DD')) {
-                                let tmpEnter = 0;
-                                let tmpExit = 0;
-                                let tmpReturn = 0;
-                                let tmpPassing = 0;
-                                for (let i = 0; i < models.length; i++) {
-                                    tmpEnter += models[i].enter;
-                                    tmpExit += models[i].exit;
-                                    tmpReturn += models[i].return;
-                                    tmpPassing += models[i].passing;
-                                }
-                                this.todayEnter = tmpEnter;
-                                this.todayExit = tmpExit;
-                                this.todayReturn = tmpReturn;
-                                this.todayPassing = tmpPassing;
-                            }
+                            // if (date == today.format('YYYY-MM-DD')) {
+                            //     let tmpEnter = 0;
+                            //     let tmpExit = 0;
+                            //     let tmpReturn = 0;
+                            //     let tmpPassing = 0;
+                            //     for (let i = 0; i < models.length; i++) {
+                            //         tmpEnter += models[i].enter;
+                            //         tmpExit += models[i].exit;
+                            //         tmpReturn += models[i].return;
+                            //         tmpPassing += models[i].passing;
+                            //     }
+                            //     this.todayEnter = tmpEnter;
+                            //     this.todayExit = tmpExit;
+                            //     this.todayReturn = tmpReturn;
+                            //     this.todayPassing = tmpPassing;
+                            // }
                         });
                     });
                 });
