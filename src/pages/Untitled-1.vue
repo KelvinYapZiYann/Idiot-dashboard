@@ -197,7 +197,7 @@ import {
     StatsCard,
     TrafficsCard,
     // LineChart
-    TrafficTrendLineChart
+    TrafficTrendLineChart,
     CategoryCard,
 } from "@/components/index";
 // import * as chartConfigs from "@/components/Chart/ChartConfig";
@@ -214,7 +214,7 @@ export default {
         TrafficsCard,
         // LineChart,
         // DateRangePicker,
-        TrafficTrendLineChart
+        TrafficTrendLineChart,
         CategoryCard,
     },
     data() {

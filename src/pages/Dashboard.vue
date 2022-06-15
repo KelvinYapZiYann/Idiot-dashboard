@@ -496,33 +496,25 @@ export default {
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
                 for (let i = 0; i < stores.length; i++) {
+                    let tmpByShopPerStore = {
+                        name: stores[i].store_name,
+                        count: 0,
+                    };
                     for (let j = 0; j < stores[i].devices.length; j++) {
                         this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                             let model = this.$store.getters["dashboard/models"][0];
                             if (this.byShopSelectedType == 'enter') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.enter
-                                });
+                                tmpByShopPerStore.count += model.enter;
                             } else if (this.byShopSelectedType == 'exit') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.exit
-                                });
+                                tmpByShopPerStore.count += model.exit;
                             } else if (this.byShopSelectedType == 'return') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.return
-                                });
+                                tmpByShopPerStore.count += model.return;
                             } else if (this.byShopSelectedType == 'passing') {
-                                tmpByShop.push({
-                                    name: stores[i].store_name,
-                                    count: model.passing
-                                });
+                                tmpByShopPerStore.count += model.passing;
                             }
                         });
                     }
-                    
+                    tmpByShop.push(tmpByShopPerStore);
                 }
                 this.byShop = tmpByShop;
             });
@@ -540,6 +532,8 @@ export default {
                 let stores = this.$store.getters["store/models"];
                 for (let i = 0; i < stores.length; i++) {
                     for (let j = 0; j < stores[i].devices.length; j++) {
+                        let subtype = JSON.parse(stores[i].devices[j].subtype);
+                        console.log(subtype);
                         this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                             let model = this.$store.getters["dashboard/models"][0];
                             if (this.byBusinessTypeSelectedType == 'enter') {
