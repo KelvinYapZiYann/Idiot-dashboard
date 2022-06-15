@@ -664,32 +664,51 @@ export default {
                 let stores = this.$store.getters["store/models"];
                 for (let i = 0; i < stores.length; i++) {
                     for (let j = 0; j < stores[i].devices.length; j++) {
+                        let subtype = JSON.parse(stores[i].devices[j].subtype);
                         this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                             let model = this.$store.getters["dashboard/models"][0];
-                            if (this.byFloorSelectedType == 'enter') {
-                                tmpByBrand.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.enter,
-                                    icon: "fa-solid fa-tags",
-                                });
-                            } else if (this.byFloorSelectedType == 'exit') {
-                                tmpByBrand.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.exit,
-                                    icon: "fa-solid fa-tags",
-                                });
-                            } else if (this.byFloorSelectedType == 'return') {
-                                tmpByBrand.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.return,
-                                    icon: "fa-solid fa-tags",
-                                });
-                            } else if (this.byFloorSelectedType == 'passing') {
-                                tmpByBrand.push({
-                                    name: this.$t("dashboard.all"),
-                                    count: model.passing,
-                                    icon: "fa-solid fa-tags",
-                                });
+                            let doesByBrandExist = false;
+                            for (let k = 0; k < tmpByBrand.length; k++) {
+                                if (tmpByBrand[k].name == subtype.brand) {
+                                    if (this.byBrandSelectedType == 'enter') {
+                                        tmpByBrand[k].count += model.enter;
+                                    } else if (this.byBrandSelectedType == 'exit') {
+                                        tmpByBrand[k].count += model.exit;
+                                    } else if (this.byBrandSelectedType == 'return') {
+                                        tmpByBrand[k].count += model.return;
+                                    } else if (this.byBrandSelectedType == 'passing') {
+                                        tmpByBrand[k].count += model.passing;
+                                    }
+                                    doesByBrandExist = true;
+                                    break;
+                                }
+                            }
+                            if (!doesByBrandExist) {
+                                if (this.byBrandSelectedType == 'enter') {
+                                    tmpByBrand.push({
+                                        name: this.$t("dashboard.all"),
+                                        count: model.enter,
+                                        icon: "fa-solid fa-tags",
+                                    });
+                                } else if (this.byBrandSelectedType == 'exit') {
+                                    tmpByBrand.push({
+                                        name: this.$t("dashboard.all"),
+                                        count: model.exit,
+                                        icon: "fa-solid fa-tags",
+                                    });
+                                } else if (this.byBrandSelectedType == 'return') {
+                                    tmpByBrand.push({
+                                        name: this.$t("dashboard.all"),
+                                        count: model.return,
+                                        icon: "fa-solid fa-tags",
+                                    });
+                                } else if (this.byBrandSelectedType == 'passing') {
+                                    tmpByBrand.push({
+                                        name: this.$t("dashboard.all"),
+                                        count: model.passing,
+                                        icon: "fa-solid fa-tags",
+                                    });
+                                }
                             }
                         });
                     }
