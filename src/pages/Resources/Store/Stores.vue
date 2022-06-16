@@ -45,19 +45,34 @@ export default {
           // this.resource.models = stores;
           // console.log(stores[0]);
           for (let i = 0; i < stores.length; i++) {
-            stores[i].enter = 0;
-            stores[i].exit = 0;
+            let tmpStore = stores[i];
+            tmpStore.enter = 0;
+            tmpStore.exit = 0;
             for (let j = 0; j < stores[i].devices.length; j++) {
               this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                 let model = this.$store.getters["dashboard/models"][0];
+                console.log(tmpStore);
                 if (model) {
-                  stores[i].enter += model.enter;
-                  stores[i].exit += model.exit;
+                  let doesStoreExist = false;
+                  for (let k = 0; k < this.resource.models.length; k++) {
+                    if (stores[i].store_id == this.resource.models[k].store_id) {
+                      this.resource.models[k].enter += model.enter;
+                      this.resource.models[k].exit += model.exit;
+                      doesStoreExist = true;
+                      break;
+                    }
+                    // this.resource.models
+                  }
+                  if (!doesStoreExist) {
+                    tmpStore.enter = model.enter;
+                    tmpStore.exit = model.exit;
+                    this.resource.models.push(tmpStore);
+                  }
                 }
-                if (i+1 == stores.length && j+1 == stores[i].devices.length) {
-                  this.resource.models = stores;
-                  loader.hide();
-                }
+                // if (i+1 == stores.length && j+1 == stores[i].devices.length) {
+                //   this.resource.models = stores;
+                //   loader.hide();
+                // }
               });
             }
             // tmpModels[i].devices.forEach((device) => {
@@ -72,6 +87,7 @@ export default {
             //   });
             // });
           }
+          loader.hide();
           // this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
         });
       } catch (e) {
