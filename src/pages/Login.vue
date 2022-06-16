@@ -4,8 +4,8 @@
       <form @submit.prevent="login">
         <card class="card-login">
           <template slot="header">
-            <img src="img/company_logo.png" class="card-img" alt=""/>
-            <h1 class="card-title text-center">{{$t('company.name')}}</h1>
+            <img src="img/company_logo.png" class="card-img mt-2" alt=""/>
+            <!-- <h1 class="card-title text-center">{{$t('company.name')}}</h1> -->
           </template>
 
           <div>
@@ -38,14 +38,14 @@
             >
               {{$t('route.login')}}
             </base-button>
-            <div class="pull-left">
+            <!-- <div class="pull-left">
               <h6>
                 <router-link class="link footer-link" to="/register" v-slot="{ navigate, href }" custom>
                   <a @click="navigate" @keypress.enter="navigate" role="link" :href="href">{{$t('route.register')}}</a>
                 </router-link>
               </h6>
-            </div>
-            <div class="pull-right">
+            </div> -->
+            <div class="pull-left">
               <h6>
                 <router-link class="link footer-link" to="/forgot-password" v-slot="{ navigate, href }" custom>
                   <a @click="navigate" @keypress.enter="navigate" role="link" :href="href">{{$t('route.forgotPassword')}}</a>
