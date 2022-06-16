@@ -51,7 +51,6 @@ export default {
             for (let j = 0; j < stores[i].devices.length; j++) {
               this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
                 let model = this.$store.getters["dashboard/models"][0];
-                console.log(tmpStore);
                 if (model) {
                   let doesStoreExist = false;
                   for (let k = 0; k < this.resource.models.length; k++) {

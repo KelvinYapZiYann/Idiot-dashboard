@@ -364,8 +364,8 @@ export default {
         }
       });
     },
-    async getLineChartTimeRange(date) {
-            if (!date) {
+    async getLineChartTimeRange(value) {
+            if (!value.date) {
                 return;
             }
             this.minuteLineChart.labels = [];
@@ -405,7 +405,7 @@ export default {
                         this.$store.dispatch('dashboard/getMinuteTrafficsInDay', {
               storeId: store.store_id, 
               deviceId: device.device_id, 
-              date: date, 
+              date: value.date, 
               interval: 15
             }).then(() => {
                             let models = this.$store.getters["dashboard/models"];
@@ -443,8 +443,8 @@ export default {
                 });
             });
         },
-    async getLineChartDate(date) {
-        if (!date) {
+    async getLineChartDate(value) {
+        if (!value.date) {
             return;
         }
         this.hourlyLineChart.labels = [];
@@ -460,7 +460,7 @@ export default {
         
         let today = this.$moment();
         let totalHour = 24;
-        if (date == today.format('YYYY-MM-DD')) {
+        if (value.date == today.format('YYYY-MM-DD')) {
             totalHour = parseInt(today.format('H')) + 1;
         }
         let time = this.$t('date.am');
@@ -480,7 +480,7 @@ export default {
             stores.forEach((store) => {
               if (store.store_id == this.storeId) {
                 store.devices.forEach((device) => {
-                    this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: date}).then(() => {
+                    this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: value.date}).then(() => {
                         let models = this.$store.getters["dashboard/models"];
                         for (let i = 0; i < models.length; i++) {
                         //     this.hourlyLineChart.labels.push(models[i].hour);
@@ -504,25 +504,25 @@ export default {
             });
         });
     },
-    async getLineChartDateRange(dateRange) {
-          if (!dateRange) {
+    async getLineChartDateRange(value) {
+          if (!value) {
               return;
           }
-          if (!dateRange.endDate) {
+          if (!value.endDate) {
               return;
           }
-          if (!dateRange.startDate) {
+          if (!value.startDate) {
               return;
           }
-          if (dateRange.endDate <= dateRange.startDate) {
+          if (value.endDate <= value.startDate) {
               return;
           }
           // if (this.lineChart.dateRange.endDate <= this.lineChart.dateRange.startDate) {
           //     return;
           // }
-          let startDateMoment = this.$moment(dateRange.startDate);
+          let startDateMoment = this.$moment(value.startDate);
           let tmpStartDateMoment = startDateMoment;
-          let endDateMoment = this.$moment(dateRange.endDate);
+          let endDateMoment = this.$moment(value.endDate);
           let duration = this.$moment.duration(endDateMoment.diff(startDateMoment));
           let durationDiffDays = Math.floor(duration.asDays());
           if (duration._milliseconds <= 0) {
@@ -557,9 +557,9 @@ export default {
               stores.forEach((store) => {
                   if (store.store_id == this.storeId) {
                     store.devices.forEach((device) => {
-                      this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: dateRange.startDate, endDate: dateRange.endDate}).then(() => {
+                      this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: value.startDate, endDate: value.endDate}).then(() => {
                           let models = this.$store.getters["dashboard/models"];
-                          tmpStartDateMoment = this.$moment(dateRange.startDate);
+                          tmpStartDateMoment = this.$moment(value.startDate);
                           mainLoop: for (let i = 0; i < durationDiffDays; i++) {
                               let tmpDate = tmpStartDateMoment.format('YYYY-MM-DD');
                               for (let j = 0; j < models.length; j++) {
