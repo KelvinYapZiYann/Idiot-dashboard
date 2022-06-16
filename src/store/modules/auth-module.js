@@ -39,6 +39,12 @@ const actions = {
       });
     });
   },
+  resetPassword({commit}, payload) {
+    console.log(commit);
+    return service.resetPassword(payload).then((response) => {
+      return response;
+    });
+  },
 };
 
 const getters = {

@@ -9,7 +9,8 @@
     "logout": "Logout",
     "register": "Register",
     "backToLogin": "Back to Login",
-    "forgotPassword": "Forgot Password"
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password"
   },
   "component": {
     "stores": "Stores",
@@ -81,12 +82,15 @@
   "alert": {
     "logoutConfirmation": "Are you sure to logout?",
     "removeConfirmation": "Are you sure to remove this?",
+    "resetPasswordConfirmation": "Are you sure to reset password?",
     "error": "Error",
 
     "registerSuccessfully": "Register Successfully",
     "registerSuccessfullyText": "Please wait for us to process the registration. We will come back for you as soon as posibile. Don't hesitate to contact us if you face any problems.",
     "forgotPasswordSuccessfully": "Forgot Password Successfully",
     "forgotPasswordSuccessfullyText": "Check your email and follow the procedure. Don't hesitate to contact us if you face any problems.",
+    "resetPasswordSuccessfully": "Reset Password Successfully",
+    "resetPasswordSuccessfullyText": "Your password has been reset successfully.",
     "addedSuccessfully": "Added Successfully",
     "editedSuccessfully": "Edited Successfully",
 

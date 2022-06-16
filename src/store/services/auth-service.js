@@ -46,9 +46,16 @@ function forgotPassword(payload) {
     });
 }
 
+function resetPassword(payload) {
+    return axios.post(`${url}/password/reset`, payload, config).then(response => {
+        return response.data;
+    });
+}
+
 export default {
     login,
     register,
     logout,
     forgotPassword,
+    resetPassword,
 };

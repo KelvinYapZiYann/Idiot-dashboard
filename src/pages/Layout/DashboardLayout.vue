@@ -30,6 +30,12 @@
           >
           </sidebar-link>
 
+          <!-- <li class="">
+            <a href="javascript:void(0)" class="nav-link" @click="resetPassword">
+                <i class="fa-solid fa-key"></i><p>{{$t('route.resetPassword')}}</p>
+            </a>
+          </li> -->
+
           <li class="">
             <a href="javascript:void(0)" class="nav-link" @click="logout">
                 <i class="fas fa-sign-out-alt"></i><p>{{$t('route.logout')}}</p>
@@ -103,6 +109,28 @@ export default {
           try {
             this.$store.dispatch("auth/logout").then(() => {
               router.push({ name: "Login" });
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      });
+    },
+    resetPassword() {
+      this.$swal.fire({
+        title: this.$t('route.resetPassword'),
+        text: this.$t('alert.resetPasswordConfirmation'),
+        showCancelButton: true,
+        confirmButtonText: this.$t('route.resetPassword'),
+        cancelButtonText: this.$t('component.cancel'),
+        icon: "warning",
+      }).then((result) => {
+        if (result.value) {
+          try {
+            this.$store.dispatch("auth/resetPassword", {
+              
+            }).then((res) => {
+              console.log(res);
             });
           } catch (err) {
             console.error(err);
