@@ -760,7 +760,7 @@ export default {
                             }).then(() => {
                                 let models = this.$store.getters["dashboard/models"];
                                 for (let i = 0; i < models.length; i++) {
-                                if (parseInt(models[i].end_time.substring(0, 2)) <= 12) {
+                                if (parseInt(models[i].end_time.substring(0, 2)) < 12) {
                                     tmpLabels.push(models[i].end_time.substring(0, 5) + "AM");
                                 } else {
                                     tmpLabels.push(models[i].end_time.substring(0, 5) + "PM");

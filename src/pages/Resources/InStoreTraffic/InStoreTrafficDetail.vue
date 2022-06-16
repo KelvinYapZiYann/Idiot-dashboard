@@ -380,43 +380,43 @@ export default {
                 let stores = this.$store.getters["store/models"];
                 stores.forEach((store) => {
                     store.devices.forEach((device) => {
-                    if (device.device_id == this.inStoreTrafficId) {
-                        this.$store.dispatch('dashboard/getMinuteTrafficsInDay', {
-							storeId: store.store_id, 
-							deviceId: device.device_id, 
-							date: value.date, 
-							interval: 15
-						}).then(() => {
-                            let models = this.$store.getters["dashboard/models"];
-                            for (let i = 0; i < models.length; i++) {
-                            //     let tmpTime = parseInt(models[i].hour);
-                            //     tmpEnters[tmpTime] += models[i].enter;
-                            //     tmpExits[tmpTime] += models[i].exit;
-                            //     tmpReturns[tmpTime] += models[i].return;
-                            //     tmpPassings[tmpTime] += models[i].passing;
-								if (parseInt(models[i].end_time.substring(0, 2)) <= 12) {
-									tmpLabels.push(models[i].end_time.substring(0, 5) + "AM");
-								} else {
-									tmpLabels.push(models[i].end_time.substring(0, 5) + "PM");
-								}
-								tmpEnters.push(models[i].enter);
-								tmpExits.push(models[i].exit);
-								tmpReturns.push(models[i].return);
-								tmpPassings.push(models[i].passing);
-                            }
-                            this.minuteLineChart.labels = tmpLabels;
-                            this.minuteLineChart.enters = tmpEnters;
-                            this.minuteLineChart.exits = tmpExits;
-                            this.minuteLineChart.returns = tmpReturns;
-                            this.minuteLineChart.passings = tmpPassings;
-                        }).catch(() => {
-							this.minuteLineChart.labels = [];
-                            this.minuteLineChart.enters = [];
-                            this.minuteLineChart.exits = [];
-                            this.minuteLineChart.returns = [];
-                            this.minuteLineChart.passings = [];
-						});
-                    }
+                        if (device.device_id == this.inStoreTrafficId) {
+                            this.$store.dispatch('dashboard/getMinuteTrafficsInDay', {
+                                storeId: store.store_id, 
+                                deviceId: device.device_id, 
+                                date: value.date, 
+                                interval: 15
+                            }).then(() => {
+                                let models = this.$store.getters["dashboard/models"];
+                                for (let i = 0; i < models.length; i++) {
+                                //     let tmpTime = parseInt(models[i].hour);
+                                //     tmpEnters[tmpTime] += models[i].enter;
+                                //     tmpExits[tmpTime] += models[i].exit;
+                                //     tmpReturns[tmpTime] += models[i].return;
+                                //     tmpPassings[tmpTime] += models[i].passing;
+                                    if (parseInt(models[i].end_time.substring(0, 2)) < 12) {
+                                        tmpLabels.push(models[i].end_time.substring(0, 5) + "AM");
+                                    } else {
+                                        tmpLabels.push(models[i].end_time.substring(0, 5) + "PM");
+                                    }
+                                    tmpEnters.push(models[i].enter);
+                                    tmpExits.push(models[i].exit);
+                                    tmpReturns.push(models[i].return);
+                                    tmpPassings.push(models[i].passing);
+                                }
+                                this.minuteLineChart.labels = tmpLabels;
+                                this.minuteLineChart.enters = tmpEnters;
+                                this.minuteLineChart.exits = tmpExits;
+                                this.minuteLineChart.returns = tmpReturns;
+                                this.minuteLineChart.passings = tmpPassings;
+                            }).catch(() => {
+                                this.minuteLineChart.labels = [];
+                                this.minuteLineChart.enters = [];
+                                this.minuteLineChart.exits = [];
+                                this.minuteLineChart.returns = [];
+                                this.minuteLineChart.passings = [];
+                            });
+                        }
                     });
                 });
             });
