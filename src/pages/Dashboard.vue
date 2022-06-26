@@ -10,16 +10,22 @@
                             :label="$t('dashboard.type')"
                             v-model="byShopSelectedType"
                             :options="$t('typeOptions')"
-                            class="col-6"
+                            class="col-4"
                             @input="byShopTypeSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
                             :label="$t('dashboard.timeRange')"
                             v-model="byShopSelectedTimeRange"
                             :options="$t('timeRangeOptions')"
-                            class="col-6"
+                            class="col-4"
                             @input="byShopTimeRangeSelectorChange"
-                            v-show="false"
+                        ></base-selector-input>
+                        <base-selector-input
+                            :label="$t('dashboard.byShop')"
+                            v-model="byShopSelectedByShop"
+                            :options="byShopOptions"
+                            class="col-4"
+                            @input="byShopByShopSelectorChange"
                         ></base-selector-input>
                     </div>
                     <div class="row">
@@ -332,6 +338,8 @@ export default {
             byShopSelectedType: "enter",
             byShopSelectedTimeRange: "today",
             byShop: [],
+            byShopSelectedByShop: "all",
+            byShopOptions: [],
 
             byBusinessTypeSelectedType: "enter",
             byBusinessTypeSelectedTimeRange: "today",
@@ -506,6 +514,9 @@ export default {
             this.getByShop();
         },
         byShopTimeRangeSelectorChange() {
+            this.getByShop();
+        },
+        byShopByShopSelectorChange() {
             this.getByShop();
         },
         async getByShop() {

@@ -131,7 +131,10 @@
     { "id": "today", "name": "Today" },
     { "id": "yesterday", "name": "Yesterday" },
     { "id": "weekTillDate", "name": "Week Till Date" },
+    { "id": "lastWeek", "name": "Last Week" },
     { "id": "monthTillDate", "name": "Month Till Date" },
-    { "id": "yearTillDate", "name": "Year Till Date" }
+    { "id": "lastMonth", "name": "Last Month" },
+    { "id": "yearTillDate", "name": "Year Till Date" },
+    { "id": "last Year", "name": "Last Year" }
   ]
 }
