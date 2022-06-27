@@ -14,11 +14,11 @@
                             @input="byShopTypeSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
-                            :label="$t('dashboard.timeRange')"
+                            :label="$t('dashboard.dateRange')"
                             v-model="byShopSelectedDateRange"
-                            :options="$t('timeRangeOptions')"
+                            :options="$t('dateRangeOptions')"
                             class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
-                            @input="byShopTimeRangeSelectorChange"
+                            @input="byShopDateRangeSelectorChange"
                         ></base-selector-input>
                     </div>
                     <div class="row">
@@ -52,9 +52,9 @@
                             @input="byFloorSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
-                            :label="$t('dashboard.timeRange')"
+                            :label="$t('dashboard.dateRange')"
                             v-model="byFloorSelectedDateRange"
-                            :options="$t('timeRangeOptions')"
+                            :options="$t('dateRangeOptions')"
                             class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byFloorDateRangeSelectorChange"
                         ></base-selector-input>
@@ -76,87 +76,43 @@
                     </div>
                 </category-card>
             </div>
-
-            <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                <category-card
-                    :title="$t('dashboard.byBrand')"
-                >
-                    <div class="row">
-                        <base-selector-input
-                            :label="$t('dashboard.type')"
-                            v-model="byBrandSelectedType"
-                            :options="$t('typeOptions')"
-                            class="col-6"
-                            @input="byBrandSelectorChange"
-                        ></base-selector-input>
-                        <base-selector-input
-                            :label="$t('dashboard.timeRange')"
-                            v-model="byBrandSelectedTimeRange"
-                            :options="$t('timeRangeOptions')"
-                            class="col-6"
-                            @input="byBrandTimeRangeSelectorChange"
-                            v-show="false"
-                        ></base-selector-input>
-                    </div>
-                    <div class="row">
-                        <div 
-                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
-                            v-for="(value, i) in byBrand"
-                            :key="i"
-                        >
-                            <div class="mb-1 font-weight-bold">
-                                <span>{{ value.name }}: </span>
-                                <span class="font-italic">{{ value.count }}</span>
-                            </div>
-                            <div class="mb-1">
-                                <i class="card-category-icon danger" :class="value.icon"></i>
-                            </div>
-                        </div>
-                    </div>
-                </category-card>
-            </div> -->
         </div>
-        <!-- <div class="row">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="todayEnter ? todayEnter : '0'"
-                    :sub-title="$t('date.today') + ' ' + $t('property.enter')"
-                    type="primary"
-                    icon="fas fa-sign-in-alt"
-                ></stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="todayExit ? todayExit : '0'"
-                    :sub-title="$t('date.today') + ' ' + $t('property.exit')"
-                    type="warning"
-                    icon="fas fa-sign-out-alt"
+        
+        <card subTitle="zxc">
+            <div class="row">
+                <base-selector-input
+                    :label="$t('dashboard.dateRange')"
+                    v-model="totalTrafficsSelectedDateRange"
+                    :options="$t('customDateRangeOptions')"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="totalTrafficsDateRangeSelectorChange"
+                ></base-selector-input>
+                <base-input 
+                    :label="$t('date.start')"
+                    :placeholder="$t('date.start')"
+                    v-model="totalTrafficsSelectedStartDate"
+                    type="date"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="totalTrafficsStartDateChange"
+                    v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
-                </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="todayReturn ? todayReturn : '0'"
-                    :sub-title="$t('date.today') + ' ' + $t('property.return')"
-                    type="success"
-                    icon="fas fa-undo-alt"
+                </base-input>
+                <base-input 
+                    :label="$t('date.end')"
+                    :placeholder="$t('date.end')"
+                    v-model="totalTrafficsSelectedEndDate"
+                    type="date"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="totalTrafficsEndDateChange"
+                    v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
-                </stats-card>
+                </base-input>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
-                <stats-card
-                    :title="todayPassing ? todayPassing : '0'"
-                    :sub-title="$t('date.today') + ' ' + $t('property.passing')"
-                    type="neutral"
-                    icon="fas fa-times"
-                    >
-                </stats-card>
-            </div>
-        </div>
+        </card>
         <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsEnter ? totalTrafficsEnter : '0'"
+                    :title="totalTraffics.enter ? totalTraffics.enter : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.enter')"
                     type="primary"
                     icon="fas fa-sign-in-alt"
@@ -165,7 +121,7 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsExit ? totalTrafficsExit : '0'"
+                    :title="totalTraffics.exit ? totalTraffics.exit : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.exit')"
                     type="warning"
                     icon="fas fa-sign-out-alt"
@@ -174,7 +130,7 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsReturn ? totalTrafficsReturn : '0'"
+                    :title="totalTraffics.return ? totalTraffics.return : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.return')"
                     type="success"
                     icon="fas fa-undo-alt"
@@ -183,14 +139,14 @@
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
-                    :title="totalTrafficsPassing ? totalTrafficsPassing : '0'"
+                    :title="totalTraffics.passing ? totalTraffics.passing : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.passing')"
                     type="neutral"
                     icon="fas fa-times"
                     >
                 </stats-card>
             </div>
-        </div> -->
+        </div>
 
         <!-- <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -270,22 +226,27 @@
 </template>
 <script>
 import {
-    CategoryCard,
     BaseSelectorInput,
-    // StatsCard,
+    BaseInput,
+    CategoryCard,
+    StatsCard,
+    Card,
     // TrafficsCard,
     // TrafficTrendLineChart,
 } from "@/components/index";
 
 export default {
     components: {
-        CategoryCard,
         BaseSelectorInput,
-        // StatsCard,
+        BaseInput,
+        CategoryCard,
+        StatsCard,
+        Card,
         // TrafficsCard,
         // TrafficTrendLineChart,
     },
     data() {
+        let today = this.$moment();
         return {
             byShopSelectedType: "enter",
             byShopSelectedDateRange: "today",
@@ -295,24 +256,15 @@ export default {
             byFloorSelectedDateRange: "today",
             byFloor: [],
 
-            totalTrafficsEnter: 0,
-            totalTrafficsExit: 0,
-            totalTrafficsReturn: 0,
-            totalTrafficsPassing: 0,
-            todayEnter: 0,
-            todayExit: 0,
-            todayReturn: 0,
-            todayPassing: 0,
-            yesterdayEnter: 0,
-            yesterdayExit: 0,
-            thisWeekEnter: 0,
-            thisWeekExit: 0,
-            lastWeekEnter: 0,
-            lastWeekExit: 0,
-            thisMonthEnter: 0,
-            thisMonthExit: 0,
-            lastMonthEnter: 0,
-            lastMonthExit: 0,
+            totalTrafficsSelectedDateRange: "today",
+            totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
+            totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
+            totalTraffics: {
+                enter: 0,
+                exit: 0,
+                return: 0,
+                passing: 0,
+            },
 
             dailyLineChart: {
                 labels: [],
@@ -335,135 +287,29 @@ export default {
 				returns: [],
 				passings: [],
 			},
-            options: [],
         }
     },
     mounted() {
-        this.initResource();
-        this.initByShopOptions().then(() => {
+        this.init().then(() => {
             this.getByShop();
-        });
-        this.initByFloorOptions().then(() => {
             this.getByFloor();
+            
+            this.getTotalTraffics();
         });
-        
-        this.getResource();
     },
     methods: {
-        async getResource() {
-            // let loader = this.$loading.show();
-            // try {
-            //     let today = this.$moment();
-            //     let currentDay = parseInt(today.format('D'));
-            //     let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
-            //     let yesterday = parseInt(today.subtract(2, 'days').format('D'));
-            //     let thisWeekStartDateString = today.subtract(5, 'days').format('YYYY-MM-DD');
-            //     let lastWeekEndDateString = today.subtract(1, 'days').format('YYYY-MM-DD');
-            //     let lastWeekStartDateString = today.subtract(6, 'days').format('YYYY-MM-DD');
-            //     today = this.$moment();
-            //     let thisMonthStartDateString = today.startOf('month').format('YYYY-MM-DD');
-            //     let thisMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
-            //     let lastMonthStartDateString = today.subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
-            //     let lastMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
-
-            //     await this.$store.dispatch('store/getAll').then(() => {
-            //         let stores = this.$store.getters["store/models"];
-            //         this.options.push({
-            //             id: "all",
-            //             name: "All"
-            //         });
-            //         stores.forEach((store) => {
-            //             store.devices.forEach((device) => {
-            //                 this.options.push({
-            //                     id: device.device_id,
-            //                     name: device.device_description
-            //                 });
-            //                 this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
-            //                     let model = this.$store.getters["dashboard/models"][0];
-            //                     if (model) {
-            //                         this.totalTrafficsEnter += model.enter;
-            //                         this.totalTrafficsExit += model.exit;
-            //                         this.totalTrafficsReturn += model.return;
-            //                         this.totalTrafficsPassing += model.passing;
-            //                     }
-            //                 });
-
-            //                 this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisWeekStartDateString, endDate: todayDateString}).then(() => {
-            //                     let models = this.$store.getters["dashboard/models"];
-            //                     models.forEach((model) => {
-            //                         this.thisWeekEnter += model.enter;
-            //                         this.thisWeekExit += model.exit;
-            //                         let day = model.date.substring(8, 10);
-            //                         if (parseInt(day) == (currentDay)) {
-            //                             this.todayEnter += model.enter;
-            //                             this.todayExit += model.exit;
-            //                             this.todayReturn += model.return;
-            //                             this.todayPassing += model.passing;
-            //                         } else if (parseInt(day) == parseInt(yesterday)) {
-            //                             this.yesterdayEnter += model.enter;
-            //                             this.yesterdayExit += model.exit;
-            //                         }
-            //                     });
-            //                 });
-
-            //                 this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastWeekStartDateString, endDate: lastWeekEndDateString}).then(() => {
-            //                     let models = this.$store.getters["dashboard/models"];
-            //                     models.forEach((model) => {
-            //                         this.lastWeekEnter += model.enter;
-            //                         this.lastWeekExit += model.exit;
-            //                     });
-            //                 });
-
-            //                 if ((currentDay) == 1) {
-            //                     this.thisMonthEnter = this.todayEnter;
-            //                     this.thisMonthExit = this.todayExit;
-            //                 } else {
-            //                     this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisMonthStartDateString, endDate: thisMonthEndDateString}).then(() => {
-            //                         let models = this.$store.getters["dashboard/models"];
-            //                         models.forEach((model) => {
-            //                             this.thisMonthEnter += model.enter;
-            //                             this.thisMonthExit += model.exit;
-            //                         });
-            //                     });
-            //                 }
-                            
-            //                 this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastMonthStartDateString, endDate: lastMonthEndDateString}).then(() => {
-            //                     let models = this.$store.getters["dashboard/models"];
-            //                     models.forEach((model) => {
-            //                         this.lastMonthEnter += model.enter;
-            //                         this.lastMonthExit += model.exit;
-            //                     });
-            //                 });
-            //             });
-            //         });
-            //     });
-            // } catch (e) {
-            //     console.error(e);
-            // } finally {
-            //     loader.hide();
-            // }
-        },
-        initResource() {
-            this.totalTrafficsEnter = 0;
-            this.totalTrafficsExit = 0;
-            this.totalTrafficsReturn = 0;
-            this.totalTrafficsPassing = 0;
-            this.todayEnter = 0;
-            this.todayExit = 0;
-            this.todayReturn = 0;
-            this.todayPassing = 0;
-            this.options = [];
-        },
-
-        goToStore(storeId) {
-            this.$router.push({
-                name: "Store Detail",
-                param: {
-                    storeId: storeId,
-                }
+        async init() {
+            this.totalTraffics = {
+                enter: 0,
+                exit: 0,
+                return: 0,
+                passing: 0,
+            };
+            await this.initStore().then(() => {
+                this.initDevice();
             });
         },
-        async initByShopOptions() {
+        async initStore() {
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
                 let tmpByShop = [];
@@ -480,10 +326,46 @@ export default {
                 this.byShop = tmpByShop;
             });
         },
+        async initDevice() {
+            await this.$store.dispatch('inStoreTraffic/getAll').then(() => {
+                let devices = this.$store.getters["inStoreTraffic/models"];
+                let tmpByFloor = [];
+                for (let i = 0; i < devices.length; i++) {
+                    let doesByFloorExist = false;
+                    for (let j = 0; j < tmpByFloor.length; j++) {
+                        if (devices[i].floor == tmpByFloor[j].id) {
+                            doesByFloorExist = true;
+                            break;
+                        }
+                    }
+                    if (!doesByFloorExist) {
+                        tmpByFloor.push({
+                            id: devices[i].floor,
+                            name: devices[i].floor,
+                            enter: 0,
+                            exit: 0,
+                            return: 0,
+                            passing: 0,
+                            icon: "fa-solid fa-layer-group"
+                        });
+                    }
+                }
+                this.byFloor = tmpByFloor;
+            });
+        },
+
+        goToStore(storeId) {
+            this.$router.push({
+                name: "Store Detail",
+                param: {
+                    storeId: storeId,
+                }
+            });
+        },
         byShopTypeSelectorChange() {
             // this.getByShop();
         },
-        byShopTimeRangeSelectorChange() {
+        byShopDateRangeSelectorChange() {
             this.getByShop();
         },
         async getByShop() {
@@ -515,33 +397,6 @@ export default {
             }
         },
 
-        async initByFloorOptions() {
-            await this.$store.dispatch('inStoreTraffic/getAll').then(() => {
-                let devices = this.$store.getters["inStoreTraffic/models"];
-                let tmpByFloor = [];
-                for (let i = 0; i < devices.length; i++) {
-                    let doesByFloorExist = false;
-                    for (let j = 0; j < tmpByFloor.length; j++) {
-                        if (devices[i].floor == tmpByFloor[j].id) {
-                            doesByFloorExist = true;
-                            break;
-                        }
-                    }
-                    if (!doesByFloorExist) {
-                        tmpByFloor.push({
-                            id: devices[i].floor,
-                            name: devices[i].floor,
-                            enter: 0,
-                            exit: 0,
-                            return: 0,
-                            passing: 0,
-                            icon: "fa-solid fa-layer-group"
-                        });
-                    }
-                }
-                this.byFloor = tmpByFloor;
-            });
-        },
         byFloorSelectorChange() {
             // this.getByFloor();
         },
@@ -574,6 +429,45 @@ export default {
                 return value.passing;
             } else {
                 return 0;
+            }
+        },
+
+        totalTrafficsDateRangeSelectorChange() {
+            this.getTotalTraffics();
+        },
+        totalTrafficsStartDateChange() {
+            this.getTotalTraffics();
+        },
+        totalTrafficsEndDateChange() {
+            this.getTotalTraffics();
+        },
+        async getTotalTraffics() {
+            if (this.totalTrafficsSelectedDateRange == 'custom') {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${this.totalTrafficsSelectedStartDate},${this.totalTrafficsSelectedEndDate}`
+                }).then(() => {
+                    let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                    this.totalTraffics = {
+                        enter: totalTraffics.enter,
+                        exit: totalTraffics.exit,
+                        return: totalTraffics.return,
+                        passing: totalTraffics.passing,
+                    };
+                });
+            } else {
+                await this.$store.dispatch('decode/decodeDateRange', this.totalTrafficsSelectedDateRange).then((dateRange) => {
+                    this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                        param: `date=${dateRange}`
+                    }).then(() => {
+                        let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                        this.totalTraffics = {
+                            enter: totalTraffics.enter,
+                            exit: totalTraffics.exit,
+                            return: totalTraffics.return,
+                            passing: totalTraffics.passing,
+                        };
+                    });
+                });
             }
         },
 

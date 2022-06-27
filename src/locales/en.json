@@ -116,7 +116,7 @@
     "byFloor": "By Floor",
     "byBrand": "By Brand",
     "type": "Type",
-    "timeRange": "Time Range",
+    "dateRange": "Date Range",
     "phoneRepair": "Phone Repair",
     "all": "All"
   },
@@ -126,7 +126,7 @@
     { "id": "return", "name": "Return" },
     { "id": "passing", "name": "Passing" }
   ],
-  "timeRangeOptions": [
+  "dateRangeOptions": [
     { "id": "all", "name": "All" },
     { "id": "today", "name": "Today" },
     { "id": "yesterday", "name": "Yesterday" },
@@ -136,5 +136,17 @@
     { "id": "lastMonth", "name": "Last Month" },
     { "id": "yearTillDate", "name": "Year Till Date" },
     { "id": "lastYear", "name": "Last Year" }
+  ],
+  "customDateRangeOptions": [
+    { "id": "all", "name": "All" },
+    { "id": "today", "name": "Today" },
+    { "id": "yesterday", "name": "Yesterday" },
+    { "id": "weekTillDate", "name": "Week Till Date" },
+    { "id": "lastWeek", "name": "Last Week" },
+    { "id": "monthTillDate", "name": "Month Till Date" },
+    { "id": "lastMonth", "name": "Last Month" },
+    { "id": "yearTillDate", "name": "Year Till Date" },
+    { "id": "lastYear", "name": "Last Year" },
+    { "id": "custom", "name": "Custom" }
   ]
 }
