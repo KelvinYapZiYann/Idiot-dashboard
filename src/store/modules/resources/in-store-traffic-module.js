@@ -22,24 +22,22 @@ const mutations = {
     },
     SET_RESOURCES: (state, response) => {
         state.models = [];
-        response.data.forEach((item) => {
-            let fields = item.fields;
+        response.forEach((item) => {
             let obj = {};
-            obj.id = item.id;
-            for (let key in fields) {
-                obj[key] = fields[key];
+            for (let key in item) {
+                obj[key] = item[key];
             }
             state.models.push(obj);
         });
-        state.data = {
-            'canAdd': response.meta.canAdd,
-            'currentPage': response.meta.current_page,
-            'from': response.meta.from,
-            'to': response.meta.to,
-            'total': response.meta.total,
-            'perPage': response.meta.per_page,
-            'links': response.meta.links,
-        }
+        // state.data = {
+        //     'canAdd': response.meta.canAdd,
+        //     'currentPage': response.meta.current_page,
+        //     'from': response.meta.from,
+        //     'to': response.meta.to,
+        //     'total': response.meta.total,
+        //     'perPage': response.meta.per_page,
+        //     'links': response.meta.links,
+        // }
     },
     SET_RESOURCE: (state, response) => {
         let fields = response.data.fields;
@@ -76,8 +74,8 @@ const actions = {
             console.error(e);
         });
     },
-    get({commit}, param) {
-        return service.get(param).then((response) => {
+    getAll({commit}, param) {
+        return service.getAll(param).then((response) => {
             commit('SET_RESOURCES', response);
         }).catch((e) => {
             console.error(e);

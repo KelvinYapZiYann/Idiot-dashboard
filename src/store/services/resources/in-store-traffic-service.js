@@ -15,7 +15,7 @@ function getDetail(param) {
     });
 }
 
-function get(param) {
+function getAll(param) {
     if (param) {
         if (typeof param == "number") {
             return axios.get(`${url}/device?page=${param}`, config).then(response => {
@@ -41,7 +41,7 @@ function get(param) {
             }
         }
     } else {
-        return axios.get(`${url}/device`, config).then(response => {
+        return axios.get(`${url}/details/device`, config).then(response => {
             return response.data;
         });
     }
@@ -92,12 +92,12 @@ function getTotalTraffics(param) {
 export default {
     getDetail,
     
-    get,
+    getAll,
     getById,
     create,
     add,
     update,
     remove,
-    
+
     getTotalTraffics,
   };

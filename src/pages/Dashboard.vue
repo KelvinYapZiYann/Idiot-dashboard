@@ -10,23 +10,16 @@
                             :label="$t('dashboard.type')"
                             v-model="byShopSelectedType"
                             :options="$t('typeOptions')"
-                            class="col-6"
+                            class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byShopTypeSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
                             :label="$t('dashboard.timeRange')"
                             v-model="byShopSelectedDateRange"
                             :options="$t('timeRangeOptions')"
-                            class="col-6"
+                            class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byShopTimeRangeSelectorChange"
                         ></base-selector-input>
-                        <!-- <base-selector-input
-                            :label="$t('dashboard.byShop')"
-                            v-model="byShopSelectedByShop"
-                            :options="byShopOptions"
-                            class="col-4"
-                            @input="byShopByShopSelectorChange"
-                        ></base-selector-input> -->
                     </div>
                     <div class="row">
                         <div 
@@ -39,51 +32,12 @@
                                 <span class="font-italic">{{ decodeByShopValue(value) }}</span>
                             </div>
                             <div class="mb-1">
-                                <i class="fa-solid fa-shop card-category-icon warning"></i>
+                                <i class="fa-solid fa-shop card-category-icon warning" @click="goToStore(value.id)"></i>
                             </div>
                         </div>
                     </div>
                 </category-card>
             </div>
-
-            <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                <category-card
-                    :title="$t('dashboard.byBusinessType')"
-                >
-                    <div class="row">
-                        <base-selector-input
-                            :label="$t('dashboard.type')"
-                            v-model="byBusinessTypeSelectedType"
-                            :options="$t('typeOptions')"
-                            class="col-6"
-                            @input="byBusinessTypeSelectorChange"
-                        ></base-selector-input>
-                        <base-selector-input
-                            :label="$t('dashboard.timeRange')"
-                            v-model="byBusinessTypeSelectedTimeRange"
-                            :options="$t('timeRangeOptions')"
-                            class="col-6"
-                            @input="byBusinessTypeTimeRangeSelectorChange"
-                            v-show="false"
-                        ></base-selector-input>
-                    </div>
-                    <div class="row">
-                        <div 
-                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
-                            v-for="(value, i) in byBusinessType"
-                            :key="i"
-                        >
-                            <div class="mb-1 font-weight-bold">
-                                <span>{{ value.name }}: </span>
-                                <span class="font-italic">{{ value.count }}</span>
-                            </div>
-                            <div class="mb-1">
-                                <i class="card-category-icon primary" :class="value.icon"></i>
-                            </div>
-                        </div>
-                    </div>
-                </category-card>
-            </div> -->
 
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <category-card
@@ -94,16 +48,15 @@
                             :label="$t('dashboard.type')"
                             v-model="byFloorSelectedType"
                             :options="$t('typeOptions')"
-                            class="col-6"
+                            class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byFloorSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
                             :label="$t('dashboard.timeRange')"
-                            v-model="byFloorSelectedTimeRange"
+                            v-model="byFloorSelectedDateRange"
                             :options="$t('timeRangeOptions')"
-                            class="col-6"
-                            @input="byFloorTimeRangeSelectorChange"
-                            v-show="false"
+                            class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
+                            @input="byFloorDateRangeSelectorChange"
                         ></base-selector-input>
                     </div>
                     <div class="row">
@@ -114,7 +67,7 @@
                         >
                             <div class="mb-1 font-weight-bold">
                                 <span>{{ value.name }}: </span>
-                                <span class="font-italic">{{ value.count }}</span>
+                                <span class="font-italic">{{ decodeByFloorValue(value) }}</span>
                             </div>
                             <div class="mb-1">
                                 <i class="card-category-icon success" :class="value.icon"></i>
@@ -337,20 +290,10 @@ export default {
             byShopSelectedType: "enter",
             byShopSelectedDateRange: "today",
             byShop: [],
-            byShopSelectedByShop: "all",
-            byShopOptions: [],
-
-            byBusinessTypeSelectedType: "enter",
-            byBusinessTypeSelectedTimeRange: "today",
-            byBusinessType: [],
 
             byFloorSelectedType: "enter",
-            byFloorSelectedTimeRange: "today",
+            byFloorSelectedDateRange: "today",
             byFloor: [],
-
-            byBrandSelectedType: "enter",
-            byBrandSelectedTimeRange: "today",
-            byBrand: [],
 
             totalTrafficsEnter: 0,
             totalTrafficsExit: 0,
@@ -397,14 +340,14 @@ export default {
     },
     mounted() {
         this.initResource();
-        this.getByShopOptions().then(() => {
+        this.initByShopOptions().then(() => {
             this.getByShop();
+        });
+        this.initByFloorOptions().then(() => {
+            this.getByFloor();
         });
         
         this.getResource();
-        // this.getByBusinessType();
-        this.getByFloor();
-        // this.getByBrand();
     },
     methods: {
         async getResource() {
@@ -512,10 +455,17 @@ export default {
             this.options = [];
         },
 
-        async getByShopOptions() {
+        goToStore(storeId) {
+            this.$router.push({
+                name: "Store Detail",
+                param: {
+                    storeId: storeId,
+                }
+            });
+        },
+        async initByShopOptions() {
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
-                // this.byShop = [];
                 let tmpByShop = [];
                 for (let i = 0; i < stores.length; i++) {
                     tmpByShop.push({
@@ -528,30 +478,14 @@ export default {
                     });
                 }
                 this.byShop = tmpByShop;
-                // this.byShopOptions = [];
-                // let tmpByShopOptions = [{
-                //     id: "all",
-                //     name: "All",
-                // }];
-                // for (let i = 0; i < stores.length; i++) {
-                //     tmpByShopOptions.push({
-                //         id: stores[i].store_id,
-                //         name: stores[i].store_name,
-                //     });
-                // }
-                // this.byShopOptions = tmpByShopOptions;
-
             });
         },
         byShopTypeSelectorChange() {
-            this.getByShop();
+            // this.getByShop();
         },
         byShopTimeRangeSelectorChange() {
             this.getByShop();
         },
-        // byShopByShopSelectorChange() {
-            // this.getByShop();
-        // },
         async getByShop() {
             await this.$store.dispatch('decode/decodeDateRange', this.byShopSelectedDateRange).then((dateRange) => {
                 for (let i = 0; i < this.byShop.length; i++) {
@@ -566,7 +500,6 @@ export default {
                     });
                 }
             });
-                
         },
         decodeByShopValue(value) {
             if (this.byShopSelectedType == 'enter') {
@@ -581,203 +514,67 @@ export default {
                 return 0;
             }
         },
-        byBusinessTypeSelectorChange() {
-            this.getByBusinessType();
-        },
-        byBusinessTypeTimeRangeSelectorChange() {
-            this.getByBusinessType();
-        },
-        async getByBusinessType() {
-            this.byBusinessType = [];
-            let tmpByBusinessType = [];
-            await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                for (let i = 0; i < stores.length; i++) {
-                    for (let j = 0; j < stores[i].devices.length; j++) {
-                        let subtype = JSON.parse(stores[i].devices[j].subtype);
-                        this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
-                            let model = this.$store.getters["dashboard/models"][0];
-                            let doesBusinessTypeExist = false;
-                            for (let k = 0; k < tmpByBusinessType.length; k++) {
-                                if (tmpByBusinessType[k].name == subtype.businessType) {
-                                    if (this.byBusinessTypeSelectedType == 'enter') {
-                                        tmpByBusinessType[k].count += model.enter;
-                                    } else if (this.byBusinessTypeSelectedType == 'exit') {
-                                        tmpByBusinessType[k].count += model.exit;
-                                    } else if (this.byBusinessTypeSelectedType == 'return') {
-                                        tmpByBusinessType[k].count += model.return;
-                                    } else if (this.byBusinessTypeSelectedType == 'passing') {
-                                        tmpByBusinessType[k].count += model.passing;
-                                    }
-                                    doesBusinessTypeExist = true;
-                                    break;
-                                }
-                            }
-                            if (!doesBusinessTypeExist) {
-                                if (this.byBusinessTypeSelectedType == 'enter') {
-                                    tmpByBusinessType.push({
-                                        name: subtype.businessType,
-                                        count: model.enter,
-                                        icon: subtype.businessTypeIcon,
-                                    });
-                                } else if (this.byBusinessTypeSelectedType == 'exit') {
-                                    tmpByBusinessType.push({
-                                        name: subtype.businessType,
-                                        count: model.exit,
-                                        icon: subtype.businessTypeIcon,
-                                    });
-                                } else if (this.byBusinessTypeSelectedType == 'return') {
-                                    tmpByBusinessType.push({
-                                        name: subtype.businessType,
-                                        count: model.return,
-                                        icon: subtype.businessTypeIcon,
-                                    });
-                                } else if (this.byBusinessTypeSelectedType == 'passing') {
-                                    tmpByBusinessType.push({
-                                        name: subtype.businessType,
-                                        count: model.passing,
-                                        icon: subtype.businessTypeIcon,
-                                    });
-                                }
-                            }
-                            
+
+        async initByFloorOptions() {
+            await this.$store.dispatch('inStoreTraffic/getAll').then(() => {
+                let devices = this.$store.getters["inStoreTraffic/models"];
+                let tmpByFloor = [];
+                for (let i = 0; i < devices.length; i++) {
+                    let doesByFloorExist = false;
+                    for (let j = 0; j < tmpByFloor.length; j++) {
+                        if (devices[i].floor == tmpByFloor[j].id) {
+                            doesByFloorExist = true;
+                            break;
+                        }
+                    }
+                    if (!doesByFloorExist) {
+                        tmpByFloor.push({
+                            id: devices[i].floor,
+                            name: devices[i].floor,
+                            enter: 0,
+                            exit: 0,
+                            return: 0,
+                            passing: 0,
+                            icon: "fa-solid fa-layer-group"
                         });
                     }
-                    
                 }
-                this.byBusinessType = tmpByBusinessType;
-            });
-        },
-        byFloorSelectorChange() {
-            this.getByFloor();
-        },
-        byFloorTimeRangeSelectorChange() {
-            this.getByFloor();
-        },
-        async getByFloor() {
-            this.byFloor = [];
-            let tmpByFloor = [];
-            await this.$store.dispatch('store/getAll').then(() => {
-                // let stores = this.$store.getters["store/models"];
-                // console.log(stores);
-                // for (let i = 0; i < stores.length; i++) {
-                //     for (let j = 0; j < stores[i].devices.length; j++) {
-                //         let subtype = JSON.parse(stores[i].devices[j].subtype);
-                //         this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
-                //             let model = this.$store.getters["dashboard/models"][0];
-                //             let doesByFloorExist = false;
-                //             for (let k = 0; k < tmpByFloor.length; k++) {
-                //                 if (tmpByFloor[k].name == subtype.floor) {
-                //                     if (this.byFloorSelectedType == 'enter') {
-                //                         tmpByFloor[k].count += model.enter;
-                //                     } else if (this.byFloorSelectedType == 'exit') {
-                //                         tmpByFloor[k].count += model.exit;
-                //                     } else if (this.byFloorSelectedType == 'return') {
-                //                         tmpByFloor[k].count += model.return;
-                //                     } else if (this.byFloorSelectedType == 'passing') {
-                //                         tmpByFloor[k].count += model.passing;
-                //                     }
-                //                     doesByFloorExist = true;
-                //                     break;
-                //                 }
-                //             }
-                //             if (!doesByFloorExist) {
-                //                 if (this.byFloorSelectedType == 'enter') {
-                //                     tmpByFloor.push({
-                //                         name: subtype.floor,
-                //                         count: model.enter,
-                //                         icon: "fa-solid fa-layer-group",
-                //                     });
-                //                 } else if (this.byFloorSelectedType == 'exit') {
-                //                     tmpByFloor.push({
-                //                         name: subtype.floor,
-                //                         count: model.exit,
-                //                         icon: "fa-solid fa-layer-group",
-                //                     });
-                //                 } else if (this.byFloorSelectedType == 'return') {
-                //                     tmpByFloor.push({
-                //                         name: subtype.floor,
-                //                         count: model.return,
-                //                         icon: "fa-solid fa-layer-group",
-                //                     });
-                //                 } else if (this.byFloorSelectedType == 'passing') {
-                //                     tmpByFloor.push({
-                //                         name: subtype.floor,
-                //                         count: model.passing,
-                //                         icon: "fa-solid fa-layer-group",
-                //                     });
-                //                 }
-                //             }
-                //         });
-                //     }
-                // }
                 this.byFloor = tmpByFloor;
             });
         },
-        byBrandSelectorChange() {
-            this.getByBrand();
+        byFloorSelectorChange() {
+            // this.getByFloor();
         },
-        byBrandTimeRangeSelectorChange() {
-            this.getByBrand();
+        byFloorDateRangeSelectorChange() {
+            this.getByFloor();
         },
-        async getByBrand() {
-            this.byBrand = [];
-            let tmpByBrand = [];
-            await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                for (let i = 0; i < stores.length; i++) {
-                    for (let j = 0; j < stores[i].devices.length; j++) {
-                        let subtype = JSON.parse(stores[i].devices[j].subtype);
-                        this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
-                            let model = this.$store.getters["dashboard/models"][0];
-                            let doesByBrandExist = false;
-                            for (let k = 0; k < tmpByBrand.length; k++) {
-                                if (tmpByBrand[k].name == subtype.brand) {
-                                    if (this.byBrandSelectedType == 'enter') {
-                                        tmpByBrand[k].count += model.enter;
-                                    } else if (this.byBrandSelectedType == 'exit') {
-                                        tmpByBrand[k].count += model.exit;
-                                    } else if (this.byBrandSelectedType == 'return') {
-                                        tmpByBrand[k].count += model.return;
-                                    } else if (this.byBrandSelectedType == 'passing') {
-                                        tmpByBrand[k].count += model.passing;
-                                    }
-                                    doesByBrandExist = true;
-                                    break;
-                                }
-                            }
-                            if (!doesByBrandExist) {
-                                if (this.byBrandSelectedType == 'enter') {
-                                    tmpByBrand.push({
-                                        name: this.$t("dashboard.all"),
-                                        count: model.enter,
-                                        icon: "fa-solid fa-tags",
-                                    });
-                                } else if (this.byBrandSelectedType == 'exit') {
-                                    tmpByBrand.push({
-                                        name: this.$t("dashboard.all"),
-                                        count: model.exit,
-                                        icon: "fa-solid fa-tags",
-                                    });
-                                } else if (this.byBrandSelectedType == 'return') {
-                                    tmpByBrand.push({
-                                        name: this.$t("dashboard.all"),
-                                        count: model.return,
-                                        icon: "fa-solid fa-tags",
-                                    });
-                                } else if (this.byBrandSelectedType == 'passing') {
-                                    tmpByBrand.push({
-                                        name: this.$t("dashboard.all"),
-                                        count: model.passing,
-                                        icon: "fa-solid fa-tags",
-                                    });
-                                }
-                            }
-                        });
-                    }
+        async getByFloor() {
+            await this.$store.dispatch('decode/decodeDateRange', this.byFloorSelectedDateRange).then((dateRange) => {
+                for (let i = 0; i < this.byFloor.length; i++) {
+                    this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                        param: `floor=${this.byFloor[i].id}&date=${dateRange}`
+                    }).then(() => {
+                        let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                        this.byFloor[i].enter = totalTraffics.enter;
+                        this.byFloor[i].exit = totalTraffics.exit;
+                        this.byFloor[i].return = totalTraffics.return;
+                        this.byFloor[i].passing = totalTraffics.passing;
+                    });
                 }
-                this.byBrand = tmpByBrand;
             });
+        },
+        decodeByFloorValue(value) {
+            if (this.byFloorSelectedType == 'enter') {
+                return value.enter;
+            } else if (this.byFloorSelectedType == 'exit') {
+                return value.exit;
+            } else if (this.byFloorSelectedType == 'return') {
+                return value.return;
+            } else if (this.byFloorSelectedType == 'passing') {
+                return value.passing;
+            } else {
+                return 0;
+            }
         },
 
         async getLineChartTimeRange(value) {
