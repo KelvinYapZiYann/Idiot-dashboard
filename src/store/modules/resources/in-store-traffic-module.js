@@ -4,6 +4,8 @@ const state = {
     models: [],
     data: {},
     selector: {},
+
+    totalTraffics: {},
 };
 
 const mutations = {
@@ -60,6 +62,10 @@ const mutations = {
             state.selector[field] = options;
         }
     },
+
+    SET_TOTAL_TRAFFICS: (state, response) => {
+        state.totalTraffics = response;
+    },
 };
 
 const actions = {
@@ -106,12 +112,21 @@ const actions = {
             console.error(e);
         });
     },
+
+    getTotalTraffics({commit}, param) {
+        return service.getTotalTraffics(param.param).then((response) => {
+            commit('SET_TOTAL_TRAFFICS', response);
+        }).catch((e) => {
+            console.error(e);
+        });
+    },
 };
 
 const getters = {
     models: state => state.models,
     data: state => state.data,
     selector: state => state.selector,
+    totalTraffics: state => state.totalTraffics,
 };
 
 const store = {

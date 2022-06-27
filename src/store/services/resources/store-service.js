@@ -10,7 +10,7 @@ const config = {
 };
 
 function getAll() {
-    return axios.get(`${url}/details/all`, config).then(response => {
+    return axios.get(`${url}/details/store`, config).then(response => {
         return response.data;
     });
 }

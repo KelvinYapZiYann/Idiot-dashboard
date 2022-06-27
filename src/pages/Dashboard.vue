@@ -10,23 +10,23 @@
                             :label="$t('dashboard.type')"
                             v-model="byShopSelectedType"
                             :options="$t('typeOptions')"
-                            class="col-4"
+                            class="col-6"
                             @input="byShopTypeSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
                             :label="$t('dashboard.timeRange')"
-                            v-model="byShopSelectedTimeRange"
+                            v-model="byShopSelectedDateRange"
                             :options="$t('timeRangeOptions')"
-                            class="col-4"
+                            class="col-6"
                             @input="byShopTimeRangeSelectorChange"
                         ></base-selector-input>
-                        <base-selector-input
+                        <!-- <base-selector-input
                             :label="$t('dashboard.byShop')"
                             v-model="byShopSelectedByShop"
                             :options="byShopOptions"
                             class="col-4"
                             @input="byShopByShopSelectorChange"
-                        ></base-selector-input>
+                        ></base-selector-input> -->
                     </div>
                     <div class="row">
                         <div 
@@ -36,7 +36,7 @@
                         >
                             <div class="mb-1 font-weight-bold">
                                 <span>{{ value.name }}: </span>
-                                <span class="font-italic">{{ value.count }}</span>
+                                <span class="font-italic">{{ decodeByShopValue(value) }}</span>
                             </div>
                             <div class="mb-1">
                                 <i class="fa-solid fa-shop card-category-icon warning"></i>
@@ -163,7 +163,7 @@
                 </category-card>
             </div> -->
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="todayEnter ? todayEnter : '0'"
@@ -208,7 +208,6 @@
                     type="primary"
                     icon="fas fa-sign-in-alt"
                     >
-                    <!-- <div slot="footer" v-html="asd"></div> -->
                 </stats-card>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -238,9 +237,9 @@
                     >
                 </stats-card>
             </div>
-        </div>
+        </div> -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
                     :sub-title="$t('date.today')"
@@ -274,9 +273,9 @@
                     >
                 </traffics-card>
             </div>
-        </div>
+        </div> -->
 
-        <traffic-trend-line-chart
+        <!-- <traffic-trend-line-chart
             type="15min"
             :labels="minuteLineChart.labels"
             :enters="minuteLineChart.enters"
@@ -313,30 +312,30 @@
             :options="options"
             @optionChange="getLineChartDateRange"
         >
-        </traffic-trend-line-chart>
+        </traffic-trend-line-chart> -->
     </div>
 </template>
 <script>
 import {
     CategoryCard,
     BaseSelectorInput,
-    StatsCard,
-    TrafficsCard,
-    TrafficTrendLineChart,
+    // StatsCard,
+    // TrafficsCard,
+    // TrafficTrendLineChart,
 } from "@/components/index";
 
 export default {
     components: {
         CategoryCard,
         BaseSelectorInput,
-        StatsCard,
-        TrafficsCard,
-        TrafficTrendLineChart,
+        // StatsCard,
+        // TrafficsCard,
+        // TrafficTrendLineChart,
     },
     data() {
         return {
             byShopSelectedType: "enter",
-            byShopSelectedTimeRange: "today",
+            byShopSelectedDateRange: "today",
             byShop: [],
             byShopSelectedByShop: "all",
             byShopOptions: [],
@@ -398,7 +397,10 @@ export default {
     },
     mounted() {
         this.initResource();
-        this.getByShop();
+        this.getByShopOptions().then(() => {
+            this.getByShop();
+        });
+        
         this.getResource();
         // this.getByBusinessType();
         this.getByFloor();
@@ -406,97 +408,97 @@ export default {
     },
     methods: {
         async getResource() {
-            let loader = this.$loading.show();
-            try {
-                let today = this.$moment();
-                let currentDay = parseInt(today.format('D'));
-                let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
-                let yesterday = parseInt(today.subtract(2, 'days').format('D'));
-                let thisWeekStartDateString = today.subtract(5, 'days').format('YYYY-MM-DD');
-                let lastWeekEndDateString = today.subtract(1, 'days').format('YYYY-MM-DD');
-                let lastWeekStartDateString = today.subtract(6, 'days').format('YYYY-MM-DD');
-                today = this.$moment();
-                let thisMonthStartDateString = today.startOf('month').format('YYYY-MM-DD');
-                let thisMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
-                let lastMonthStartDateString = today.subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
-                let lastMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
+            // let loader = this.$loading.show();
+            // try {
+            //     let today = this.$moment();
+            //     let currentDay = parseInt(today.format('D'));
+            //     let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+            //     let yesterday = parseInt(today.subtract(2, 'days').format('D'));
+            //     let thisWeekStartDateString = today.subtract(5, 'days').format('YYYY-MM-DD');
+            //     let lastWeekEndDateString = today.subtract(1, 'days').format('YYYY-MM-DD');
+            //     let lastWeekStartDateString = today.subtract(6, 'days').format('YYYY-MM-DD');
+            //     today = this.$moment();
+            //     let thisMonthStartDateString = today.startOf('month').format('YYYY-MM-DD');
+            //     let thisMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
+            //     let lastMonthStartDateString = today.subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+            //     let lastMonthEndDateString = today.endOf('month').format('YYYY-MM-DD');
 
-                await this.$store.dispatch('store/getAll').then(() => {
-                    let stores = this.$store.getters["store/models"];
-                    this.options.push({
-                        id: "all",
-                        name: "All"
-                    });
-                    stores.forEach((store) => {
-                        store.devices.forEach((device) => {
-                            this.options.push({
-                                id: device.device_id,
-                                name: device.device_description
-                            });
-                            this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
-                                let model = this.$store.getters["dashboard/models"][0];
-                                if (model) {
-                                    this.totalTrafficsEnter += model.enter;
-                                    this.totalTrafficsExit += model.exit;
-                                    this.totalTrafficsReturn += model.return;
-                                    this.totalTrafficsPassing += model.passing;
-                                }
-                            });
+            //     await this.$store.dispatch('store/getAll').then(() => {
+            //         let stores = this.$store.getters["store/models"];
+            //         this.options.push({
+            //             id: "all",
+            //             name: "All"
+            //         });
+            //         stores.forEach((store) => {
+            //             store.devices.forEach((device) => {
+            //                 this.options.push({
+            //                     id: device.device_id,
+            //                     name: device.device_description
+            //                 });
+            //                 this.$store.dispatch('dashboard/getTotalTraffics', {storeId: store.store_id, deviceId: device.device_id}).then(() => {
+            //                     let model = this.$store.getters["dashboard/models"][0];
+            //                     if (model) {
+            //                         this.totalTrafficsEnter += model.enter;
+            //                         this.totalTrafficsExit += model.exit;
+            //                         this.totalTrafficsReturn += model.return;
+            //                         this.totalTrafficsPassing += model.passing;
+            //                     }
+            //                 });
 
-                            this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisWeekStartDateString, endDate: todayDateString}).then(() => {
-                                let models = this.$store.getters["dashboard/models"];
-                                models.forEach((model) => {
-                                    this.thisWeekEnter += model.enter;
-                                    this.thisWeekExit += model.exit;
-                                    let day = model.date.substring(8, 10);
-                                    if (parseInt(day) == (currentDay)) {
-                                        this.todayEnter += model.enter;
-                                        this.todayExit += model.exit;
-                                        this.todayReturn += model.return;
-                                        this.todayPassing += model.passing;
-                                    } else if (parseInt(day) == parseInt(yesterday)) {
-                                        this.yesterdayEnter += model.enter;
-                                        this.yesterdayExit += model.exit;
-                                    }
-                                });
-                            });
+            //                 this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisWeekStartDateString, endDate: todayDateString}).then(() => {
+            //                     let models = this.$store.getters["dashboard/models"];
+            //                     models.forEach((model) => {
+            //                         this.thisWeekEnter += model.enter;
+            //                         this.thisWeekExit += model.exit;
+            //                         let day = model.date.substring(8, 10);
+            //                         if (parseInt(day) == (currentDay)) {
+            //                             this.todayEnter += model.enter;
+            //                             this.todayExit += model.exit;
+            //                             this.todayReturn += model.return;
+            //                             this.todayPassing += model.passing;
+            //                         } else if (parseInt(day) == parseInt(yesterday)) {
+            //                             this.yesterdayEnter += model.enter;
+            //                             this.yesterdayExit += model.exit;
+            //                         }
+            //                     });
+            //                 });
 
-                            this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastWeekStartDateString, endDate: lastWeekEndDateString}).then(() => {
-                                let models = this.$store.getters["dashboard/models"];
-                                models.forEach((model) => {
-                                    this.lastWeekEnter += model.enter;
-                                    this.lastWeekExit += model.exit;
-                                });
-                            });
+            //                 this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastWeekStartDateString, endDate: lastWeekEndDateString}).then(() => {
+            //                     let models = this.$store.getters["dashboard/models"];
+            //                     models.forEach((model) => {
+            //                         this.lastWeekEnter += model.enter;
+            //                         this.lastWeekExit += model.exit;
+            //                     });
+            //                 });
 
-                            if ((currentDay) == 1) {
-                                this.thisMonthEnter = this.todayEnter;
-                                this.thisMonthExit = this.todayExit;
-                            } else {
-                                this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisMonthStartDateString, endDate: thisMonthEndDateString}).then(() => {
-                                    let models = this.$store.getters["dashboard/models"];
-                                    models.forEach((model) => {
-                                        this.thisMonthEnter += model.enter;
-                                        this.thisMonthExit += model.exit;
-                                    });
-                                });
-                            }
+            //                 if ((currentDay) == 1) {
+            //                     this.thisMonthEnter = this.todayEnter;
+            //                     this.thisMonthExit = this.todayExit;
+            //                 } else {
+            //                     this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: thisMonthStartDateString, endDate: thisMonthEndDateString}).then(() => {
+            //                         let models = this.$store.getters["dashboard/models"];
+            //                         models.forEach((model) => {
+            //                             this.thisMonthEnter += model.enter;
+            //                             this.thisMonthExit += model.exit;
+            //                         });
+            //                     });
+            //                 }
                             
-                            this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastMonthStartDateString, endDate: lastMonthEndDateString}).then(() => {
-                                let models = this.$store.getters["dashboard/models"];
-                                models.forEach((model) => {
-                                    this.lastMonthEnter += model.enter;
-                                    this.lastMonthExit += model.exit;
-                                });
-                            });
-                        });
-                    });
-                });
-            } catch (e) {
-                console.error(e);
-            } finally {
-                loader.hide();
-            }
+            //                 this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: lastMonthStartDateString, endDate: lastMonthEndDateString}).then(() => {
+            //                     let models = this.$store.getters["dashboard/models"];
+            //                     models.forEach((model) => {
+            //                         this.lastMonthEnter += model.enter;
+            //                         this.lastMonthExit += model.exit;
+            //                     });
+            //                 });
+            //             });
+            //         });
+            //     });
+            // } catch (e) {
+            //     console.error(e);
+            // } finally {
+            //     loader.hide();
+            // }
         },
         initResource() {
             this.totalTrafficsEnter = 0;
@@ -510,43 +512,74 @@ export default {
             this.options = [];
         },
 
+        async getByShopOptions() {
+            await this.$store.dispatch('store/getAll').then(() => {
+                let stores = this.$store.getters["store/models"];
+                // this.byShop = [];
+                let tmpByShop = [];
+                for (let i = 0; i < stores.length; i++) {
+                    tmpByShop.push({
+                        id: stores[i].store_id,
+                        name: stores[i].store_name,
+                        enter: 0,
+                        exit: 0,
+                        return: 0,
+                        passing: 0,
+                    });
+                }
+                this.byShop = tmpByShop;
+                // this.byShopOptions = [];
+                // let tmpByShopOptions = [{
+                //     id: "all",
+                //     name: "All",
+                // }];
+                // for (let i = 0; i < stores.length; i++) {
+                //     tmpByShopOptions.push({
+                //         id: stores[i].store_id,
+                //         name: stores[i].store_name,
+                //     });
+                // }
+                // this.byShopOptions = tmpByShopOptions;
+
+            });
+        },
         byShopTypeSelectorChange() {
             this.getByShop();
         },
         byShopTimeRangeSelectorChange() {
             this.getByShop();
         },
-        byShopByShopSelectorChange() {
-            this.getByShop();
-        },
+        // byShopByShopSelectorChange() {
+            // this.getByShop();
+        // },
         async getByShop() {
-            this.byShop = [];
-            let tmpByShop = [];
-            await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                for (let i = 0; i < stores.length; i++) {
-                    let tmpByShopPerStore = {
-                        name: stores[i].store_name,
-                        count: 0,
-                    };
-                    for (let j = 0; j < stores[i].devices.length; j++) {
-                        this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
-                            let model = this.$store.getters["dashboard/models"][0];
-                            if (this.byShopSelectedType == 'enter') {
-                                tmpByShopPerStore.count += model.enter;
-                            } else if (this.byShopSelectedType == 'exit') {
-                                tmpByShopPerStore.count += model.exit;
-                            } else if (this.byShopSelectedType == 'return') {
-                                tmpByShopPerStore.count += model.return;
-                            } else if (this.byShopSelectedType == 'passing') {
-                                tmpByShopPerStore.count += model.passing;
-                            }
-                        });
-                    }
-                    tmpByShop.push(tmpByShopPerStore);
+            await this.$store.dispatch('decode/decodeDateRange', this.byShopSelectedDateRange).then((dateRange) => {
+                for (let i = 0; i < this.byShop.length; i++) {
+                    this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                        param: `store_id=${this.byShop[i].id}&date=${dateRange}`
+                    }).then(() => {
+                        let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                        this.byShop[i].enter = totalTraffics.enter;
+                        this.byShop[i].exit = totalTraffics.exit;
+                        this.byShop[i].return = totalTraffics.return;
+                        this.byShop[i].passing = totalTraffics.passing;
+                    });
                 }
-                this.byShop = tmpByShop;
             });
+                
+        },
+        decodeByShopValue(value) {
+            if (this.byShopSelectedType == 'enter') {
+                return value.enter;
+            } else if (this.byShopSelectedType == 'exit') {
+                return value.exit;
+            } else if (this.byShopSelectedType == 'return') {
+                return value.return;
+            } else if (this.byShopSelectedType == 'passing') {
+                return value.passing;
+            } else {
+                return 0;
+            }
         },
         byBusinessTypeSelectorChange() {
             this.getByBusinessType();
@@ -625,58 +658,59 @@ export default {
             this.byFloor = [];
             let tmpByFloor = [];
             await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                for (let i = 0; i < stores.length; i++) {
-                    for (let j = 0; j < stores[i].devices.length; j++) {
-                        let subtype = JSON.parse(stores[i].devices[j].subtype);
-                        this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
-                            let model = this.$store.getters["dashboard/models"][0];
-                            let doesByFloorExist = false;
-                            for (let k = 0; k < tmpByFloor.length; k++) {
-                                if (tmpByFloor[k].name == subtype.floor) {
-                                    if (this.byFloorSelectedType == 'enter') {
-                                        tmpByFloor[k].count += model.enter;
-                                    } else if (this.byFloorSelectedType == 'exit') {
-                                        tmpByFloor[k].count += model.exit;
-                                    } else if (this.byFloorSelectedType == 'return') {
-                                        tmpByFloor[k].count += model.return;
-                                    } else if (this.byFloorSelectedType == 'passing') {
-                                        tmpByFloor[k].count += model.passing;
-                                    }
-                                    doesByFloorExist = true;
-                                    break;
-                                }
-                            }
-                            if (!doesByFloorExist) {
-                                if (this.byFloorSelectedType == 'enter') {
-                                    tmpByFloor.push({
-                                        name: subtype.floor,
-                                        count: model.enter,
-                                        icon: "fa-solid fa-layer-group",
-                                    });
-                                } else if (this.byFloorSelectedType == 'exit') {
-                                    tmpByFloor.push({
-                                        name: subtype.floor,
-                                        count: model.exit,
-                                        icon: "fa-solid fa-layer-group",
-                                    });
-                                } else if (this.byFloorSelectedType == 'return') {
-                                    tmpByFloor.push({
-                                        name: subtype.floor,
-                                        count: model.return,
-                                        icon: "fa-solid fa-layer-group",
-                                    });
-                                } else if (this.byFloorSelectedType == 'passing') {
-                                    tmpByFloor.push({
-                                        name: subtype.floor,
-                                        count: model.passing,
-                                        icon: "fa-solid fa-layer-group",
-                                    });
-                                }
-                            }
-                        });
-                    }
-                }
+                // let stores = this.$store.getters["store/models"];
+                // console.log(stores);
+                // for (let i = 0; i < stores.length; i++) {
+                //     for (let j = 0; j < stores[i].devices.length; j++) {
+                //         let subtype = JSON.parse(stores[i].devices[j].subtype);
+                //         this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
+                //             let model = this.$store.getters["dashboard/models"][0];
+                //             let doesByFloorExist = false;
+                //             for (let k = 0; k < tmpByFloor.length; k++) {
+                //                 if (tmpByFloor[k].name == subtype.floor) {
+                //                     if (this.byFloorSelectedType == 'enter') {
+                //                         tmpByFloor[k].count += model.enter;
+                //                     } else if (this.byFloorSelectedType == 'exit') {
+                //                         tmpByFloor[k].count += model.exit;
+                //                     } else if (this.byFloorSelectedType == 'return') {
+                //                         tmpByFloor[k].count += model.return;
+                //                     } else if (this.byFloorSelectedType == 'passing') {
+                //                         tmpByFloor[k].count += model.passing;
+                //                     }
+                //                     doesByFloorExist = true;
+                //                     break;
+                //                 }
+                //             }
+                //             if (!doesByFloorExist) {
+                //                 if (this.byFloorSelectedType == 'enter') {
+                //                     tmpByFloor.push({
+                //                         name: subtype.floor,
+                //                         count: model.enter,
+                //                         icon: "fa-solid fa-layer-group",
+                //                     });
+                //                 } else if (this.byFloorSelectedType == 'exit') {
+                //                     tmpByFloor.push({
+                //                         name: subtype.floor,
+                //                         count: model.exit,
+                //                         icon: "fa-solid fa-layer-group",
+                //                     });
+                //                 } else if (this.byFloorSelectedType == 'return') {
+                //                     tmpByFloor.push({
+                //                         name: subtype.floor,
+                //                         count: model.return,
+                //                         icon: "fa-solid fa-layer-group",
+                //                     });
+                //                 } else if (this.byFloorSelectedType == 'passing') {
+                //                     tmpByFloor.push({
+                //                         name: subtype.floor,
+                //                         count: model.passing,
+                //                         icon: "fa-solid fa-layer-group",
+                //                     });
+                //                 }
+                //             }
+                //         });
+                //     }
+                // }
                 this.byFloor = tmpByFloor;
             });
         },

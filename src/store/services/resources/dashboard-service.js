@@ -11,7 +11,7 @@ const config = {
 };
 
 function getTotalTraffics(param) {
-    return axios.get(`${url}/device/total-traffics?store_id=${param.storeId}&device_id=${param.deviceId}`, config)
+    return axios.get(`${url}/device/total-traffics?${param}`, config)
         .then(response => {
             return response.data;
         });

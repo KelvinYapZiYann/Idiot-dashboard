@@ -135,6 +135,6 @@
     { "id": "monthTillDate", "name": "Month Till Date" },
     { "id": "lastMonth", "name": "Last Month" },
     { "id": "yearTillDate", "name": "Year Till Date" },
-    { "id": "last Year", "name": "Last Year" }
+    { "id": "lastYear", "name": "Last Year" }
   ]
 }

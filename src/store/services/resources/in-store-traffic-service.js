@@ -82,6 +82,13 @@ function remove(id) {
     });
 }
 
+function getTotalTraffics(param) {
+    return axios.get(`${url}/device/total-traffics?${param}`, config)
+        .then(response => {
+            return response.data;
+        });
+}
+
 export default {
     getDetail,
     
@@ -91,4 +98,6 @@ export default {
     add,
     update,
     remove,
+    
+    getTotalTraffics,
   };
