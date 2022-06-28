@@ -128,7 +128,7 @@
 					:extra-options="lineChart.extraOptions"
 				>
 				</line-chart>
-				<base-button slot="footer" type="primary" @click="generateExcel()" fill>
+				<base-button slot="footer" type="primary" @click="generateExcel()" fill v-show="false">
 					<i class="fas fa-table mr-1"></i>
 					{{$t('chart.generateExcel')}}
 				</base-button>

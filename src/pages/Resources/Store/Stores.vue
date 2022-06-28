@@ -1,102 +1,72 @@
 <template>
-  <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto">
-    <store-table
-      :resource="resource"
-      @getResource="getResource"
-    ></store-table>
-  </div>
+	<div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto">
+		<store-table
+			:resource="resource"
+			@getResource="getResource"
+		></store-table>
+	</div>
 </template>
 <script>
 import StoreTable from "@/components/Resources/Store/StoreTable";
 
 export default {
-  components: {
-    StoreTable
-  },
-  data() {
-    return {
-      resource: {
-        models: [],
-        data: {}
-      }
-    };
-  },
-  props: {
-    previousRouteParam: {
-      type: Object,
-      required: false,
-      default: () => {return {}},
-      description: "Previous Route Param"
-    }
-  },
-  mounted() {
-    this.getResource();
-  },
-  methods: {
-    async getResource() {
-      let loader = this.$loading.show();
-      try {
-        // await this.$store.dispatch('store/get', pageId).then(() => {
-        //   this.resource.models = this.$store.getters["store/models"]
-        //   this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
-        // });
-        await this.$store.dispatch('store/getAll').then(() => {
-          let stores = this.$store.getters["store/models"];
-          // this.resource.models = stores;
-          // console.log(stores[0]);
-          for (let i = 0; i < stores.length; i++) {
-            let tmpStore = stores[i];
-            tmpStore.enter = 0;
-            tmpStore.exit = 0;
-            for (let j = 0; j < stores[i].devices.length; j++) {
-              this.$store.dispatch('dashboard/getTotalTraffics', {storeId: stores[i].store_id, deviceId: stores[i].devices[j].device_id}).then(() => {
-                let model = this.$store.getters["dashboard/models"][0];
-                if (model) {
-                  let doesStoreExist = false;
-                  for (let k = 0; k < this.resource.models.length; k++) {
-                    if (stores[i].store_id == this.resource.models[k].store_id) {
-                      this.resource.models[k].enter += model.enter;
-                      this.resource.models[k].exit += model.exit;
-                      doesStoreExist = true;
-                      break;
-                    }
-                    // this.resource.models
-                  }
-                  if (!doesStoreExist) {
-                    tmpStore.enter = model.enter;
-                    tmpStore.exit = model.exit;
-                    this.resource.models.push(tmpStore);
-                  }
-                }
-                // if (i+1 == stores.length && j+1 == stores[i].devices.length) {
-                //   this.resource.models = stores;
-                //   loader.hide();
-                // }
-              });
-            }
-            // tmpModels[i].devices.forEach((device) => {
-            //   console.log('device id = ' + device.device_id);
-            //   this.$store.dispatch('store/getAll').then(() => {
-            //     this.$store.dispatch('dashboard/getTotalTraffics', {storeId: tmpModels[i].store_id, deviceId: device.device_id}).then(() => {
-            //       let model = this.$store.getters["dashboard/models"][0];
-            //       // this.resource.totalTrafficsEnter += model.enter;
-            //       // this.resource.totalTrafficsExit += model.exit;
-            //       tmpModels
-            //     });
-            //   });
-            // });
-          }
-          loader.hide();
-          // this.resource.data = Object.assign({}, this.$store.getters["store/data"]);
-        });
-      } catch (e) {
-          console.error(e);
-          loader.hide();
-      } finally {
-        loader.hide();
-      }
-    },
-  }
+	components: {
+		StoreTable
+	},
+	data() {
+		return {
+			resource: {
+				models: [],
+				data: {}
+			}
+		};
+	},
+	props: {
+		previousRouteParam: {
+			type: Object,
+			required: false,
+			default: () => {return {}},
+			description: "Previous Route Param"
+		}
+	},
+	mounted() {
+		this.getResource();
+	},
+	methods: {
+		async getResource() {
+			let loader = this.$loading.show();
+			try {
+				this.resource.models = [];
+				await this.$store.dispatch('store/getDetailAll').then(() => {
+					let stores = this.$store.getters["store/models"];
+					for (let i = 0; i < stores.length; i++) {
+						let tmpStore = stores[i];
+						tmpStore.enter = 0;
+						tmpStore.exit = 0;
+						this.$store.dispatch('decode/decodeDateRange', 'weekTillDate').then((dateRange) => {
+							this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+								param: `store_id=${tmpStore.id}&date=${dateRange}`
+							}).then((response) => {
+								let totalTraffics = response;
+								tmpStore.enter = totalTraffics.enter;
+								tmpStore.exit = totalTraffics.exit;
+								tmpStore.return = totalTraffics.return;
+								tmpStore.passing = totalTraffics.passing;
+								console.log(tmpStore);
+								this.resource.models.push(tmpStore);
+							});
+						});
+					}
+					loader.hide();
+				});
+			} catch (e) {
+				console.error(e);
+				loader.hide();
+			} finally {
+				loader.hide();
+			}
+		},
+	}
 };
 </script>
 <style>

@@ -70,6 +70,13 @@ const actions = {
             console.error(e);
         });
     },
+    getDetailAll({commit}) {
+        return service.getDetailAll().then((response) => {
+            commit('SET_RESOURCES_ALL', response);
+        }).catch((e) => {
+            console.error(e);
+        });
+    },
     get({commit}, pageId) {
         return service.get(pageId).then((response) => {
             commit('SET_RESOURCES', response);

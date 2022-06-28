@@ -15,6 +15,12 @@ function getAll() {
     });
 }
 
+function getDetailAll() {
+    return axios.get(`${url}/details/all`, config).then(response => {
+        return response.data;
+    });
+}
+
 function get(pageId) {
     if (pageId && typeof pageId == "number") {
         return axios.get(`${url}/store?page=${pageId}`, config).then(response => {
@@ -64,6 +70,7 @@ function remove(id) {
 
 export default {
     getAll,
+    getDetailAll,
     get,
     getById,
     create,
