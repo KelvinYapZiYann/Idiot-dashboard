@@ -111,12 +111,13 @@
                     multiple
                     class="select-info col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
                     size="large"
-                    v-model="totalTrafficsSelectedShops"
+                    v-model="totalTrafficsSelectedStores"
                     collapse-tags
                     :placeholder="$t('component.stores')"
+                    @change="totalTrafficsStoresChange"
                   >
                     <el-option
-                        v-for="option in totalTrafficsShopOptions"
+                        v-for="option in totalTrafficsStoreOptions"
                         class="select-info"
                         :value="option.value"
                         :label="option.label"
@@ -275,8 +276,8 @@ export default {
             totalTrafficsSelectedDateRange: "today",
             totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
             totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
-            totalTrafficsSelectedShops: "",
-            totalTrafficsShopOptions: [],
+            totalTrafficsSelectedStores: "",
+            totalTrafficsStoreOptions: [],
             totalTraffics: {
                 enter: 0,
                 exit: 0,
@@ -411,6 +412,7 @@ export default {
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
                 let tmpByStore = [];
+                let tmpStoreOptions = [];
                 for (let i = 0; i < stores.length; i++) {
                     tmpByStore.push({
                         id: stores[i].store_id,
@@ -420,8 +422,13 @@ export default {
                         return: 0,
                         passing: 0,
                     });
+                    tmpStoreOptions.push({
+                        value: stores[i].store_id,
+                        label: stores[i].store_name,
+                    });
                 }
                 this.byStore = tmpByStore;
+                this.totalTrafficsStoreOptions = tmpStoreOptions;
             });
         },
         async initDevice() {
@@ -539,10 +546,17 @@ export default {
         totalTrafficsEndDateChange() {
             this.getTotalTraffics();
         },
+        totalTrafficsStoresChange() {
+            this.getTotalTraffics();
+        },
         async getTotalTraffics() {
+            let param = '';
+            if (this.totalTrafficsSelectedStores.length > 0) {
+                param += `&store_id=${this.totalTrafficsSelectedStores.join()}`;
+            }
             if (this.totalTrafficsSelectedDateRange == 'custom') {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${this.totalTrafficsSelectedStartDate},${this.totalTrafficsSelectedEndDate}`
+                    param: `date=${this.totalTrafficsSelectedStartDate},${this.totalTrafficsSelectedEndDate}` + param
                 }).then(() => {
                     let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     this.totalTraffics = {
@@ -555,7 +569,7 @@ export default {
             } else {
                 await this.$store.dispatch('decode/decodeDateRange', this.totalTrafficsSelectedDateRange).then((dateRange) => {
                     this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                        param: `date=${dateRange}`
+                        param: `date=${dateRange}` + param
                     }).then(() => {
                         let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                         this.totalTraffics = {

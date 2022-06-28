@@ -7,6 +7,8 @@ import store from "./store";
 import i18n from "./i18n";
 
 import SideBar from "@/components/SidebarPlugin";
+import Element from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
 import VueLoadingOverlay from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import swal from "vue-sweetalert2";
@@ -18,6 +20,7 @@ import "@/assets/scss/dashboard.scss";
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 Vue.use(SideBar);
+Vue.use(Element);
 Vue.use(VueLoadingOverlay, {
   canCancel: false,
   color: '#1d8cf8',
