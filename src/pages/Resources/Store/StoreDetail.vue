@@ -106,10 +106,10 @@
         >
         </traffic-trend-line-chart>
 
-		<!-- <in-store-traffic-table
+		<in-store-traffic-table
 			:resource="inStoreTrafficResource"
-			@getResource="getResource"
-		></in-store-traffic-table> -->
+			@getResource="getInStoreTrafficResource"
+		></in-store-traffic-table>
 
 		<base-button slot="footer" type="primary" @click="handleBack()" fill>
 			<i class="fas fa-chevron-left mr-1"></i>
@@ -127,7 +127,7 @@ import {
 	CategoryCard,
 	TrafficTrendLineChart,
 } from "@/components/index";
-// import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
+import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
 import { Select, Option } from "element-ui";
 
 export default {
@@ -141,7 +141,7 @@ export default {
 		StatsCard,
 		CategoryCard,
 		TrafficTrendLineChart,
-		// InStoreTrafficTable,
+		InStoreTrafficTable,
 	},
 	props: {
 		storeId: {
@@ -183,6 +183,11 @@ export default {
 
 			trendLineChartLabels: [],
             trendLineChartLines: [],
+
+			inStoreTrafficResource: {
+				models: [],
+				data: {}
+			}
 		};
 	},
 	mounted() {
@@ -216,9 +221,14 @@ export default {
             });
 		},
 		async initDevice() {
-            await this.$store.dispatch('inStoreTraffic/getAll').then(() => {
+            await this.$store.dispatch('inStoreTraffic/getAll', {
+				param: {
+					storeId: this.storeId,
+				}
+			}).then(() => {
                 let devices = this.$store.getters["inStoreTraffic/models"];
                 let tmpDeviceOptions = [];
+				this.inStoreTrafficResource.models = [];
                 for (let i = 0; i < devices.length; i++) {
 					if (devices[i].store_id == this.storeId) {
 						tmpDeviceOptions.push({
@@ -226,6 +236,18 @@ export default {
 							label: devices[i].device_description,
 						});
 					}
+					this.$store.dispatch('decode/decodeDateRange', 'weekTillDate').then((dateRange) => {
+						this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+							param: `date=${dateRange}&device_id=${devices[i].device_id}`
+						}).then((response) => {
+							let tmpDevice = devices[i];
+							tmpDevice.enter = response.enter;
+							tmpDevice.exit = response.exit;
+							tmpDevice.return = response.return;
+							tmpDevice.passing = response.passing;
+							this.inStoreTrafficResource.models.push(tmpDevice);
+						});
+					});
                 }
                 this.totalTrafficsDeviceOptions = tmpDeviceOptions;
             });

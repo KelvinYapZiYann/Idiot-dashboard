@@ -90,7 +90,7 @@
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
-                {{ row.exit ? row.exit : '0' }}
+                {{ row.passing ? row.passing : '0' }}
               </td>
             </template>
           </base-table>
@@ -138,8 +138,8 @@ export default {
           store_name: this.$t('property.name'),
           store_address: this.$t('property.address'),
           inStoreTraffics: this.$t('component.inStoreTraffics'),
-          enter: this.$t('property.enter'),
-          exit: this.$t('property.exit'),
+          enter: this.$t('date.weekTillDate') + ' ' + this.$t('property.enter'),
+          passing: this.$t('date.weekTillDate') + ' ' + this.$t('property.passing'),
         },
       },
     //   searchQuery: "",

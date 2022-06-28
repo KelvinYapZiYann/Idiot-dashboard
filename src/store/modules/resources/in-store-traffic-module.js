@@ -75,7 +75,7 @@ const actions = {
         });
     },
     getAll({commit}, param) {
-        return service.getAll(param).then((response) => {
+        return service.getAll(param.param).then((response) => {
             commit('SET_RESOURCES', response);
         }).catch((e) => {
             console.error(e);

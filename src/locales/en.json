@@ -76,7 +76,8 @@
     "start": "Start",
     "end": "End",
     "am": "AM",
-    "pm": "PM"
+    "pm": "PM",
+    "weekTillDate": "Week Till Date"
   },
   "alert": {
     "logoutConfirmation": "Are you sure to logout?",
