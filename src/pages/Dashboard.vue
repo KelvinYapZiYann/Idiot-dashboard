@@ -14,7 +14,7 @@
                             @input="byStoreTypeSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
-                            :label="$t('dashboard.dateRange')"
+                            :label="$t('date.dateRange')"
                             v-model="byStoreSelectedDateRange"
                             :options="$t('dateRangeOptions')"
                             class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
@@ -52,7 +52,7 @@
                             @input="byFloorSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
-                            :label="$t('dashboard.dateRange')"
+                            :label="$t('date.dateRange')"
                             v-model="byFloorSelectedDateRange"
                             :options="$t('dateRangeOptions')"
                             class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
@@ -81,7 +81,7 @@
         <category-card :title="$t('component.total') + ' ' + $t('component.traffics')">
             <div class="row">
                 <base-selector-input
-                    :label="$t('dashboard.dateRange')"
+                    :label="$t('date.dateRange')"
                     v-model="totalTrafficsSelectedDateRange"
                     :options="$t('customDateRangeOptions')"
                     class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
@@ -203,7 +203,7 @@
                         :placeholder="$t('component.stores')"
                     >
                         <el-option
-                            v-for="option in comparisonTotalTrafficsTypeOptions"
+                            v-for="option in $t('multiTypeOptions')"
                             class="select-info"
                             :value="option.value"
                             :label="option.label"
@@ -289,19 +289,14 @@
             </div>
         </div>
 
-        <!-- <traffic-trend-line-chart
-            type="hourly"
-            :labels="minuteLineChart.labels"
-            :enters="minuteLineChart.enters"
-            :exits="minuteLineChart.exits"
-            :returns="minuteLineChart.returns"
-            :passings="minuteLineChart.passings"
-            @getLineChartTimeRange="getLineChartTimeRange"
-            :disableOption="false"
-            :options="options"
-            @optionChange="getLineChartTimeRange"
+        <traffic-trend-line-chart
+            :labels="trendLineChartLabels"
+            :lines="trendLineChartLines"
+            :storeOptions="totalTrafficsStoreOptions"
+            :deviceOptions="totalTrafficsDeviceOptions"
+            @trend-chart-change="trafficTrendChartChange"
         >
-        </traffic-trend-line-chart> -->
+        </traffic-trend-line-chart>
 
         <!-- <traffic-trend-line-chart
             type="15min"
@@ -350,9 +345,8 @@ import {
     CategoryCard,
     StatsCard,
     TrafficsCard,
-    // TrafficTrendLineChart,
+    TrafficTrendLineChart,
 } from "@/components/index";
-
 import { Select, Option } from "element-ui";
 
 export default {
@@ -364,7 +358,7 @@ export default {
         CategoryCard,
         StatsCard,
         TrafficsCard,
-        // TrafficTrendLineChart,
+        TrafficTrendLineChart,
     },
     data() {
         let today = this.$moment();
@@ -396,24 +390,6 @@ export default {
             comparisonTotalTrafficsSelectedDevices: "",
             comparisonTotalTrafficsDeviceOptions: [],
             comparisonTotalTrafficsTypes: ["enter", "passing"],
-            comparisonTotalTrafficsTypeOptions: [
-                {
-                    value: "enter",
-                    label: this.$t('property.enter'),
-                },
-                {
-                    value: "exit",
-                    label: this.$t('property.exit'),
-                },
-                {
-                    value: "return",
-                    label: this.$t('property.return'),
-                },
-                {
-                    value: "passing",
-                    label: this.$t('property.passing'),
-                },
-            ],
             comparisonTotalTraffics: {
                 today: {
                     enter: 0,
@@ -453,36 +429,15 @@ export default {
                 },
             },
 
-            dailyLineChart: {
-                labels: [],
-                enters: [],
-                exits: [],
-                returns: [],
-                passings: [],
-            },
-            hourlyLineChart: {
-                labels: [],
-                enters: [],
-                exits: [],
-                returns: [],
-                passings: [],
-            },
-			minuteLineChart: {
-				labels: [],
-				enters: [],
-				exits: [],
-				returns: [],
-				passings: [],
-			},
+            trendLineChartLabels: [],
+            trendLineChartLines: [],
         }
     },
     mounted() {
         this.init().then(() => {
             this.getByStore();
             this.getByFloor();
-            
             this.getTotalTraffics();
-
             this.getComparisonTotalTraffics();
         });
     },
@@ -532,9 +487,8 @@ export default {
                     passing: 0,
                 },
             },
-            await this.initStore().then(() => {
-                this.initDevice();
-            });
+            await this.initStore();
+            await this.initDevice();
         },
         async initStore() {
             await this.$store.dispatch('store/getAll').then(() => {
@@ -651,7 +605,6 @@ export default {
                     this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                         param: `floor=${this.byFloor[i].id}&date=${dateRange}`
                     }).then((response) => {
-                        // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                         let totalTraffics = response;
                         this.byFloor[i].enter = totalTraffics.enter;
                         this.byFloor[i].exit = totalTraffics.exit;
@@ -702,7 +655,6 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${this.totalTrafficsSelectedStartDate},${this.totalTrafficsSelectedEndDate}` + param
                 }).then((response) => {
-                        // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                         let totalTraffics = response;
                     this.totalTraffics = {
                         enter: totalTraffics.enter,
@@ -716,7 +668,6 @@ export default {
                     this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                         param: `date=${dateRange}` + param
                     }).then((response) => {
-                        // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                         let totalTraffics = response;
                         this.totalTraffics = {
                             enter: totalTraffics.enter,
@@ -729,7 +680,6 @@ export default {
             }
         },
 
-        
         comparisonTotalTrafficsStoresChange() {
             this.getComparisonTotalTraffics();
         },
@@ -748,7 +698,6 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${dateRange}` + param
                 }).then((response) => {
-                    // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
                     this.comparisonTotalTraffics.today = {
                         enter: totalTraffics.enter,
@@ -762,7 +711,6 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${dateRange}` + param
                 }).then((response) => {
-                    // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
                     this.comparisonTotalTraffics.yesterday = {
                         enter: totalTraffics.enter,
@@ -776,7 +724,6 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${dateRange}` + param
                 }).then((response) => {
-                    // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
                     this.comparisonTotalTraffics.thisWeek = {
                         enter: totalTraffics.enter,
@@ -790,7 +737,6 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${dateRange}` + param
                 }).then((response) => {
-                    // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
                     this.comparisonTotalTraffics.lastWeek = {
                         enter: totalTraffics.enter,
@@ -804,7 +750,6 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${dateRange}` + param
                 }).then((response) => {
-                    // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
                     this.comparisonTotalTraffics.thisMonth = {
                         enter: totalTraffics.enter,
@@ -818,7 +763,6 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${dateRange}` + param
                 }).then((response) => {
-                    // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
                     this.comparisonTotalTraffics.lastMonth = {
                         enter: totalTraffics.enter,
@@ -830,196 +774,172 @@ export default {
             });
         },
 
-        async getLineChartTimeRange(value) {
-            if (!value.date) {
-                return;
-            }
-            this.minuteLineChart.labels = [];
+        async trafficTrendChartChange(param) {
+            let queries = [];
+            if (param.chartType == 'daily') {
+                if (param.dateRange == 'custom') {
+                    let tmpTrendLineChartLabels = [];
+                    let tmpStartDate = this.$moment(param.startDate);
+                    let tmpEndDate = this.$moment(param.endDate);
+                    let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
+                    for (let i = 0; i < daysDifference + 1; i++) {
+                        tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
+                        tmpStartDate.add(1, 'days');
+                    }
+                    this.trendLineChartLabels = tmpTrendLineChartLabels;
+                    
+                    queries.push({
+                        label: this.$t('dashboard.all'),
+                        dateRange: `${param.startDate},${param.endDate}`,
+                        daysDifference: daysDifference + 1,
+                    });
+                    for (let i = 0; i < param.stores.length; i++) {
+                        for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
+                            if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
+                                queries.push({
+                                    label: this.totalTrafficsStoreOptions[j].label,
+                                    dateRange: `${param.startDate},${param.endDate}`,
+                                    daysDifference: daysDifference + 1,
+                                    query: `&store_id=${param.stores[i]}`
+                                });
+                                break;
+                            }
+                        }
+                    }
+                    for (let i = 0; i < param.devices.length; i++) {
+                        for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
+                            if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
+                                queries.push({
+                                    label: this.totalTrafficsDeviceOptions[j].label,
+                                    dateRange: `${param.startDate},${param.endDate}`,
+                                    daysDifference: daysDifference + 1,
+                                    query: `&device_id=${param.devices[i]}`
+                                });
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    await this.$store.dispatch('decode/decodeDateRangeOneDayBefore', param.dateRange).then((dateRange) => {
+                        let tmpTrendLineChartLabels = [];
+                        let tmpStartDate = this.$moment(dateRange.substring(0, 10));
+                        let tmpEndDate = this.$moment(dateRange.substring(11, 21));
+                        let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
+                        for (let i = 0; i < daysDifference + 1; i++) {
+                            tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
+                            tmpStartDate.add(1, 'days');
+                        }
+                        this.trendLineChartLabels = tmpTrendLineChartLabels;
 
-            let tmpLabels = [];
-            let tmpEnters = [];
-            let tmpExits = [];
-            let tmpReturns = [];
-            let tmpPassings = [];
-
-            await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                stores.forEach((store) => {
-                    store.devices.forEach((device) => {
-                        if (device.device_id == value.option || value.option == 'all') {
-                            this.$store.dispatch('dashboard/getMinuteTrafficsInDay', {
-                                storeId: store.store_id, 
-                                deviceId: device.device_id, 
-                                date: value.date, 
-                                interval: 15
-                            }).then(() => {
-                                let models = this.$store.getters["dashboard/models"];
-                                for (let i = 0; i < models.length; i++) {
-                                if (parseInt(models[i].end_time.substring(0, 2)) < 12) {
-                                    tmpLabels.push(models[i].end_time.substring(0, 5) + "AM");
-                                } else {
-                                    tmpLabels.push(models[i].end_time.substring(0, 5) + "PM");
+                        queries.push({
+                            label: this.$t('dashboard.all'),
+                            dateRange: dateRange,
+                            daysDifference: daysDifference + 1,
+                        });
+                        for (let i = 0; i < param.stores.length; i++) {
+                            for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
+                                if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
+                                    queries.push({
+                                        label: this.totalTrafficsStoreOptions[j].label,
+                                        dateRange: dateRange,
+                                        daysDifference: daysDifference + 1,
+                                        query: `&store_id=${param.stores[i]}`
+                                    });
+                                    break;
                                 }
-                                tmpEnters.push(models[i].enter);
-                                tmpExits.push(models[i].exit);
-                                tmpReturns.push(models[i].return);
-                                tmpPassings.push(models[i].passing);
+                            }
+                        }
+                        for (let i = 0; i < param.devices.length; i++) {
+                            for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
+                                if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
+                                    queries.push({
+                                        label: this.totalTrafficsDeviceOptions[j].label,
+                                        dateRange: dateRange,
+                                        daysDifference: daysDifference + 1,
+                                        query: `&device_id=${param.devices[i]}`
+                                    });
+                                    break;
                                 }
-                                this.minuteLineChart.labels = tmpLabels;
-                                this.minuteLineChart.enters = tmpEnters;
-                                this.minuteLineChart.exits = tmpExits;
-                                this.minuteLineChart.returns = tmpReturns;
-                                this.minuteLineChart.passings = tmpPassings;
-                            }).catch(() => {
-                                this.minuteLineChart.labels = [];
-                                this.minuteLineChart.enters = [];
-                                this.minuteLineChart.exits = [];
-                                this.minuteLineChart.returns = [];
-                                this.minuteLineChart.passings = [];
-                            });
+                            }
                         }
                     });
-                });
-            });
-        },
-        async getLineChartDate(value) {
-            if (!value.date) {
-                return;
-            }
-            this.hourlyLineChart.labels = [];
-
-            let tmpEnters = [];
-            let tmpExits = [];
-            let tmpReturns = [];
-            let tmpPassings = [];
-            
-            let today = this.$moment();
-            let totalHour = 24;
-            if (value.date == today.format('YYYY-MM-DD')) {
-                totalHour = parseInt(today.format('H')) + 1;
-            }
-            let time = this.$t('date.am');
-            for (let i = 0; i < totalHour; i++) {
-                if (i >= 12) {
-                    time = this.$t('date.pm');
                 }
-                this.hourlyLineChart.labels.push(i + ':00' + time);
-                tmpEnters.push(0);
-                tmpExits.push(0);
-                tmpPassings.push(0);
-                tmpReturns.push(0);
-            }
-
-            await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                stores.forEach((store) => {
-                    store.devices.forEach((device) => {
-                        if (device.device_id == value.option || value.option == 'all') {
-                            this.$store.dispatch('dashboard/getHourlyTrafficsInDay', {storeId: store.store_id, deviceId: device.device_id, date: value.date}).then(() => {
-                                let models = this.$store.getters["dashboard/models"];
-                                for (let i = 0; i < models.length; i++) {
-                                    let tmpTime = parseInt(models[i].hour);
-                                    tmpEnters[tmpTime] += models[i].enter;
-                                    tmpExits[tmpTime] += models[i].exit;
-                                    tmpReturns[tmpTime] += models[i].return;
-                                    tmpPassings[tmpTime] += models[i].passing;
-                                }
-                                this.hourlyLineChart.enters = tmpEnters;
-                                this.hourlyLineChart.exits = tmpExits;
-                                this.hourlyLineChart.returns = tmpReturns;
-                                this.hourlyLineChart.passings = tmpPassings;
-                                // if (date == today.format('YYYY-MM-DD')) {
-                                //     let tmpEnter = 0;
-                                //     let tmpExit = 0;
-                                //     let tmpReturn = 0;
-                                //     let tmpPassing = 0;
-                                //     for (let i = 0; i < models.length; i++) {
-                                //         tmpEnter += models[i].enter;
-                                //         tmpExit += models[i].exit;
-                                //         tmpReturn += models[i].return;
-                                //         tmpPassing += models[i].passing;
-                                //     }
-                                //     this.todayEnter = tmpEnter;
-                                //     this.todayExit = tmpExit;
-                                //     this.todayReturn = tmpReturn;
-                                //     this.todayPassing = tmpPassing;
-                                // }
-                            });
+            } else if (param.chartType == 'hourly') {
+                await this.$store.dispatch('inStoreTraffic/getHourlyTraffics', {
+                    param: `date=${param.date}&interval=60`
+                }).then((response) => {
+                    console.log(response);
+                    let tmpTrendLineChartLabels = [];
+                    let tmpDate = this.$moment(param.date);
+                    let today = this.$moment();
+                    if (today.format("YYYY-MM-DD") == tmpDate.format("YYYY-MM-DD")) {
+                        for (let i = 0; i < today.hour() + 1; i++) {
+                            tmpTrendLineChartLabels.push(`${i}:00:00`);
                         }
-                    });
+                    } else {
+                        for (let i = 0; i < 24; i++) {
+                            tmpTrendLineChartLabels.push(`${i}:00:00`);
+                        }
+                    }
+                    this.trendLineChartLabels = tmpTrendLineChartLabels;
                 });
+            } 
+            // else if (param.chartType == 'minute15') {
+            //     query += `&interval=15`;
+            // }
+            let lines = [];
+            let tmpFlag = 0;
+            for (let i = 0; i < queries.length; i++) {
+                await this.getTrafficTrendChart(lines, queries[i].daysDifference, queries[i].label, queries[i].dateRange, queries[i].query).then(() => {
+                    tmpFlag++;
+                    if (tmpFlag == queries.length) {
+                        this.trendLineChartLines = lines;
+                    }
+                });
+            }
+        },
+        async getTrafficTrendChart(lines, daysDifference, label, dateRange, query) {
+            await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
+                param: `date=${dateRange}` + query
+            }).then((response) => {
+                if (response.length == daysDifference) {
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+                    });
+                } else if (response.length > daysDifference) {
+                    response.splice(response.length - 1, 1);
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+                    });
+                } else {
+                    response = response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
+                    let tmpJ = 0;
+                    let tmpData = [];
+                    loop: for (let i = 0; i < daysDifference; i++) {
+                        for (let j = tmpJ; j < response.length; j++) {
+                            if (this.trendLineChartLabels[i].substring(0, 10) == response[j].date) {
+                                tmpData.push(response[j]);
+                                tmpJ++;
+                                continue loop;
+                            }
+                        }
+                        tmpData.push({
+                            date: this.trendLineChartLabels[i],
+                            enter: 0,
+                            exit: 0,
+                            return: 0,
+                            passing: 0,
+                        });
+                    }
+                    lines.push({
+                        label: label,
+                        data: tmpData,
+                    });
+                }
             });
         },
-        async getLineChartDateRange(value) {
-            if (!value) {
-                return;
-            }
-            if (!value.endDate) {
-                return;
-            }
-            if (!value.startDate) {
-                return;
-            }
-            if (value.endDate <= value.startDate) {
-                return;
-            }
-            let startDateMoment = this.$moment(value.startDate);
-            let tmpStartDateMoment = startDateMoment;
-            let endDateMoment = this.$moment(value.endDate);
-            let duration = this.$moment.duration(endDateMoment.diff(startDateMoment));
-            let durationDiffDays = Math.floor(duration.asDays());
-            if (duration._milliseconds <= 0) {
-                return;
-            }
-            this.dailyLineChart.labels = [];
-
-            let tmpEnters = [];
-            let tmpExits = [];
-            let tmpReturns = [];
-            let tmpPassings = [];
-
-            for (let i = 0; i < durationDiffDays; i++) {
-                this.dailyLineChart.labels.push(tmpStartDateMoment.format('YYYY-MM-DD (ddd)'));
-                tmpEnters.push(0);
-                tmpExits.push(0);
-                tmpReturns.push(0);
-                tmpPassings.push(0);
-                tmpStartDateMoment.add(1, 'days');
-            }
-
-            await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                
-                stores.forEach((store) => {
-                    store.devices.forEach((device) => {
-                        if (device.device_id == value.option || value.option == 'all') {
-                            this.$store.dispatch('dashboard/getDailyTrafficsInCustomDateRange', {storeId: store.store_id, deviceId: device.device_id, startDate: value.startDate, endDate: value.endDate}).then(() => {
-                                let models = this.$store.getters["dashboard/models"];
-                                tmpStartDateMoment = this.$moment(value.startDate);
-                                mainLoop: for (let i = 0; i < durationDiffDays; i++) {
-                                    let tmpDate = tmpStartDateMoment.format('YYYY-MM-DD');
-                                    for (let j = 0; j < models.length; j++) {
-                                        if (tmpDate == models[j].date) {
-                                            tmpEnters[i] += (models[j].enter);
-                                            tmpExits[i] += (models[j].exit);
-                                            tmpReturns[i] += (models[j].return);
-                                            tmpPassings[i] += (models[j].passing);
-                                            tmpStartDateMoment.add(1, 'days');
-                                            continue mainLoop;
-                                        }
-                                    }
-                                    tmpStartDateMoment.add(1, 'days');
-                                }
-                                this.dailyLineChart.enters = tmpEnters;
-                                this.dailyLineChart.exits = tmpExits;
-                                this.dailyLineChart.returns = tmpReturns;
-                                this.dailyLineChart.passings = tmpPassings;
-                            });
-                        }
-                    });
-                });
-            });
-        }
     }
 };
 

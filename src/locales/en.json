@@ -58,11 +58,8 @@
     "type": "Type"
   },
   "chart": {
-    "trafficTrendChart": {
-      "dailyTitle": "Traffic Daily Trend Chart",
-      "hourlyTitle": "Traffic Hourly Trend Chart",
-      "15MinuteTitle": "Traffic 15 Minute Trend Chart"
-    },
+    "trafficTrendChart": "Traffic Trend Chart",
+    "type": "Chart Type",
     "generateExcel": "Generate Excel File"
   },
   "date": {
@@ -128,6 +125,12 @@
     { "id": "return", "name": "Return" },
     { "id": "passing", "name": "Passing" }
   ],
+  "multiTypeOptions": [
+    { "value": "enter", "label": "Enter" },
+    { "value": "exit", "label": "Exit" },
+    { "value": "return", "label": "Return" },
+    { "value": "passing", "label": "Passing" }
+  ],
   "dateRangeOptions": [
     { "id": "all", "name": "All" },
     { "id": "today", "name": "Today" },
@@ -150,5 +153,10 @@
     { "id": "yearTillDate", "name": "Year Till Date" },
     { "id": "lastYear", "name": "Last Year" },
     { "id": "custom", "name": "Custom" }
+  ],
+  "chartTypeOptions": [
+    { "id": "minute15", "name": "15 Minute" },
+    { "id": "hourly", "name": "Hourly" },
+    { "id": "daily", "name": "Daily" }
   ]
 }

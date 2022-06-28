@@ -89,6 +89,20 @@ function getTotalTraffics(param) {
         });
 }
 
+function getDailyTraffics(param) {
+    return axios.get(`${url}/device/custom-traffics?${param}`, config)
+        .then(response => {
+            return response.data;
+        });
+}
+
+function getHourlyTraffics(param) {
+    return axios.get(`${url}/device/traffics?${param}`, config)
+        .then(response => {
+            return response.data;
+        });
+}
+
 export default {
     getDetail,
     
@@ -100,4 +114,6 @@ export default {
     remove,
 
     getTotalTraffics,
+    getDailyTraffics,
+    getHourlyTraffics,
   };

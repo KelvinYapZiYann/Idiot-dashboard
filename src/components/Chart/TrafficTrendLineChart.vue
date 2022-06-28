@@ -3,90 +3,123 @@
 		<div class="col-12">
 			<card type="chart">
 				<div slot="header">
-					<h2 class="card-title" v-if="type == 'daily'">
-						{{  $t('chart.trafficTrendChart.dailyTitle') }}
-					</h2>
-					<h2 class="card-title" v-if="type == 'hourly'">
-						{{  $t('chart.trafficTrendChart.hourlyTitle') }}
-					</h2>
-					<h2 class="card-title" v-if="type == '15min'">
-						{{  $t('chart.trafficTrendChart.15MinuteTitle') }}
+					<h2 class="card-title">
+						{{  $t('chart.trafficTrendChart') }}
 					</h2>
 				</div>
-				<div class="row" v-if="this.type == 'daily'">
+				<div class="row">
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+						<label class="col-12">{{$t('dashboard.type')}}</label>
+						<el-select
+							multiple
+							class="select-info"
+							size="large"
+							v-model="displayTypes"
+							collapse-tags
+							:placeholder="$t('dashboard.type')"
+							@change="displayTypesChange"
+						>
+							<el-option
+								v-for="option in $t('multiTypeOptions')"
+								class="select-info"
+								:value="option.value"
+								:label="option.label"
+								:key="option.label"
+							>
+							</el-option>
+						</el-select>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+						<label class="col-12">{{$t('component.stores')}}</label>
+						<el-select
+							multiple
+							class="select-info"
+							size="large"
+							v-model="selectedStores"
+							collapse-tags
+							:placeholder="$t('component.stores')"
+							@change="storesChange"
+						>
+							<el-option
+								v-for="option in storeOptions"
+								class="select-info"
+								:value="option.value"
+								:label="option.label"
+								:key="option.label"
+							>
+							</el-option>
+						</el-select>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+						<label class="col-12">{{$t('component.inStoreTraffics')}}</label>
+						<el-select
+							multiple
+							class="select-info"
+							size="large"
+							v-model="selectedDevices"
+							collapse-tags
+							:placeholder="$t('component.inStoreTraffics')"
+							@change="devicesChange"
+						>
+							<el-option
+								v-for="option in deviceOptions"
+								class="select-info"
+								:value="option.value"
+								:label="option.label"
+								:key="option.label"
+							>
+							</el-option>
+						</el-select>
+					</div>
 					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
 						<base-selector-input 
-							:placeholder="$t('dashboard.dateRange')"
-							v-model="dateRange"
-							:options="$t('customDateRangeOptions')"
+							:label="$t('chart.type')"
+							:placeholder="$t('chart.type')"
+							v-model="chartType"
+							:options="$t('chartTypeOptions')"
+							@input="chartTypeSelectorChange"
+							>
+						</base-selector-input>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType != 'daily'">
+						<base-input 
+							:label="$t('date.date')"
+							:placeholder="$t('date.date')"
+							v-model="date"
 							type="date"
+							@input="dateChange"
+							>
+						</base-input>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily'">
+						<base-selector-input 
+							:label="$t('date.dateRange')"
+							:placeholder="$t('date.dateRange')"
+							v-model="dateRange.dateRange"
+							:options="$t('customDateRangeOptions')"
 							@input="dateRangeSelectorChange"
 							>
 						</base-selector-input>
 					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
 						<base-input 
+							:label="$t('date.start')"
 							:placeholder="$t('date.start')"
-							v-model="lineChart.dateRange.startDate"
+							v-model="dateRange.startDate"
 							type="date"
-							@input="getLineChartDateRange"
+							@input="dateRangeStartDateChange"
 							>
 						</base-input>
 					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
 						<base-input 
+							:label="$t('date.end')"
 							:placeholder="$t('date.end')"
-							v-model="lineChart.dateRange.endDate"
+							v-model="dateRange.endDate"
 							type="date"
-							@input="getLineChartDateRange"
+							@input="dateRangeEndDateChange"
 							>
 						</base-input>
-					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-						<base-selector-input
-							v-model="option"
-							:options="options"
-							@input="optionChange"
-							v-show="!disableOption"
-						></base-selector-input>
-					</div>
-				</div>
-				<div class="row" v-else-if="this.type == 'hourly'">
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-						<base-input 
-							:placeholder="$t('date.date')"
-							v-model="lineChart.date"
-							type="date"
-							@input="getLineChartDate"
-							>
-						</base-input>
-					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-						<base-selector-input
-							v-model="option"
-							:options="options"
-							@input="optionChange"
-							v-show="!disableOption"
-						></base-selector-input>
-					</div>
-				</div>
-				<div class="row" v-else-if="this.type == '15min'">
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-						<base-input 
-							:placeholder="$t('date.date')"
-							v-model="lineChart.date"
-							type="date"
-							@input="getLineChartTimeRange"
-							>
-						</base-input>
-					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-						<base-selector-input
-							v-model="option"
-							:options="options"
-							@input="optionChange"
-							v-show="!disableOption"
-						></base-selector-input>
 					</div>
 				</div>
 				<line-chart
@@ -111,27 +144,21 @@ import {
 	Card,
 	LineChart
 } from "@/components/index";
+import { Select, Option } from "element-ui";
 import * as chartConfigs from "@/components/Chart/ChartConfig";
 import download from "downloadjs";
 
 export default {
 	components: {
+        [Option.name]: Option,
+        [Select.name]: Select,
 		BaseButton,
 		BaseInput,
 		BaseSelectorInput,
 		Card,
 		LineChart,
-		// JsonExcel
 	},
 	props: {
-		type: {
-			type: String,
-			required: false,
-			default: () => {
-				return "hourly";
-			},
-			description: "Traffic Trend Line Type"
-		},
 		labels: {
 			type: Array,
 			required: true,
@@ -148,88 +175,44 @@ export default {
 			},
 			description: "Traffic Trend Line Data"
 		},
-		// enters: {
-		// 	type: Array,
-		// 	required: true,
-		// 	default: () => {
-		// 		return [];
-		// 	},
-		// 	description: "Traffic Trend Line Enters"
-		// },
-		// exits: {
-		// 	type: Array,
-		// 	required: true,
-		// 	default: () => {
-		// 		return [];
-		// 	},
-		// 	description: "Traffic Trend Line Exits"
-		// },
-		// returns: {
-		// 	type: Array,
-		// 	required: true,
-		// 	default: () => {
-		// 		return [];
-		// 	},
-		// 	description: "Traffic Trend Line Returns"
-		// },
-		// passings: {
-		// 	type: Array,
-		// 	required: true,
-		// 	default: () => {
-		// 		return [];
-		// 	},
-		// 	description: "Traffic Trend Line Passings"
-		// },
-		// disableOption: {
-		// 	type: Boolean,
-		// 	required: false,
-		// 	default: true,
-		// },
-		// options: {
-		// 	type: Array,
-		// 	required: false,
-		// 	default: () => {
-		// 		return [];
-		// 	},
-		// },
+		storeOptions: {
+			type: Array,
+			required: true,
+			default: () => {
+				return [];
+			},
+			description: "Traffic Trend Line Store Options"
+		},
+		deviceOptions: {
+			type: Array,
+			required: true,
+			default: () => {
+				return [];
+			},
+			description: "Traffic Trend Line Device Options"
+		},
 	},
 	data() {
+		let today = this.$moment();
 		return {
 			lineChart: {
 				extraOptions: chartConfigs.chartOptions,
-				dateRange: {
-					startDate: null,
-					endDate: null
-				},
-				date: null
 			},
-			dateRange: "today",
-			option: "all"
+			dateRange: {
+				dateRange: "weekTillDate",
+				startDate: today.format("YYYY-MM-DD"),
+				endDate: today.add(1, 'days').format("YYYY-MM-DD")
+			},
+			date: today.subtract(1, 'days').format("YYYY-MM-DD"),
+			chartType: "daily",
+			displayTypes: ["enter"],
+			selectedStores: [],
+			selectedDevices: [],
 		};
 	},
 	methods: {
-		getLineChartTimeRange() {
-			this.$emit('getLineChartTimeRange', {
-				date: this.lineChart.date,
-				option: this.option
-			});
-		},
-		getLineChartDate() {
-			this.$emit('getLineChartDate', {
-				date: this.lineChart.date,
-				option: this.option
-			});
-		},
-		getLineChartDateRange() {
-			this.$emit('getLineChartDateRange', {
-				startDate: this.lineChart.dateRange.startDate,
-				endDate: this.lineChart.dateRange.endDate,
-				option: this.option
-			});
-		},
 		async export(data, filename, mime) {
 			let blob = this.base64ToBlob(data, mime);
-			// if (typeof this.beforeFinish === "function") await this.beforeFinish();
 			download(blob, filename, mime);
 		},
 		base64ToBlob(data, mime) {
@@ -254,24 +237,24 @@ export default {
 				if (result.isConfirmed) {
 					try {
 						let excelData = [];
-						for (let i = 0; i < this.labels.length; i++) {
-						excelData.push({
-							date: this.labels[i],
-							enter: this.enters[i],
-							exit: this.exits[i],
-							return: this.returns[i],
-							passing: this.passings[i],
-						});
-						}
+						// for (let i = 0; i < this.labels.length; i++) {
+						// 	excelData.push({
+						// 		date: this.labels[i],
+						// 		enter: this.enters[i],
+						// 		exit: this.exits[i],
+						// 		return: this.returns[i],
+						// 		passing: this.passings[i],
+						// 	});
+						// }
 						let finalExcelData = this.jsonToXLS(excelData);
 						let fileName;
-						if (this.type == "daily") {
-						fileName = `Traffic Daily Trend Data (${this.lineChart.dateRange.startDate + ' to ' + this.lineChart.dateRange.endDate})`;
-						} else if (this.type == "hourly") {
-						fileName = `Traffic Hourly Trend Data (${this.lineChart.date})`;
-						} else if (this.type == "15min") {
-						fileName = `Traffic 15 Minute Trend Data (${this.lineChart.date})`;
-						}
+						// if (this.type == "daily") {
+						// 	fileName = `Traffic Daily Trend Data (${this.lineChart.dateRange.startDate + ' to ' + this.lineChart.dateRange.endDate})`;
+						// } else if (this.type == "hourly") {
+						// 	fileName = `Traffic Hourly Trend Data (${this.lineChart.date})`;
+						// } else if (this.type == "15min") {
+						// 	fileName = `Traffic 15 Minute Trend Data (${this.lineChart.date})`;
+						// }
 						this.export(finalExcelData, fileName, "application/vnd.ms-excel");
 					} catch (e) {
 						console.error(e);
@@ -303,131 +286,246 @@ export default {
 			xlsData += "<tr>";
 			xlsData += "<td>total</td>";
 			let tmpTotal = 0;
-			this.enters.forEach(function(count) {
-				tmpTotal += count;
-			});
+			// this.enters.forEach(function(count) {
+			// 	tmpTotal += count;
+			// });
 			xlsData += "<td>" + tmpTotal + "</td>";
 			tmpTotal = 0;
-			this.exits.forEach(function(count) {
-				tmpTotal += count;
-			});
+			// this.exits.forEach(function(count) {
+			// 	tmpTotal += count;
+			// });
 			xlsData += "<td>" + tmpTotal + "</td>";
 			tmpTotal = 0;
-			this.returns.forEach(function(count) {
-				tmpTotal += count;
-			});
+			// this.returns.forEach(function(count) {
+			// 	tmpTotal += count;
+			// });
 			xlsData += "<td>" + tmpTotal + "</td>";
 			tmpTotal = 0;
-			this.passings.forEach(function(count) {
-				tmpTotal += count;
-			});
+			// this.passings.forEach(function(count) {
+			// 	tmpTotal += count;
+			// });
 			xlsData += "<td>" + tmpTotal + "</td>";
 			xlsData += "</tr>";
 
 			xlsData += "</tbody>";
-			return xlsTemp
-			.replace("${table}", xlsData)
-			.replace("${worksheet}", this.worksheet);
+			return xlsTemp.replace("${table}", xlsData).replace("${worksheet}", this.worksheet);
 		},
-		optionChange(value) {
-			this.$emit('optionChange', {
-				date: this.lineChart.date,
-				startDate: this.lineChart.dateRange.startDate,
-				endDate: this.lineChart.dateRange.endDate,
-				option: value
+		
+		displayTypesChange() {
+
+		},
+		storesChange() {
+			this.trafficTrendChartChange();
+		},
+		devicesChange() {
+			this.trafficTrendChartChange();
+		},
+		chartTypeSelectorChange() {
+			this.trafficTrendChartChange();
+		},
+		dateChange() {
+			this.trafficTrendChartChange();
+		},
+		dateRangeSelectorChange() {
+			this.trafficTrendChartChange();
+		},
+		dateRangeStartDateChange() {
+			this.trafficTrendChartChange();
+		},
+		dateRangeEndDateChange() {
+			this.trafficTrendChartChange();
+		},
+		trafficTrendChartChange() {
+			this.$emit("trend-chart-change", {
+				stores: this.selectedStores,
+				devices: this.selectedDevices,
+				chartType: this.chartType,
+				date: this.date,
+				dateRange: this.dateRange.dateRange,
+				startDate: this.dateRange.startDate,
+				endDate: this.dateRange.endDate,
 			});
 		},
 	},
 	mounted() {
-		if (this.type == 'daily') {
-			let today = this.$moment();
-			let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
-			today = this.$moment();
-			let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
+		this.trafficTrendChartChange();
+		// if (this.type == 'daily') {
+		// 	let today = this.$moment();
+		// 	let todayDateString = today.add(1, 'days').format('YYYY-MM-DD');
+		// 	today = this.$moment();
+		// 	let wholeMonthStartDateString = this.$store.getters["mobileLayout/isMobileLayout"] ? today.subtract(7, 'days').format('YYYY-MM-DD') : today.subtract(1, 'months').format('YYYY-MM-DD');
 
-			this.lineChart.dateRange.startDate = wholeMonthStartDateString;
-			this.lineChart.dateRange.endDate = todayDateString;
-			this.getLineChartDateRange();
-		} else if (this.type == 'hourly') {
-			let todayDateString = this.$moment().format('YYYY-MM-DD');
-			this.lineChart.date = todayDateString;
-			this.getLineChartDate();
-		} else if (this.type == '15min') {
-			let todayDateString = this.$moment().format('YYYY-MM-DD');
-			this.lineChart.date = todayDateString;
-			this.getLineChartTimeRange();
-		}
+		// 	this.lineChart.dateRange.startDate = wholeMonthStartDateString;
+		// 	this.lineChart.dateRange.endDate = todayDateString;
+		// 	this.getLineChartDateRange();
+		// } else if (this.type == 'hourly') {
+		// 	let todayDateString = this.$moment().format('YYYY-MM-DD');
+		// 	this.lineChart.date = todayDateString;
+		// 	this.getLineChartDate();
+		// } else if (this.type == '15min') {
+		// 	let todayDateString = this.$moment().format('YYYY-MM-DD');
+		// 	this.lineChart.date = todayDateString;
+		// 	this.getLineChartTimeRange();
+		// }
 	},
 	computed: {
 		chartData() {
+			let tmpDatasets = [];
+			for (let i = 0; i < this.lines.length; i++) {
+				for (let j = 0; j < this.displayTypes.length; j++) {
+					let tmpLines = [];
+					if (this.displayTypes[j] == 'enter') {
+						for (let k = 0; k < this.lines[i].data.length; k++) {
+							tmpLines.push(this.lines[i].data[k].enter);
+						}
+						tmpDatasets.push({
+							label: this.lines[i].label + ' ' + this.$t('property.enter'),
+							fill: true,
+							borderColor: "#1d8cf8",
+							borderWidth: 2,
+							borderDash: [],
+							borderDashOffset: 0.0,
+							pointBackgroundColor: "#1d8cf8",
+							pointBorderColor: "rgba(255,255,255,0)",
+							pointHoverBackgroundColor: "#1d8cf8",
+							pointBorderWidth: 20,
+							pointHoverRadius: 4,
+							pointHoverBorderWidth: 15,
+							pointRadius: 4,
+							data: tmpLines
+						});
+					} else if (this.displayTypes[j] == 'exit') {
+						for (let k = 0; k < this.lines[i].data.length; k++) {
+							tmpLines.push(this.lines[i].data[k].exit);
+						}
+						tmpDatasets.push({
+							label: this.lines[i].label + ' ' + this.$t('property.exit'),
+							fill: true,
+							borderColor: "#1d8cf8",
+							borderWidth: 2,
+							borderDash: [],
+							borderDashOffset: 0.0,
+							pointBackgroundColor: "#1d8cf8",
+							pointBorderColor: "rgba(255,255,255,0)",
+							pointHoverBackgroundColor: "#1d8cf8",
+							pointBorderWidth: 20,
+							pointHoverRadius: 4,
+							pointHoverBorderWidth: 15,
+							pointRadius: 4,
+							data: tmpLines
+						});
+					} else if (this.displayTypes[j] == 'return') {
+						for (let k = 0; k < this.lines[i].data.length; k++) {
+							tmpLines.push(this.lines[i].data[k].return);
+						}
+						tmpDatasets.push({
+							label: this.lines[i].label + ' ' + this.$t('property.return'),
+							fill: true,
+							borderColor: "#1d8cf8",
+							borderWidth: 2,
+							borderDash: [],
+							borderDashOffset: 0.0,
+							pointBackgroundColor: "#1d8cf8",
+							pointBorderColor: "rgba(255,255,255,0)",
+							pointHoverBackgroundColor: "#1d8cf8",
+							pointBorderWidth: 20,
+							pointHoverRadius: 4,
+							pointHoverBorderWidth: 15,
+							pointRadius: 4,
+							data: tmpLines
+						});
+					} else if (this.displayTypes[j] == 'passing') {
+						for (let k = 0; k < this.lines[i].data.length; k++) {
+							tmpLines.push(this.lines[i].data[k].passing);
+						}
+						tmpDatasets.push({
+							label: this.lines[i].label + ' ' + this.$t('property.passing'),
+							fill: true,
+							borderColor: "#1d8cf8",
+							borderWidth: 2,
+							borderDash: [],
+							borderDashOffset: 0.0,
+							pointBackgroundColor: "#1d8cf8",
+							pointBorderColor: "rgba(255,255,255,0)",
+							pointHoverBackgroundColor: "#1d8cf8",
+							pointBorderWidth: 20,
+							pointHoverRadius: 4,
+							pointHoverBorderWidth: 15,
+							pointRadius: 4,
+							data: tmpLines
+						});
+					}
+				}
+			}
 			return {
 				labels: this.labels,
-				datasets: [
-				{
-					label: this.$t('property.enter'),
-					fill: true,
-					borderColor: "#1d8cf8",
-					borderWidth: 2,
-					borderDash: [],
-					borderDashOffset: 0.0,
-					pointBackgroundColor: "#1d8cf8",
-					pointBorderColor: "rgba(255,255,255,0)",
-					pointHoverBackgroundColor: "#1d8cf8",
-					pointBorderWidth: 20,
-					pointHoverRadius: 4,
-					pointHoverBorderWidth: 15,
-					pointRadius: 4,
-					data: this.enters
-				},
-				{
-					label: this.$t('property.exit'),
-					fill: true,
-					borderColor: "#fd5d93",
-					borderWidth: 2,
-					borderDash: [],
-					borderDashOffset: 0.0,
-					pointBackgroundColor: "#fd5d93",
-					pointBorderColor: "rgba(255,255,255,0)",
-					pointHoverBackgroundColor: "#fd5d93",
-					pointBorderWidth: 20,
-					pointHoverRadius: 4,
-					pointHoverBorderWidth: 15,
-					pointRadius: 4,
-					data: this.exits
-				},
-				{
-					label: this.$t('property.return'),
-					fill: true,
-					borderColor: "#00f2c3",
-					borderWidth: 2,
-					borderDash: [],
-					borderDashOffset: 0.0,
-					pointBackgroundColor: "#00f2c3",
-					pointBorderColor: "rgba(255,255,255,0)",
-					pointHoverBackgroundColor: "#00f2c3",
-					pointBorderWidth: 20,
-					pointHoverRadius: 4,
-					pointHoverBorderWidth: 15,
-					pointRadius: 4,
-					data: this.returns
-				},
-				{
-					label: this.$t('property.passing'),
-					fill: true,
-					borderColor: "#ffd600",
-					borderWidth: 2,
-					borderDash: [],
-					borderDashOffset: 0.0,
-					pointBackgroundColor: "#ffd600",
-					pointBorderColor: "rgba(255,255,255,0)",
-					pointHoverBackgroundColor: "#ffd600",
-					pointBorderWidth: 20,
-					pointHoverRadius: 4,
-					pointHoverBorderWidth: 15,
-					pointRadius: 4,
-					data: this.passings
-				}
-				]
+				datasets: tmpDatasets
+				// [
+					// {
+					// 	label: this.$t('property.enter'),
+					// 	fill: true,
+					// 	borderColor: "#1d8cf8",
+					// 	borderWidth: 2,
+					// 	borderDash: [],
+					// 	borderDashOffset: 0.0,
+					// 	pointBackgroundColor: "#1d8cf8",
+					// 	pointBorderColor: "rgba(255,255,255,0)",
+					// 	pointHoverBackgroundColor: "#1d8cf8",
+					// 	pointBorderWidth: 20,
+					// 	pointHoverRadius: 4,
+					// 	pointHoverBorderWidth: 15,
+					// 	pointRadius: 4,
+					// 	data: tmpLines
+					// },
+					// {
+					// 	label: this.$t('property.exit'),
+					// 	fill: true,
+					// 	borderColor: "#fd5d93",
+					// 	borderWidth: 2,
+					// 	borderDash: [],
+					// 	borderDashOffset: 0.0,
+					// 	pointBackgroundColor: "#fd5d93",
+					// 	pointBorderColor: "rgba(255,255,255,0)",
+					// 	pointHoverBackgroundColor: "#fd5d93",
+					// 	pointBorderWidth: 20,
+					// 	pointHoverRadius: 4,
+					// 	pointHoverBorderWidth: 15,
+					// 	pointRadius: 4,
+					// 	data: this.exits
+					// },
+					// {
+					// 	label: this.$t('property.return'),
+					// 	fill: true,
+					// 	borderColor: "#00f2c3",
+					// 	borderWidth: 2,
+					// 	borderDash: [],
+					// 	borderDashOffset: 0.0,
+					// 	pointBackgroundColor: "#00f2c3",
+					// 	pointBorderColor: "rgba(255,255,255,0)",
+					// 	pointHoverBackgroundColor: "#00f2c3",
+					// 	pointBorderWidth: 20,
+					// 	pointHoverRadius: 4,
+					// 	pointHoverBorderWidth: 15,
+					// 	pointRadius: 4,
+					// 	data: this.returns
+					// },
+					// {
+					// 	label: this.$t('property.passing'),
+					// 	fill: true,
+					// 	borderColor: "#ffd600",
+					// 	borderWidth: 2,
+					// 	borderDash: [],
+					// 	borderDashOffset: 0.0,
+					// 	pointBackgroundColor: "#ffd600",
+					// 	pointBorderColor: "rgba(255,255,255,0)",
+					// 	pointHoverBackgroundColor: "#ffd600",
+					// 	pointBorderWidth: 20,
+					// 	pointHoverRadius: 4,
+					// 	pointHoverBorderWidth: 15,
+					// 	pointRadius: 4,
+					// 	data: this.passings
+					// }
+				// ]
 			};
 		}
 	}

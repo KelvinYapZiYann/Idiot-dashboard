@@ -120,6 +120,22 @@ const actions = {
             console.error(e);
         });
     },
+    getDailyTraffics({commit}, param) {
+        return service.getDailyTraffics(param.param).then((response) => {
+            return response;
+        }).catch((e) => {
+            console.log(commit);
+            console.error(e);
+        });
+    },
+    getHourlyTraffics({commit}, param) {
+        return service.getHourlyTraffics(param.param).then((response) => {
+            return response;
+        }).catch((e) => {
+            console.log(commit);
+            console.error(e);
+        });
+    },
 };
 
 const getters = {
