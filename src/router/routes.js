@@ -60,18 +60,14 @@ const routes = [
         name: "Profile Detail",
         component: ProfileDetail,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "profile/edit",
         name: "Edit Profile",
         component: ProfileEdit,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
     ]
   },
@@ -85,81 +81,63 @@ const routes = [
         name: "Dashboard",
         component: Dashboard,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "stores",
         name: "Stores",
         component: Stores,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "stores/add",
         name: "Add Store",
         component: StoreAdd,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "stores/:storeId",
         name: "Store Detail",
         component: StoreDetail,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "stores/:storeId/edit",
         name: "Edit Store",
         component: StoreEdit,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "inStoreTraffics",
         name: "In Store Traffics",
         component: InStoreTraffics,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "inStoreTraffics/add",
         name: "Add In Store Traffic",
         component: InStoreTrafficAdd,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "inStoreTraffics/:inStoreTrafficId",
         name: "In Store Traffic Detail",
         component: InStoreTrafficDetail,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
       {
         path: "inStoreTraffics/:inStoreTrafficId/edit",
         name: "Edit In Store Traffic",
         component: InStoreTrafficEdit,
         meta: { middleware: auth },
-        props: {
-          default: true
-        }
+        props: true
       },
     ]
   },

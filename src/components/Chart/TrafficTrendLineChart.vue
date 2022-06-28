@@ -29,7 +29,7 @@
 							</el-option>
 						</el-select>
 					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-if="storeOptions.length > 0">
 						<label class="col-12">{{$t('component.stores')}}</label>
 						<el-select
 							multiple
@@ -50,7 +50,7 @@
 							</el-option>
 						</el-select>
 					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-if="deviceOptions.length > 0">
 						<label class="col-12">{{$t('component.inStoreTraffics')}}</label>
 						<el-select
 							multiple
@@ -177,7 +177,7 @@ export default {
 		},
 		storeOptions: {
 			type: Array,
-			required: true,
+			required: false,
 			default: () => {
 				return [];
 			},
@@ -185,7 +185,7 @@ export default {
 		},
 		deviceOptions: {
 			type: Array,
-			required: true,
+			required: false,
 			default: () => {
 				return [];
 			},

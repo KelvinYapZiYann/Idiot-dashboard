@@ -52,7 +52,6 @@ export default {
 								tmpStore.exit = totalTraffics.exit;
 								tmpStore.return = totalTraffics.return;
 								tmpStore.passing = totalTraffics.passing;
-								console.log(tmpStore);
 								this.resource.models.push(tmpStore);
 							});
 						});

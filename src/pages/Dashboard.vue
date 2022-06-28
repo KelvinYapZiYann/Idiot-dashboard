@@ -552,8 +552,9 @@ export default {
         goToStore(storeId) {
             this.$router.push({
                 name: "Store Detail",
-                param: {
+                params: {
                     storeId: storeId,
+                    previousRoute: this.$router.currentRoute.name,
                 }
             });
         },

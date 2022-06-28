@@ -121,7 +121,6 @@
 <script>
 import { /*BaseButton, BasePagination,*/ BaseTable, Card } from "@/components/index";
 import InStoreTrafficIconList from "@/components/Resources/InStoreTraffic/InStoreTrafficIconList";
-import router from "@/router";
 
 export default {
   components: {
@@ -176,20 +175,20 @@ export default {
   },
   methods: {
     showDetails(id) {
-      router.push({
+      this.$router.push({
         name: "Store Detail",
         params: {
           storeId: id,
-          previousRoute: router.currentRoute.name,
+          previousRoute: this.$router.currentRoute.name,
         }
       });
     },
     editDetails(id) {
-      router.push({
+      this.$router.push({
         name: "Edit Store",
         params: {
           storeId: id,
-          previousRoute: router.currentRoute.name,
+          previousRoute: this.$router.currentRoute.name,
         }
       });
     },
