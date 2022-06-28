@@ -47,10 +47,16 @@ function getAll(param) {
     }
 }
   
-function getById(id) {
-    return axios.get(`${url}/device/${id}`, config).then(response => {
-        return response.data;
-    });
+function getById(id, param) {
+    if (param) {
+        return axios.get(`${url}/details/device?device_id=${id}${param}`, config).then(response => {
+            return response.data;
+        });
+    } else {
+        return axios.get(`${url}/details/device?device_id=${id}`, config).then(response => {
+            return response.data;
+        });
+    }
 }
   
 function create() {

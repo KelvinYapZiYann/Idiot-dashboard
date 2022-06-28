@@ -108,7 +108,6 @@
 
 		<in-store-traffic-table
 			:resource="inStoreTrafficResource"
-			@getResource="getInStoreTrafficResource"
 		></in-store-traffic-table>
 
 		<base-button slot="footer" type="primary" @click="handleBack()" fill>
