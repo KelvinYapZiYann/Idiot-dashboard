@@ -35,33 +35,33 @@
 
             <template slot-scope="{ row }">
               <td
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
+                @click="showDetails(row.device_id)"
+                @mousedown="startLongClick(row.device_id)" 
                 @mouseleave="stopLongClick"
                 @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
+                @touchstart="startLongClick(row.device_id)"
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
                 {{ row.device_description }}
               </td>
               <td
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
+                @click="showDetails(row.device_id)"
+                @mousedown="startLongClick(row.device_id)" 
                 @mouseleave="stopLongClick"
                 @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
+                @touchstart="startLongClick(row.device_id)"
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
                 {{ row.device_mac_address }}
               </td>
               <td
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
+                @click="showDetails(row.device_id)"
+                @mousedown="startLongClick(row.device_id)" 
                 @mouseleave="stopLongClick"
                 @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
+                @touchstart="startLongClick(row.device_id)"
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
@@ -70,33 +70,33 @@
                 </span>
               </td>
               <!-- <td
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
+                @click="showDetails(row.device_id)"
+                @mousedown="startLongClick(row.device_id)" 
                 @mouseleave="stopLongClick"
                 @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
+                @touchstart="startLongClick(row.device_id)"
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
                 {{ row.device_mac_address }}
               </td> -->
               <td
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
+                @click="showDetails(row.device_id)"
+                @mousedown="startLongClick(row.device_id)" 
                 @mouseleave="stopLongClick"
                 @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
+                @touchstart="startLongClick(row.device_id)"
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
                 {{ row.enter ? row.enter : '0' }}
               </td>
               <td
-                @click="showDetails(row.id)"
-                @mousedown="startLongClick(row.id)" 
+                @click="showDetails(row.device_id)"
+                @mousedown="startLongClick(row.device_id)" 
                 @mouseleave="stopLongClick"
                 @mouseup="stopLongClick"
-                @touchstart="startLongClick(row.id)"
+                @touchstart="startLongClick(row.device_id)"
                 @touchend="stopLongClick"
                 @touchcancel="stopLongClick"
               >
@@ -188,6 +188,7 @@ export default {
   },
   methods: {
     showDetails(id) {
+      console.log(id);
       router.push({
         name: "In Store Traffic Detail",
         params: {
@@ -200,7 +201,7 @@ export default {
       router.push({
         name: "Edit In Store Traffic",
         params: {
-          deviceId: id,
+          inStoreTrafficId: id,
           previousRoute: router.currentRoute.name,
         }
       });

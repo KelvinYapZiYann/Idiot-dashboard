@@ -83,8 +83,10 @@ const actions = {
     },
     getById({commit}, param) {
         return service.getById(param.id, param.param).then((response) => {
-            commit('SET_RESOURCE', response);
+            return response;
+            // commit('SET_RESOURCE', response);
         }).catch((e) => {
+            console.log(commit);
             console.error(e);
         });
     },
