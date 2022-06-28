@@ -193,6 +193,26 @@
         <category-card :title="$t('component.comparison') + ' ' + $t('component.traffics')">
             <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('dashboard.type')}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="comparisonTotalTrafficsTypes"
+                        collapse-tags
+                        :placeholder="$t('component.stores')"
+                    >
+                        <el-option
+                            v-for="option in comparisonTotalTrafficsTypeOptions"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('component.stores')}}</label>
                     <el-select
                         multiple
@@ -268,6 +288,20 @@
                 </traffics-card>
             </div>
         </div>
+
+        <!-- <traffic-trend-line-chart
+            type="hourly"
+            :labels="minuteLineChart.labels"
+            :enters="minuteLineChart.enters"
+            :exits="minuteLineChart.exits"
+            :returns="minuteLineChart.returns"
+            :passings="minuteLineChart.passings"
+            @getLineChartTimeRange="getLineChartTimeRange"
+            :disableOption="false"
+            :options="options"
+            @optionChange="getLineChartTimeRange"
+        >
+        </traffic-trend-line-chart> -->
 
         <!-- <traffic-trend-line-chart
             type="15min"
@@ -362,6 +396,24 @@ export default {
             comparisonTotalTrafficsSelectedDevices: "",
             comparisonTotalTrafficsDeviceOptions: [],
             comparisonTotalTrafficsTypes: ["enter", "passing"],
+            comparisonTotalTrafficsTypeOptions: [
+                {
+                    value: "enter",
+                    label: this.$t('property.enter'),
+                },
+                {
+                    value: "exit",
+                    label: this.$t('property.exit'),
+                },
+                {
+                    value: "return",
+                    label: this.$t('property.return'),
+                },
+                {
+                    value: "passing",
+                    label: this.$t('property.passing'),
+                },
+            ],
             comparisonTotalTraffics: {
                 today: {
                     enter: 0,
