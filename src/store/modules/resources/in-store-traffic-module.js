@@ -128,8 +128,8 @@ const actions = {
             console.error(e);
         });
     },
-    getHourlyTraffics({commit}, param) {
-        return service.getHourlyTraffics(param.param).then((response) => {
+    getMinuteTraffics({commit}, param) {
+        return service.getMinuteTraffics(param.param).then((response) => {
             return response;
         }).catch((e) => {
             console.log(commit);

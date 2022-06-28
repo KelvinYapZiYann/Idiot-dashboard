@@ -96,7 +96,7 @@ function getDailyTraffics(param) {
         });
 }
 
-function getHourlyTraffics(param) {
+function getMinuteTraffics(param) {
     return axios.get(`${url}/device/traffics?${param}`, config)
         .then(response => {
             return response.data;
@@ -115,5 +115,5 @@ export default {
 
     getTotalTraffics,
     getDailyTraffics,
-    getHourlyTraffics,
+    getMinuteTraffics,
   };

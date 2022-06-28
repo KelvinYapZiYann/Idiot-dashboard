@@ -792,6 +792,7 @@ export default {
                         label: this.$t('dashboard.all'),
                         dateRange: `${param.startDate},${param.endDate}`,
                         daysDifference: daysDifference + 1,
+                        query: '',
                     });
                     for (let i = 0; i < param.stores.length; i++) {
                         for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
@@ -835,6 +836,7 @@ export default {
                             label: this.$t('dashboard.all'),
                             dateRange: dateRange,
                             daysDifference: daysDifference + 1,
+                            query: '',
                         });
                         for (let i = 0; i < param.stores.length; i++) {
                             for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
@@ -864,41 +866,146 @@ export default {
                         }
                     });
                 }
+                let lines = [];
+                let tmpFlag = 0;
+                for (let i = 0; i < queries.length; i++) {
+                    await this.getDailyTrafficTrendChart(lines, queries[i].daysDifference, queries[i].label, queries[i].dateRange, queries[i].query).then(() => {
+                        tmpFlag++;
+                        if (tmpFlag == queries.length) {
+                            this.trendLineChartLines = lines;
+                        }
+                    });
+                }
             } else if (param.chartType == 'hourly') {
-                await this.$store.dispatch('inStoreTraffic/getHourlyTraffics', {
-                    param: `date=${param.date}&interval=60`
-                }).then((response) => {
-                    console.log(response);
-                    let tmpTrendLineChartLabels = [];
-                    let tmpDate = this.$moment(param.date);
-                    let today = this.$moment();
-                    if (today.format("YYYY-MM-DD") == tmpDate.format("YYYY-MM-DD")) {
-                        for (let i = 0; i < today.hour() + 1; i++) {
-                            tmpTrendLineChartLabels.push(`${i}:00:00`);
-                        }
-                    } else {
-                        for (let i = 0; i < 24; i++) {
-                            tmpTrendLineChartLabels.push(`${i}:00:00`);
+                let tmpTrendLineChartLabels = [];
+                let tmpDate = this.$moment(param.date);
+                let tmpDate2 = this.$moment(param.date);
+                let today = this.$moment();
+                if (today.format("YYYY-MM-DD") == tmpDate.format("YYYY-MM-DD")) {
+                    for (let i = 0; i < today.hour() + 1; i++) {
+                        tmpTrendLineChartLabels.push(tmpDate2.format('hh:mm a'));
+                        tmpDate2.add(60, 'minutes');
+                    }
+                } else {
+                    for (let i = 0; i < 24; i++) {
+                        tmpTrendLineChartLabels.push(tmpDate2.format('hh:mm a'));
+                        tmpDate2.add(60, 'minutes');
+                    }
+                }
+                this.trendLineChartLabels = tmpTrendLineChartLabels;
+
+                queries.push({
+                    label: this.$t('dashboard.all'),
+                    date: tmpDate.format("YYYY-MM-DD"),
+                    query: '',
+                });
+                for (let i = 0; i < param.stores.length; i++) {
+                    for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
+                        if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
+                            queries.push({
+                                label: this.totalTrafficsStoreOptions[j].label,
+                                date: tmpDate.format("YYYY-MM-DD"),
+                                query: `&store_id=${param.stores[i]}`
+                            });
+                            break;
                         }
                     }
-                    this.trendLineChartLabels = tmpTrendLineChartLabels;
-                });
-            } 
-            // else if (param.chartType == 'minute15') {
-            //     query += `&interval=15`;
-            // }
-            let lines = [];
-            let tmpFlag = 0;
-            for (let i = 0; i < queries.length; i++) {
-                await this.getTrafficTrendChart(lines, queries[i].daysDifference, queries[i].label, queries[i].dateRange, queries[i].query).then(() => {
-                    tmpFlag++;
-                    if (tmpFlag == queries.length) {
-                        this.trendLineChartLines = lines;
+                }
+                for (let i = 0; i < param.devices.length; i++) {
+                    for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
+                        if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
+                            queries.push({
+                                label: this.totalTrafficsDeviceOptions[j].label,
+                                date: tmpDate.format("YYYY-MM-DD"),
+                                query: `&device_id=${param.devices[i]}`
+                            });
+                            break;
+                        }
                     }
+                }
+                
+                let lines = [];
+                let tmpFlag = 0;
+                for (let i = 0; i < queries.length; i++) {
+                    await this.getHourlyTrafficTrendChart(lines, tmpTrendLineChartLabels.length, queries[i].label, queries[i].date, queries[i].query).then(() => {
+                        tmpFlag++;
+                        if (tmpFlag == queries.length) {
+                            this.trendLineChartLines = lines;
+                        }
+                    });
+                }
+            } else if (param.chartType == 'minute15') {
+                let tmpTrendLineChartLabels = [];
+                let tmpDate = this.$moment(param.date);
+                let tmpDate2 = this.$moment(param.date);
+                let today = this.$moment();
+                if (today.format("YYYY-MM-DD") == tmpDate.format("YYYY-MM-DD")) {
+                    for (let i = 0; i < today.hour() + 1; i++) {
+                        if (i != today.hour()) {
+                            for (let j = 0; j < 4; j++) {
+                                tmpTrendLineChartLabels.push(tmpDate2.format('hh:mm a'));
+                                tmpDate2.add(15, 'minutes');
+                            }
+                        } else {
+                            for (let j = 0; j < (today.minute() / 15) + 1; j++) {
+                                tmpTrendLineChartLabels.push(tmpDate2.format('hh:mm a'));
+                                tmpDate2.add(15, 'minutes');
+                            }
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < 24; i++) {
+                        for (let j = 0; j < 4; j++) {
+                            tmpTrendLineChartLabels.push(tmpDate2.format('hh:mm a'));
+                            tmpDate2.add(15, 'minutes');
+                        }
+                    }
+                }
+                this.trendLineChartLabels = tmpTrendLineChartLabels;
+
+                queries.push({
+                    label: this.$t('dashboard.all'),
+                    date: tmpDate.format("YYYY-MM-DD"),
+                    query: '',
                 });
+                for (let i = 0; i < param.stores.length; i++) {
+                    for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
+                        if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
+                            queries.push({
+                                label: this.totalTrafficsStoreOptions[j].label,
+                                date: tmpDate.format("YYYY-MM-DD"),
+                                query: `&store_id=${param.stores[i]}`
+                            });
+                            break;
+                        }
+                    }
+                }
+                for (let i = 0; i < param.devices.length; i++) {
+                    for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
+                        if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
+                            queries.push({
+                                label: this.totalTrafficsDeviceOptions[j].label,
+                                date: tmpDate.format("YYYY-MM-DD"),
+                                query: `&device_id=${param.devices[i]}`
+                            });
+                            break;
+                        }
+                    }
+                }
+                
+                let lines = [];
+                let tmpFlag = 0;
+                for (let i = 0; i < queries.length; i++) {
+                    await this.getMinuteTrafficTrendChart(lines, tmpTrendLineChartLabels.length, queries[i].label, queries[i].date, queries[i].query).then(() => {
+                        tmpFlag++;
+                        if (tmpFlag == queries.length) {
+                            this.trendLineChartLines = lines;
+                        }
+                    });
+                }
             }
         },
-        async getTrafficTrendChart(lines, daysDifference, label, dateRange, query) {
+        async getDailyTrafficTrendChart(lines, daysDifference, label, dateRange, query) {
             await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
                 param: `date=${dateRange}` + query
             }).then((response) => {
@@ -908,7 +1015,7 @@ export default {
                         data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
                     });
                 } else if (response.length > daysDifference) {
-                    response.splice(response.length - 1, 1);
+                    response.splice(response.length - 1, response.length - daysDifference);
                     lines.push({
                         label: label,
                         data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
@@ -936,6 +1043,78 @@ export default {
                     lines.push({
                         label: label,
                         data: tmpData,
+                    });
+                }
+            });
+        },
+        async getHourlyTrafficTrendChart(lines, timeDifference, label, date, query) {
+            await this.$store.dispatch('inStoreTraffic/getMinuteTraffics', {
+                param: `date=${date}&interval=60` + query
+            }).then((response) => {
+                if (response.length == timeDifference) {
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.end_time > b.end_time) ? 1 : ((b.end_time > a.end_time) ? -1 : 0))
+                    });
+                } else if (response.length > timeDifference) {
+                    response.splice(response.length - 1, response.length - timeDifference);
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.end_time > b.end_time) ? 1 : ((b.end_time > a.end_time) ? -1 : 0))
+                    });
+                } else {
+                    response = response.sort((a,b) => (a.end_time > b.end_time) ? 1 : ((b.end_time > a.end_time) ? -1 : 0));
+                    let tmpJ = 0;
+                    let tmpData = [];
+                    loop: for (let i = 0; i < timeDifference; i++) {
+                        for (let j = tmpJ; j < response.length; j++) {
+                            if (this.trendLineChartLabels[i].substring(0, 2) == response[j].end_time.substring(0, 2)) {
+                                tmpData.push(response[j]);
+                                tmpJ++;
+                                continue loop;
+                            }
+                        }
+                        tmpData.push({
+                            date: this.trendLineChartLabels[i],
+                            enter: 0,
+                            exit: 0,
+                            return: 0,
+                            passing: 0,
+                        });
+                    }
+                    lines.push({
+                        label: label,
+                        data: tmpData,
+                    });
+                }
+            });
+        },
+        async getMinuteTrafficTrendChart(lines, timeDifference, label, date, query) {
+            await this.$store.dispatch('inStoreTraffic/getMinuteTraffics', {
+                param: `date=${date}&interval=15` + query
+            }).then((response) => {
+                if (response.length == timeDifference) {
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.end_time > b.end_time) ? 1 : ((b.end_time > a.end_time) ? -1 : 0))
+                    });
+                } else if (response.length > timeDifference) {
+                    response.splice(response.length - 1, response.length - timeDifference);
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.end_time > b.end_time) ? 1 : ((b.end_time > a.end_time) ? -1 : 0))
+                    });
+                } else {
+                    response.splice(response.length, timeDifference - response.length, {
+                        end_time: "",
+                        enter: 0,
+                        exit: 0,
+                        return: 0,
+                        passing: 0,
+                    });
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.end_time > b.end_time) ? 1 : ((b.end_time > a.end_time) ? -1 : 0))
                     });
                 }
             });
