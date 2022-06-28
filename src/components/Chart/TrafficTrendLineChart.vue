@@ -371,6 +371,14 @@ export default {
 	computed: {
 		chartData() {
 			let tmpDatasets = [];
+			let colors = [
+				"#1d8cf8",
+				"#fcba03",
+				"#fc6203",
+				"#18fc03",
+				"#ce03fc",
+				"#fc0339",
+			];
 			for (let i = 0; i < this.lines.length; i++) {
 				for (let j = 0; j < this.displayTypes.length; j++) {
 					let tmpLines = [];
@@ -381,13 +389,13 @@ export default {
 						tmpDatasets.push({
 							label: this.lines[i].label + ' ' + this.$t('property.enter'),
 							fill: true,
-							borderColor: "#1d8cf8",
+							borderColor: colors[i] + "ff",
 							borderWidth: 2,
 							borderDash: [],
 							borderDashOffset: 0.0,
-							pointBackgroundColor: "#1d8cf8",
+							pointBackgroundColor: colors[i] + "ff",
 							pointBorderColor: "rgba(255,255,255,0)",
-							pointHoverBackgroundColor: "#1d8cf8",
+							pointHoverBackgroundColor: colors[i] + "ff",
 							pointBorderWidth: 20,
 							pointHoverRadius: 4,
 							pointHoverBorderWidth: 15,
@@ -401,13 +409,13 @@ export default {
 						tmpDatasets.push({
 							label: this.lines[i].label + ' ' + this.$t('property.exit'),
 							fill: true,
-							borderColor: "#1d8cf8",
+							borderColor: colors[i] + "c1",
 							borderWidth: 2,
 							borderDash: [],
 							borderDashOffset: 0.0,
-							pointBackgroundColor: "#1d8cf8",
+							pointBackgroundColor: colors[i] + "c1",
 							pointBorderColor: "rgba(255,255,255,0)",
-							pointHoverBackgroundColor: "#1d8cf8",
+							pointHoverBackgroundColor: colors[i] + "c1",
 							pointBorderWidth: 20,
 							pointHoverRadius: 4,
 							pointHoverBorderWidth: 15,
@@ -421,13 +429,13 @@ export default {
 						tmpDatasets.push({
 							label: this.lines[i].label + ' ' + this.$t('property.return'),
 							fill: true,
-							borderColor: "#1d8cf8",
+							borderColor: colors[i] + "a1",
 							borderWidth: 2,
 							borderDash: [],
 							borderDashOffset: 0.0,
-							pointBackgroundColor: "#1d8cf8",
+							pointBackgroundColor: colors[i] + "a1",
 							pointBorderColor: "rgba(255,255,255,0)",
-							pointHoverBackgroundColor: "#1d8cf8",
+							pointHoverBackgroundColor: colors[i] + "a1",
 							pointBorderWidth: 20,
 							pointHoverRadius: 4,
 							pointHoverBorderWidth: 15,
@@ -441,13 +449,13 @@ export default {
 						tmpDatasets.push({
 							label: this.lines[i].label + ' ' + this.$t('property.passing'),
 							fill: true,
-							borderColor: "#1d8cf8",
+							borderColor: colors[i] + "71",
 							borderWidth: 2,
 							borderDash: [],
 							borderDashOffset: 0.0,
-							pointBackgroundColor: "#1d8cf8",
+							pointBackgroundColor: colors[i] + "71",
 							pointBorderColor: "rgba(255,255,255,0)",
-							pointHoverBackgroundColor: "#1d8cf8",
+							pointHoverBackgroundColor: colors[i] + "71",
 							pointBorderWidth: 20,
 							pointHoverRadius: 4,
 							pointHoverBorderWidth: 15,

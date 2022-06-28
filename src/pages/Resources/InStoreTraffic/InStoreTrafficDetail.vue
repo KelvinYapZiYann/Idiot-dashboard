@@ -171,7 +171,9 @@ export default {
             await this.$store.dispatch('inStoreTraffic/getById', {
                 id: this.inStoreTrafficId,
 			}).then((response) => {
-                this.detail.model = response['1'];
+                let tmp = Object.entries(response);
+                let tmp2 = tmp[0];
+                this.detail.model = tmp2[tmp2.length - 1];
             });
         },
 
