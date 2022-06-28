@@ -18,6 +18,7 @@
     "inStoreTraffics": "In-Store Traffics",
     "inStoreTraffic": "In-Store Traffic",
     "traffic": "Traffic",
+    "traffics": "Traffics",
     "download": "Download",
 
     "index": "Index",
@@ -111,7 +112,7 @@
     "ENTRANCE": "Entrance"
   },
   "dashboard": {
-    "byShop": "By Shop",
+    "byStore": "By Store",
     "byBusinessType": "By Business Type",
     "byFloor": "By Floor",
     "byBrand": "By Brand",

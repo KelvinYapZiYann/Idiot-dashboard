@@ -10,9 +10,9 @@
     >
       <slot name="header">
         <h5 class="card-category" v-if="subTitle">{{ subTitle }}</h5>
-        <h2 class="card-title">
+        <h4 class="card-title">
           <i v-if="icon" class="tim-icons" :class="icon"></i>{{ title }}
-        </h2>
+        </h4>
       </slot>
     </div>
     <div class="card-body" v-if="$slots.default" :class="bodyClasses">

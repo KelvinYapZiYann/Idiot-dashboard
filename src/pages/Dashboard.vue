@@ -3,33 +3,33 @@
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <category-card
-                    :title="$t('dashboard.byShop')"
+                    :title="$t('dashboard.byStore')"
                 >
                     <div class="row">
                         <base-selector-input
                             :label="$t('dashboard.type')"
-                            v-model="byShopSelectedType"
+                            v-model="byStoreSelectedType"
                             :options="$t('typeOptions')"
                             class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
-                            @input="byShopTypeSelectorChange"
+                            @input="byStoreTypeSelectorChange"
                         ></base-selector-input>
                         <base-selector-input
                             :label="$t('dashboard.dateRange')"
-                            v-model="byShopSelectedDateRange"
+                            v-model="byStoreSelectedDateRange"
                             :options="$t('dateRangeOptions')"
                             class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
-                            @input="byShopDateRangeSelectorChange"
+                            @input="byStoreDateRangeSelectorChange"
                         ></base-selector-input>
                     </div>
                     <div class="row">
                         <div 
                             class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
-                            v-for="(value, i) in byShop"
+                            v-for="(value, i) in byStore"
                             :key="i"
                         >
                             <div class="mb-1 font-weight-bold">
                                 <span>{{ value.name }}: </span>
-                                <span class="font-italic">{{ decodeByShopValue(value) }}</span>
+                                <span class="font-italic">{{ decodeByStoreValue(value) }}</span>
                             </div>
                             <div class="mb-1">
                                 <i class="fa-solid fa-shop card-category-icon warning" @click="goToStore(value.id)"></i>
@@ -78,7 +78,7 @@
             </div>
         </div>
         
-        <card subTitle="zxc">
+        <category-card :title="$t('component.total') + ' ' + $t('component.traffics')">
             <div class="row">
                 <base-selector-input
                     :label="$t('dashboard.dateRange')"
@@ -107,8 +107,25 @@
                     v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
                 </base-input>
+                <el-select
+                    multiple
+                    class="select-info col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    size="large"
+                    v-model="totalTrafficsSelectedShops"
+                    collapse-tags
+                    :placeholder="$t('component.stores')"
+                  >
+                    <el-option
+                        v-for="option in totalTrafficsShopOptions"
+                        class="select-info"
+                        :value="option.value"
+                        :label="option.label"
+                        :key="option.label"
+                    >
+                    </el-option>
+                </el-select>
             </div>
-        </card>
+        </category-card>
         <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
@@ -148,15 +165,14 @@
             </div>
         </div>
 
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
                     :sub-title="$t('date.today')"
                     :previous-title="$t('date.yesterday')"
-                    :enter="todayEnter ? todayEnter : 0"
-                    :exit="todayExit ? todayExit : 0"
-                    :previous-enter="yesterdayEnter ? yesterdayEnter : 0"
-                    :previous-exit="yesterdayExit ? yesterdayExit : 0"
+                    :displayTypes="comparisonTotalTrafficsTypes"
+                    :currentData="comparisonTotalTraffics.today"
+                    :previousData="comparisonTotalTraffics.yesterday"
                     >
                 </traffics-card>
             </div>
@@ -164,10 +180,9 @@
                 <traffics-card
                     :sub-title="$t('date.thisWeek')"
                     :previous-title="$t('date.lastWeek')"
-                    :enter="thisWeekEnter ? thisWeekEnter : 0"
-                    :exit="thisWeekExit ? thisWeekExit : 0"
-                    :previous-enter="lastWeekEnter ? lastWeekEnter : 0"
-                    :previous-exit="lastWeekExit ? lastWeekExit : 0"
+                    :displayTypes="comparisonTotalTrafficsTypes"
+                    :currentData="comparisonTotalTraffics.thisWeek"
+                    :previousData="comparisonTotalTraffics.lastWeek"
                     >
                 </traffics-card>
             </div>
@@ -175,14 +190,13 @@
                 <traffics-card
                     :sub-title="$t('date.thisMonth')"
                     :previous-title="$t('date.lastMonth')"
-                    :enter="thisMonthEnter ? thisMonthEnter : 0"
-                    :exit="thisMonthExit ? thisMonthExit : 0"
-                    :previous-enter="lastMonthEnter ? lastMonthEnter : 0"
-                    :previous-exit="lastMonthExit ? lastMonthExit : 0"
+                    :displayTypes="comparisonTotalTrafficsTypes"
+                    :currentData="comparisonTotalTraffics.thisMonth"
+                    :previousData="comparisonTotalTraffics.lastMonth"
                     >
                 </traffics-card>
             </div>
-        </div> -->
+        </div>
 
         <!-- <traffic-trend-line-chart
             type="15min"
@@ -230,27 +244,29 @@ import {
     BaseInput,
     CategoryCard,
     StatsCard,
-    Card,
-    // TrafficsCard,
+    TrafficsCard,
     // TrafficTrendLineChart,
 } from "@/components/index";
 
+import { Select, Option } from "element-ui";
+
 export default {
     components: {
+        [Option.name]: Option,
+        [Select.name]: Select,
         BaseSelectorInput,
         BaseInput,
         CategoryCard,
         StatsCard,
-        Card,
-        // TrafficsCard,
+        TrafficsCard,
         // TrafficTrendLineChart,
     },
     data() {
         let today = this.$moment();
         return {
-            byShopSelectedType: "enter",
-            byShopSelectedDateRange: "today",
-            byShop: [],
+            byStoreSelectedType: "enter",
+            byStoreSelectedDateRange: "today",
+            byStore: [],
 
             byFloorSelectedType: "enter",
             byFloorSelectedDateRange: "today",
@@ -259,11 +275,53 @@ export default {
             totalTrafficsSelectedDateRange: "today",
             totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
             totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
+            totalTrafficsSelectedShops: "",
+            totalTrafficsShopOptions: [],
             totalTraffics: {
                 enter: 0,
                 exit: 0,
                 return: 0,
                 passing: 0,
+            },
+
+            comparisonTotalTrafficsTypes: ["enter", "passing"],
+            comparisonTotalTraffics: {
+                today: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                yesterday: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                thisWeek: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                lastWeek: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                thisMonth: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                lastMonth: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
             },
 
             dailyLineChart: {
@@ -291,10 +349,12 @@ export default {
     },
     mounted() {
         this.init().then(() => {
-            this.getByShop();
+            this.getByStore();
             this.getByFloor();
             
             this.getTotalTraffics();
+
+            this.getComparisonTotalTraffics();
         });
     },
     methods: {
@@ -305,6 +365,44 @@ export default {
                 return: 0,
                 passing: 0,
             };
+            this.comparisonTotalTraffics = {
+                today: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                yesterday: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                thisWeek: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                lastWeek: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                thisMonth: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+                lastMonth: {
+                    enter: 0,
+                    exit: 0,
+                    return: 0,
+                    passing: 0,
+                },
+            },
             await this.initStore().then(() => {
                 this.initDevice();
             });
@@ -312,9 +410,9 @@ export default {
         async initStore() {
             await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
-                let tmpByShop = [];
+                let tmpByStore = [];
                 for (let i = 0; i < stores.length; i++) {
-                    tmpByShop.push({
+                    tmpByStore.push({
                         id: stores[i].store_id,
                         name: stores[i].store_name,
                         enter: 0,
@@ -323,7 +421,7 @@ export default {
                         passing: 0,
                     });
                 }
-                this.byShop = tmpByShop;
+                this.byStore = tmpByStore;
             });
         },
         async initDevice() {
@@ -362,35 +460,35 @@ export default {
                 }
             });
         },
-        byShopTypeSelectorChange() {
-            // this.getByShop();
+        byStoreTypeSelectorChange() {
+            // this.getByStore();
         },
-        byShopDateRangeSelectorChange() {
-            this.getByShop();
+        byStoreDateRangeSelectorChange() {
+            this.getByStore();
         },
-        async getByShop() {
-            await this.$store.dispatch('decode/decodeDateRange', this.byShopSelectedDateRange).then((dateRange) => {
-                for (let i = 0; i < this.byShop.length; i++) {
+        async getByStore() {
+            await this.$store.dispatch('decode/decodeDateRange', this.byStoreSelectedDateRange).then((dateRange) => {
+                for (let i = 0; i < this.byStore.length; i++) {
                     this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                        param: `store_id=${this.byShop[i].id}&date=${dateRange}`
+                        param: `store_id=${this.byStore[i].id}&date=${dateRange}`
                     }).then(() => {
                         let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
-                        this.byShop[i].enter = totalTraffics.enter;
-                        this.byShop[i].exit = totalTraffics.exit;
-                        this.byShop[i].return = totalTraffics.return;
-                        this.byShop[i].passing = totalTraffics.passing;
+                        this.byStore[i].enter = totalTraffics.enter;
+                        this.byStore[i].exit = totalTraffics.exit;
+                        this.byStore[i].return = totalTraffics.return;
+                        this.byStore[i].passing = totalTraffics.passing;
                     });
                 }
             });
         },
-        decodeByShopValue(value) {
-            if (this.byShopSelectedType == 'enter') {
+        decodeByStoreValue(value) {
+            if (this.byStoreSelectedType == 'enter') {
                 return value.enter;
-            } else if (this.byShopSelectedType == 'exit') {
+            } else if (this.byStoreSelectedType == 'exit') {
                 return value.exit;
-            } else if (this.byShopSelectedType == 'return') {
+            } else if (this.byStoreSelectedType == 'return') {
                 return value.return;
-            } else if (this.byShopSelectedType == 'passing') {
+            } else if (this.byStoreSelectedType == 'passing') {
                 return value.passing;
             } else {
                 return 0;
@@ -469,6 +567,87 @@ export default {
                     });
                 });
             }
+        },
+
+        async getComparisonTotalTraffics() {
+            await this.$store.dispatch('decode/decodeDateRange', 'today').then((dateRange) => {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${dateRange}`
+                }).then(() => {
+                    let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                    this.comparisonTotalTraffics.today = {
+                        enter: totalTraffics.enter,
+                        exit: totalTraffics.exit,
+                        return: totalTraffics.return,
+                        passing: totalTraffics.passing,
+                    };
+                });
+            });
+            await this.$store.dispatch('decode/decodeDateRange', 'yesterday').then((dateRange) => {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${dateRange}`
+                }).then(() => {
+                    let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                    this.comparisonTotalTraffics.yesterday = {
+                        enter: totalTraffics.enter,
+                        exit: totalTraffics.exit,
+                        return: totalTraffics.return,
+                        passing: totalTraffics.passing,
+                    };
+                });
+            });
+            await this.$store.dispatch('decode/decodeDateRange', 'weekTillDate').then((dateRange) => {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${dateRange}`
+                }).then(() => {
+                    let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                    this.comparisonTotalTraffics.thisWeek = {
+                        enter: totalTraffics.enter,
+                        exit: totalTraffics.exit,
+                        return: totalTraffics.return,
+                        passing: totalTraffics.passing,
+                    };
+                });
+            });
+            await this.$store.dispatch('decode/decodeDateRange', 'lastWeek').then((dateRange) => {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${dateRange}`
+                }).then(() => {
+                    let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                    this.comparisonTotalTraffics.lastWeek = {
+                        enter: totalTraffics.enter,
+                        exit: totalTraffics.exit,
+                        return: totalTraffics.return,
+                        passing: totalTraffics.passing,
+                    };
+                });
+            });
+            await this.$store.dispatch('decode/decodeDateRange', 'monthTillDate').then((dateRange) => {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${dateRange}`
+                }).then(() => {
+                    let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                    this.comparisonTotalTraffics.thisMonth = {
+                        enter: totalTraffics.enter,
+                        exit: totalTraffics.exit,
+                        return: totalTraffics.return,
+                        passing: totalTraffics.passing,
+                    };
+                });
+            });
+            await this.$store.dispatch('decode/decodeDateRange', 'lastMonth').then((dateRange) => {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${dateRange}`
+                }).then(() => {
+                    let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
+                    this.comparisonTotalTraffics.lastMonth = {
+                        enter: totalTraffics.enter,
+                        exit: totalTraffics.exit,
+                        return: totalTraffics.return,
+                        passing: totalTraffics.passing,
+                    };
+                });
+            });
         },
 
         async getLineChartTimeRange(value) {
