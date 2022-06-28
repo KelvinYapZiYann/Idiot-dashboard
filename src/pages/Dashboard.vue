@@ -190,6 +190,52 @@
             </div>
         </div>
 
+        <category-card :title="$t('component.comparison') + ' ' + $t('component.traffics')">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('component.stores')}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="comparisonTotalTrafficsSelectedStores"
+                        collapse-tags
+                        :placeholder="$t('component.stores')"
+                        @change="comparisonTotalTrafficsStoresChange"
+                    >
+                        <el-option
+                            v-for="option in comparisonTotalTrafficsStoreOptions"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('component.inStoreTraffics')}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="comparisonTotalTrafficsSelectedDevices"
+                        collapse-tags
+                        :placeholder="$t('component.inStoreTraffics')"
+                        @change="comparisonTotalTrafficsDevicesChange"
+                    >
+                        <el-option
+                            v-for="option in comparisonTotalTrafficsDeviceOptions"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+        </category-card>
         <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
@@ -311,6 +357,10 @@ export default {
                 passing: 0,
             },
 
+            comparisonTotalTrafficsSelectedStores: "",
+            comparisonTotalTrafficsStoreOptions: [],
+            comparisonTotalTrafficsSelectedDevices: "",
+            comparisonTotalTrafficsDeviceOptions: [],
             comparisonTotalTrafficsTypes: ["enter", "passing"],
             comparisonTotalTraffics: {
                 today: {
@@ -455,6 +505,7 @@ export default {
                 }
                 this.byStore = tmpByStore;
                 this.totalTrafficsStoreOptions = tmpStoreOptions;
+                this.comparisonTotalTrafficsStoreOptions = tmpStoreOptions;
             });
         },
         async initDevice() {
@@ -488,6 +539,7 @@ export default {
                 }
                 this.byFloor = tmpByFloor;
                 this.totalTrafficsDeviceOptions = tmpDeviceOptions;
+                this.comparisonTotalTrafficsDeviceOptions = tmpDeviceOptions;
             });
         },
 
@@ -625,10 +677,24 @@ export default {
             }
         },
 
+        
+        comparisonTotalTrafficsStoresChange() {
+            this.getComparisonTotalTraffics();
+        },
+        comparisonTotalTrafficsDevicesChange() {
+            this.getComparisonTotalTraffics();
+        },
         async getComparisonTotalTraffics() {
+            let param = '';
+            if (this.totalTrafficsSelectedStores.length > 0) {
+                param += `&store_id=${this.totalTrafficsSelectedStores.join()}`;
+            }
+            if (this.totalTrafficsSelectedDevices.length > 0) {
+                param += `&device_id=${this.totalTrafficsSelectedDevices.join()}`;
+            }
             await this.$store.dispatch('decode/decodeDateRange', 'today').then((dateRange) => {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${dateRange}`
+                    param: `date=${dateRange}` + param
                 }).then((response) => {
                     // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
@@ -642,7 +708,7 @@ export default {
             });
             await this.$store.dispatch('decode/decodeDateRange', 'yesterday').then((dateRange) => {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${dateRange}`
+                    param: `date=${dateRange}` + param
                 }).then((response) => {
                     // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
@@ -656,7 +722,7 @@ export default {
             });
             await this.$store.dispatch('decode/decodeDateRange', 'weekTillDate').then((dateRange) => {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${dateRange}`
+                    param: `date=${dateRange}` + param
                 }).then((response) => {
                     // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
@@ -670,7 +736,7 @@ export default {
             });
             await this.$store.dispatch('decode/decodeDateRange', 'lastWeek').then((dateRange) => {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${dateRange}`
+                    param: `date=${dateRange}` + param
                 }).then((response) => {
                     // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
@@ -684,7 +750,7 @@ export default {
             });
             await this.$store.dispatch('decode/decodeDateRange', 'monthTillDate').then((dateRange) => {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${dateRange}`
+                    param: `date=${dateRange}` + param
                 }).then((response) => {
                     // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
@@ -698,7 +764,7 @@ export default {
             });
             await this.$store.dispatch('decode/decodeDateRange', 'lastMonth').then((dateRange) => {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${dateRange}`
+                    param: `date=${dateRange}` + param
                 }).then((response) => {
                     // let totalTraffics = this.$store.getters["inStoreTraffic/totalTraffics"];
                     let totalTraffics = response;
