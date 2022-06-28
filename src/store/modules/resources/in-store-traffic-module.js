@@ -113,8 +113,10 @@ const actions = {
 
     getTotalTraffics({commit}, param) {
         return service.getTotalTraffics(param.param).then((response) => {
-            commit('SET_TOTAL_TRAFFICS', response);
+            return response;
+            // commit('SET_TOTAL_TRAFFICS', response);
         }).catch((e) => {
+            console.log(commit);
             console.error(e);
         });
     },
