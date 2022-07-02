@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                         <base-input
-                            :label="$t('sales.revenue')"
+                            :label="$t('sales.revenueRm')"
                             :placeholder="$t('sales.revenueRm')"
                             class="col-12"
                             type="number"
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                         <base-input
-                            :label="$t('sales.profit')"
+                            :label="$t('sales.profitRm')"
                             :placeholder="$t('sales.profitRm')"
                             class="col-12"
                             type="number"
@@ -50,7 +50,7 @@
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                         <base-input
-                            :label="$t('sales.profitMargin')"
+                            :label="$t('sales.profitMarginRm')"
                             :placeholder="$t('sales.profitMarginRm')"
                             class="col-12"
                             type="number"
@@ -126,7 +126,7 @@ export default {
     },
     methods: {
         handleSubmitSalesReport() {
-
+            
         },
     },
 };

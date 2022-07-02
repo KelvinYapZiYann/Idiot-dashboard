@@ -9,6 +9,7 @@ import decode from "./modules/resources/decode-module";
 import dashboard from "./modules/resources/dashboard-module";
 import store from "./modules/resources/store-module";
 import inStoreTraffic from "./modules/resources/in-store-traffic-module";
+import sales from "./modules/resources/sales-module";
 
 Vue.use(Vuex);
 
@@ -22,5 +23,6 @@ export default new Vuex.Store({
     dashboard,
     store,
     inStoreTraffic,
+    sales,
   }
 });
