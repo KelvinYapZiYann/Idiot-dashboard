@@ -79,6 +79,16 @@
     "pm": "PM",
     "weekTillDate": "Week Till Date"
   },
+  "sales": {
+    "salesReport": "Sales Report",
+    "revenue": "Revenue",
+    "profit": "Profit",
+    "profitMargin": "Profit Margin",
+    "volume": "Volume",
+    "revenueRm": "Revenue (RM)",
+    "profitRm": "Profit (RM)",
+    "profitMarginRm": "Profit Margin (RM)"
+  },
   "alert": {
     "logoutConfirmation": "Are you sure to logout?",
     "removeConfirmation": "Are you sure to remove this?",

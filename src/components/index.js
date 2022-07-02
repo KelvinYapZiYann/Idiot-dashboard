@@ -16,6 +16,7 @@ import DropDown from "./Dropdown.vue";
 import Modal from "./Modal";
 import LineChart from "./Chart/LineChart";
 import TrafficTrendLineChart from "./Chart/TrafficTrendLineChart";
+import SalesAddModal from "./Resources/Sales/SalesAddModal";
 
 export {
   SidebarPlugin,
@@ -36,4 +37,5 @@ export {
   Modal,
   LineChart,
   TrafficTrendLineChart,
+  SalesAddModal,
 };

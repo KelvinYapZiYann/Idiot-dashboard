@@ -15,7 +15,8 @@ import swal from "vue-sweetalert2";
 import '@sweetalert2/theme-bootstrap-4/bootstrap-4.scss';
 import VueMoment from 'vue-moment';
 
-import VueFab from 'vue-float-action-button'
+import VueFab from 'vue-float-action-button';
+import VModal from 'vue-js-modal';
 
 import "@/assets/scss/dashboard.scss";
 
@@ -35,6 +36,7 @@ Vue.use(swal, {
 });
 Vue.use(VueMoment);
 Vue.use(VueFab);
+Vue.use(VModal);
 
 new Vue({
   store,

@@ -124,13 +124,21 @@
             >
             <fab-item 
                 :idx="0"
-                title="add"
+                :title="$t('component.add') + ' ' + $t('sales.salesReport')"
                 color="#1d8cf8"
                 titleColor="#fff"
                 titleBgColor="#1d8cf8"
                 icon="description"
                 @clickItem="handleFloatButtonClick" />
         </vue-fab>
+
+        <sales-add-modal 
+            name="salesModal"
+            :storeOptions="salesStoreOptions"
+            :selectedStore="storeId"
+            >
+
+        </sales-add-modal>
 	</div>
 </template>
 <script>
@@ -142,6 +150,7 @@ import {
 	StatsCard,
 	CategoryCard,
 	TrafficTrendLineChart,
+    SalesAddModal,
 } from "@/components/index";
 import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
 import { Select, Option } from "element-ui";
@@ -158,6 +167,7 @@ export default {
 		CategoryCard,
 		TrafficTrendLineChart,
 		InStoreTrafficTable,
+        SalesAddModal,
 	},
 	props: {
 		storeId: {
@@ -187,7 +197,7 @@ export default {
             totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
             totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
             totalTrafficsSelectedStores: "",
-            totalTrafficsStoreOptions: [],
+            // totalTrafficsStoreOptions: [],
             totalTrafficsSelectedDevices: "",
             totalTrafficsDeviceOptions: [],
             totalTraffics: {
@@ -203,7 +213,9 @@ export default {
 			inStoreTrafficResource: {
 				models: [],
 				data: {}
-			}
+			},
+
+            salesStoreOptions: [],
 		};
 	},
 	mounted() {
@@ -225,7 +237,7 @@ export default {
 		async initStore() {
 			await this.$store.dispatch('store/getAll').then(() => {
                 let stores = this.$store.getters["store/models"];
-                // let tmpStoreOptions = [];
+                let tmpStoreOptions = [];
                 for (let i = 0; i < stores.length; i++) {
 					if (stores[i].store_id == this.storeId) {
 						this.detail.model = stores[i];
@@ -234,8 +246,13 @@ export default {
                     //     value: stores[i].store_id,
                     //     label: stores[i].store_name,
                     // });
+                    tmpStoreOptions.push({
+                        id: stores[i].store_id,
+                        name: stores[i].store_name,
+                    });
 				}
                 // this.totalTrafficsStoreOptions = tmpStoreOptions;
+                this.salesStoreOptions = tmpStoreOptions;
             });
 		},
 		async initDevice() {
@@ -677,7 +694,7 @@ export default {
 		},
         handleFloatButtonClick(idx) {
             if (idx.idx == 0) {
-                console.log(idx.idx);
+                this.$modal.show('salesModal');
             }
         },
 	},
