@@ -289,6 +289,185 @@
             </div>
         </div>
 
+        <category-card :title="$t('component.comparison') + ' ' + $t('component.traffics')">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('dashboard.type')}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="specificComparisonTotalTrafficsTypes"
+                        collapse-tags
+                        :placeholder="$t('component.stores')"
+                    >
+                        <el-option
+                            v-for="option in $t('multiTypeOptions')"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="row">
+                <base-selector-input
+                    :label="$t('date.dateRange') + ' ' + 1"
+                    v-model="specificComparisonTotalTrafficsSelectedDateRange1"
+                    :options="$t('customDateRangeOptions')"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="specificComparisonTotalTrafficsDateRangeSelectorChange1"
+                ></base-selector-input>
+                <base-input 
+                    :label="$t('date.start')"
+                    :placeholder="$t('date.start')"
+                    v-model="specificComparisonTotalTrafficsSelectedStartDate1"
+                    type="date"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="specificComparisonTotalTrafficsStartDateChange1"
+                    v-show="specificComparisonTotalTrafficsSelectedDateRange1 == 'custom'"
+                    >
+                </base-input>
+                <base-input 
+                    :label="$t('date.end')"
+                    :placeholder="$t('date.end')"
+                    v-model="specificComparisonTotalTrafficsSelectedEndDate1"
+                    type="date"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="specificComparisonTotalTrafficsEndDateChange1"
+                    v-show="specificComparisonTotalTrafficsSelectedDateRange1 == 'custom'"
+                    >
+                </base-input>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('component.stores') + ' ' + 1}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="specificComparisonTotalTrafficsSelectedStores1"
+                        collapse-tags
+                        :placeholder="$t('component.stores')"
+                        @change="specificComparisonTotalTrafficsStoresChange1"
+                    >
+                        <el-option
+                            v-for="option in specificComparisonTotalTrafficsStoreOptions1"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('component.inStoreTraffics') + ' ' + 1}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="specificComparisonTotalTrafficsSelectedDevices1"
+                        collapse-tags
+                        :placeholder="$t('component.inStoreTraffics')"
+                        @change="specificComparisonTotalTrafficsDevicesChange1"
+                    >
+                        <el-option
+                            v-for="option in specificComparisonTotalTrafficsDeviceOptions1"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="row">
+                <base-selector-input
+                    :label="$t('date.dateRange') + ' ' + 2"
+                    v-model="specificComparisonTotalTrafficsSelectedDateRange2"
+                    :options="$t('customDateRangeOptions')"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="specificComparisonTotalTrafficsDateRangeSelectorChange2"
+                ></base-selector-input>
+                <base-input 
+                    :label="$t('date.start')"
+                    :placeholder="$t('date.start')"
+                    v-model="specificComparisonTotalTrafficsSelectedStartDate2"
+                    type="date"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="specificComparisonTotalTrafficsStartDateChange2"
+                    v-show="specificComparisonTotalTrafficsSelectedDateRange2 == 'custom'"
+                    >
+                </base-input>
+                <base-input 
+                    :label="$t('date.end')"
+                    :placeholder="$t('date.end')"
+                    v-model="specificComparisonTotalTrafficsSelectedEndDate2"
+                    type="date"
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
+                    @input="specificComparisonTotalTrafficsEndDateChange2"
+                    v-show="specificComparisonTotalTrafficsSelectedDateRange2 == 'custom'"
+                    >
+                </base-input>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('component.stores') + ' ' + 2}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="specificComparisonTotalTrafficsSelectedStores2"
+                        collapse-tags
+                        :placeholder="$t('component.stores')"
+                        @change="specificComparisonTotalTrafficsStoresChange2"
+                    >
+                        <el-option
+                            v-for="option in specificComparisonTotalTrafficsStoreOptions2"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('component.inStoreTraffics') + ' ' + 2}}</label>
+                    <el-select
+                        multiple
+                        class="select-info"
+                        size="large"
+                        v-model="specificComparisonTotalTrafficsSelectedDevices2"
+                        collapse-tags
+                        :placeholder="$t('component.inStoreTraffics')"
+                        @change="specificComparisonTotalTrafficsDevicesChange2"
+                    >
+                        <el-option
+                            v-for="option in specificComparisonTotalTrafficsDeviceOptions2"
+                            class="select-info"
+                            :value="option.value"
+                            :label="option.label"
+                            :key="option.label"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+        </category-card>
+        <div class="row">
+            <div class="col-12">
+                <traffics-card
+                    :sub-title="specificComparisonTotalTrafficsSelectedDateRange1"
+                    :previous-title="specificComparisonTotalTrafficsSelectedDateRange2"
+                    :displayTypes="specificComparisonTotalTrafficsTypes"
+                    :currentData="specificComparisonTotalTraffics1"
+                    :previousData="specificComparisonTotalTraffics2"
+                    >
+                </traffics-card>
+            </div>
+        </div>
+
         <traffic-trend-line-chart
             :labels="trendLineChartLabels"
             :lines="trendLineChartLines"
@@ -362,6 +541,9 @@ export default {
     },
     data() {
         let today = this.$moment();
+        let todayString = today.format("YYYY-MM-DD");
+        let tomorrowString = today.add(1, 'days').format("YYYY-MM-DD");
+        let yesterdayString = today.subtract(2, 'days').format("YYYY-MM-DD");
         return {
             byStoreSelectedType: "enter",
             byStoreSelectedDateRange: "today",
@@ -372,8 +554,8 @@ export default {
             byFloor: [],
 
             totalTrafficsSelectedDateRange: "today",
-            totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
-            totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
+            totalTrafficsSelectedStartDate: todayString,
+            totalTrafficsSelectedEndDate: tomorrowString,
             totalTrafficsSelectedStores: "",
             totalTrafficsStoreOptions: [],
             totalTrafficsSelectedDevices: "",
@@ -428,6 +610,34 @@ export default {
                     passing: 0,
                 },
             },
+            specificComparisonTotalTrafficsTypes: ["enter", "return", "passing"],
+            specificComparisonTotalTrafficsSelectedDateRange1: "today",
+            specificComparisonTotalTrafficsSelectedStartDate1: todayString,
+            specificComparisonTotalTrafficsSelectedEndDate1: tomorrowString,
+            specificComparisonTotalTrafficsSelectedStores1: "",
+            specificComparisonTotalTrafficsStoreOptions1: [],
+            specificComparisonTotalTrafficsSelectedDevices1: "",
+            specificComparisonTotalTrafficsDeviceOptions1: [],
+
+            specificComparisonTotalTrafficsSelectedDateRange2: "yesterday",
+            specificComparisonTotalTrafficsSelectedStartDate2: yesterdayString,
+            specificComparisonTotalTrafficsSelectedEndDate2: todayString,
+            specificComparisonTotalTrafficsSelectedStores2: "",
+            specificComparisonTotalTrafficsStoreOptions2: [],
+            specificComparisonTotalTrafficsSelectedDevices2: "",
+            specificComparisonTotalTrafficsDeviceOptions2: [],
+            specificComparisonTotalTraffics1: {
+                enter: 0,
+                exit: 0,
+                return: 0,
+                passing: 0,
+            },
+            specificComparisonTotalTraffics2: {
+                enter: 0,
+                exit: 0,
+                return: 0,
+                passing: 0,
+            },
 
             trendLineChartLabels: [],
             trendLineChartLines: [],
@@ -439,6 +649,8 @@ export default {
             this.getByFloor();
             this.getTotalTraffics();
             this.getComparisonTotalTraffics();
+            this.getSpecificComparisonTotalTraffics1();
+            this.getSpecificComparisonTotalTraffics2();
         });
     },
     methods: {
@@ -512,6 +724,8 @@ export default {
                 this.byStore = tmpByStore;
                 this.totalTrafficsStoreOptions = tmpStoreOptions;
                 this.comparisonTotalTrafficsStoreOptions = tmpStoreOptions;
+                this.specificComparisonTotalTrafficsStoreOptions1 = tmpStoreOptions;
+                this.specificComparisonTotalTrafficsStoreOptions2 = tmpStoreOptions;
             });
         },
         async initDevice() {
@@ -546,6 +760,8 @@ export default {
                 this.byFloor = tmpByFloor;
                 this.totalTrafficsDeviceOptions = tmpDeviceOptions;
                 this.comparisonTotalTrafficsDeviceOptions = tmpDeviceOptions;
+                this.specificComparisonTotalTrafficsDeviceOptions1 = tmpDeviceOptions;
+                this.specificComparisonTotalTrafficsDeviceOptions2 = tmpDeviceOptions;
             });
         },
 
@@ -689,11 +905,11 @@ export default {
         },
         async getComparisonTotalTraffics() {
             let param = '';
-            if (this.totalTrafficsSelectedStores.length > 0) {
-                param += `&store_id=${this.totalTrafficsSelectedStores.join()}`;
+            if (this.comparisonTotalTrafficsSelectedStores.length > 0) {
+                param += `&store_id=${this.comparisonTotalTrafficsSelectedStores.join()}`;
             }
-            if (this.totalTrafficsSelectedDevices.length > 0) {
-                param += `&device_id=${this.totalTrafficsSelectedDevices.join()}`;
+            if (this.comparisonTotalTrafficsSelectedDevices.length > 0) {
+                param += `&device_id=${this.comparisonTotalTrafficsSelectedDevices.join()}`;
             }
             await this.$store.dispatch('decode/decodeDateRange', 'today').then((dateRange) => {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
@@ -774,6 +990,105 @@ export default {
                 });
             });
         },
+        specificComparisonTotalTrafficsDateRangeSelectorChange1() {
+            this.getSpecificComparisonTotalTraffics1();
+        },
+        specificComparisonTotalTrafficsStartDateChange1() {
+            this.getSpecificComparisonTotalTraffics1();
+        },
+        specificComparisonTotalTrafficsEndDateChange1() {
+            this.getSpecificComparisonTotalTraffics1();
+        },
+        specificComparisonTotalTrafficsStoresChange1() {
+            this.getSpecificComparisonTotalTraffics1();
+        },
+        specificComparisonTotalTrafficsDevicesChange1() {
+            this.getSpecificComparisonTotalTraffics1();
+        },
+        async getSpecificComparisonTotalTraffics1() {
+            let param = '';
+            if (this.specificComparisonTotalTrafficsSelectedStores1.length > 0) {
+                param += `&store_id=${this.specificComparisonTotalTrafficsSelectedStores1.join()}`;
+            }
+            if (this.specificComparisonTotalTrafficsSelectedDevices1.length > 0) {
+                param += `&device_id=${this.specificComparisonTotalTrafficsSelectedDevices1.join()}`;
+            }
+            if (this.specificComparisonTotalTrafficsSelectedDateRange1 == 'custom') {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${this.specificComparisonTotalTrafficsSelectedStartDate1},${this.specificComparisonTotalTrafficsSelectedEndDate1}` + param
+                }).then((response) => {
+                    this.specificComparisonTotalTraffics1 = {
+                        enter: response.enter,
+                        exit: response.exit,
+                        return: response.return,
+                        passing: response.passing,
+                    };
+                });
+            } else {
+                await this.$store.dispatch('decode/decodeDateRange', this.specificComparisonTotalTrafficsSelectedDateRange1).then((dateRange) => {
+                    this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                        param: `date=${dateRange}` + param
+                    }).then((response) => {
+                        this.specificComparisonTotalTraffics1 = {
+                            enter: response.enter,
+                            exit: response.exit,
+                            return: response.return,
+                            passing: response.passing,
+                        };
+                    });
+                });
+            }
+        },
+        specificComparisonTotalTrafficsDateRangeSelectorChange2() {
+            this.getSpecificComparisonTotalTraffics2();
+        },
+        specificComparisonTotalTrafficsStartDateChange2() {
+            this.getSpecificComparisonTotalTraffics2();
+        },
+        specificComparisonTotalTrafficsEndDateChange2() {
+            this.getSpecificComparisonTotalTraffics2();
+        },
+        specificComparisonTotalTrafficsStoresChange2() {
+            this.getSpecificComparisonTotalTraffics2();
+        },
+        specificComparisonTotalTrafficsDevicesChange2() {
+            this.getSpecificComparisonTotalTraffics2();
+        },
+        async getSpecificComparisonTotalTraffics2() {
+            let param = '';
+            if (this.specificComparisonTotalTrafficsSelectedStores2.length > 0) {
+                param += `&store_id=${this.specificComparisonTotalTrafficsSelectedStores2.join()}`;
+            }
+            if (this.specificComparisonTotalTrafficsSelectedDevices2.length > 0) {
+                param += `&device_id=${this.specificComparisonTotalTrafficsSelectedDevices2.join()}`;
+            }
+            if (this.specificComparisonTotalTrafficsSelectedDateRange2 == 'custom') {
+                this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                    param: `date=${this.specificComparisonTotalTrafficsSelectedStartDate2},${this.specificComparisonTotalTrafficsSelectedEndDate2}` + param
+                }).then((response) => {
+                    this.specificComparisonTotalTraffics2 = {
+                        enter: response.enter,
+                        exit: response.exit,
+                        return: response.return,
+                        passing: response.passing,
+                    };
+                });
+            } else {
+                await this.$store.dispatch('decode/decodeDateRange', this.specificComparisonTotalTrafficsSelectedDateRange2).then((dateRange) => {
+                    this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
+                        param: `date=${dateRange}` + param
+                    }).then((response) => {
+                        this.specificComparisonTotalTraffics2 = {
+                            enter: response.enter,
+                            exit: response.exit,
+                            return: response.return,
+                            passing: response.passing,
+                        };
+                    });
+                });
+            }
+        },
+
 
         async trafficTrendChartChange(param) {
             let queries = [];
