@@ -136,8 +136,8 @@
             name="salesModal"
             :storeOptions="salesStoreOptions"
             :selectedStore="storeId"
+            @close-modal="handleCloseSalesModal"
             >
-
         </sales-add-modal>
 	</div>
 </template>
@@ -696,6 +696,9 @@ export default {
             if (idx.idx == 0) {
                 this.$modal.show('salesModal');
             }
+        },
+        handleCloseSalesModal() {
+            this.$modal.hide('salesModal');
         },
 	},
 };

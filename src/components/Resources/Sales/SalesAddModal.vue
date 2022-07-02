@@ -125,8 +125,20 @@ export default {
         // console.log(this.storeOptions);
     },
     methods: {
-        handleSubmitSalesReport() {
-            
+        async handleSubmitSalesReport() {
+            // let param = `&store_id=${this.storeId}`;
+            await this.$store.dispatch('sales/add', {
+                model: {
+                    store_id: this.storeId,
+                    revenue: this.revenue,
+                    profit: this.profit,
+                    profit_margin: this.profitMargin,
+                    volume: this.volume,
+                    collection_date: this.date,
+                }
+            }).then(() => {
+                this.$emit('close-modal');
+            });
         },
     },
 };

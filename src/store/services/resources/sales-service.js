@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = process.env.VUE_APP_API_BASE_URL;
+const url = process.env.VUE_APP_API_BASE_URL_SALES;
 const config = {
     headers: {
         'Accept': 'application/json',
