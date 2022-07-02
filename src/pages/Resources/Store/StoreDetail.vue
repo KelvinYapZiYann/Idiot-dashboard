@@ -200,25 +200,27 @@ export default {
                 return: 0,
                 passing: 0,
             };
-			await this.initStore();
-            await this.initDevice();
-        },
-		async initStore() {
-			await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
-                let tmpStoreOptions = [];
-                for (let i = 0; i < stores.length; i++) {
-					if (stores[i].store_id == this.storeId) {
-						this.detail.model = stores[i];
-					}
-					tmpStoreOptions.push({
-                        value: stores[i].store_id,
-                        label: stores[i].store_name,
-                    });
-				}
-                this.totalTrafficsStoreOptions = tmpStoreOptions;
+			// await this.initStore();
+            await this.initDevice().then(() => {
+                this.getTotalTraffics();
             });
-		},
+        },
+		// async initStore() {
+		// 	await this.$store.dispatch('store/getAll').then(() => {
+        //         let stores = this.$store.getters["store/models"];
+        //         let tmpStoreOptions = [];
+        //         for (let i = 0; i < stores.length; i++) {
+		// 			if (stores[i].store_id == this.storeId) {
+		// 				this.detail.model = stores[i];
+		// 			}
+		// 			tmpStoreOptions.push({
+        //                 value: stores[i].store_id,
+        //                 label: stores[i].store_name,
+        //             });
+		// 		}
+        //         this.totalTrafficsStoreOptions = tmpStoreOptions;
+        //     });
+		// },
 		async initDevice() {
             await this.$store.dispatch('inStoreTraffic/getAll', {
 				param: {
@@ -273,7 +275,7 @@ export default {
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
                     param: `date=${this.totalTrafficsSelectedStartDate},${this.totalTrafficsSelectedEndDate}` + param
                 }).then((response) => {
-                        let totalTraffics = response;
+                    let totalTraffics = response;
                     this.totalTraffics = {
                         enter: totalTraffics.enter,
                         exit: totalTraffics.exit,

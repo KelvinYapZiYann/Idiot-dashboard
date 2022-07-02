@@ -165,7 +165,9 @@ export default {
                 return: 0,
                 passing: 0,
             };
-            await this.initDevice();
+            await this.initDevice().then(() => {
+                this.getTotalTraffics();
+            });
         },
 		async initDevice() {
             await this.$store.dispatch('inStoreTraffic/getById', {
