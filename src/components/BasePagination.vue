@@ -82,7 +82,7 @@ export default {
     },
     value: {
       type: Number,
-      default: 5
+      default: 1
     },
     pagesToDisplay: {
       type: Number,

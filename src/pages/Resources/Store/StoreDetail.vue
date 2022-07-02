@@ -106,6 +106,13 @@
         >
         </traffic-trend-line-chart>
 
+        <sales-table
+            :resource="salesResource"
+            @handle-add-click="handleSalesAddClick"
+            @handle-edit-click="handleSalesEditClick"
+            @handle-remove-click="handleSalesRemoveClick"
+        ></sales-table>
+
 		<in-store-traffic-table
 			:resource="inStoreTrafficResource"
 		></in-store-traffic-table>
@@ -137,6 +144,8 @@
             :storeOptions="salesStoreOptions"
             :selectedStore="storeId"
             @close-modal="handleCloseSalesModal"
+            :isEdit="isSalesModalEdit"
+            :salesId="salesId"
             >
         </sales-add-modal>
 	</div>
@@ -152,6 +161,7 @@ import {
 	TrafficTrendLineChart,
     SalesAddModal,
 } from "@/components/index";
+import SalesTable from "@/components/Resources/Sales/SalesTable";
 import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
 import { Select, Option } from "element-ui";
 
@@ -166,6 +176,7 @@ export default {
 		StatsCard,
 		CategoryCard,
 		TrafficTrendLineChart,
+        SalesTable,
 		InStoreTrafficTable,
         SalesAddModal,
 	},
@@ -210,12 +221,19 @@ export default {
 			trendLineChartLabels: [],
             trendLineChartLines: [],
 
+            salesResource: {
+                models: [],
+                data: {},
+            },
+
 			inStoreTrafficResource: {
 				models: [],
-				data: {}
+				data: {},
 			},
 
             salesStoreOptions: [],
+            isSalesModalEdit: false,
+            salesId: "",
 		};
 	},
 	mounted() {
@@ -229,7 +247,9 @@ export default {
                 return: 0,
                 passing: 0,
             };
-			await this.initStore();
+			await this.initStore().then(() => {
+                this.getSales();
+            });
             await this.initDevice().then(() => {
                 this.getTotalTraffics();
             });
@@ -255,6 +275,17 @@ export default {
                 this.salesStoreOptions = tmpStoreOptions;
             });
 		},
+        async getSales() {
+            await this.$store.dispatch('sales/getAll', {
+                param: `store_id=${this.storeId}`,
+            }).then((response) => {
+                console.log(response.meta);
+                this.salesResource = {
+                    models: response.data,
+                    data: response.meta,
+                }
+            });
+        },
 		async initDevice() {
             await this.$store.dispatch('inStoreTraffic/getAll', {
 				param: {
@@ -692,6 +723,18 @@ export default {
 				this.$router.go(-1);
 			}
 		},
+        handleSalesAddClick() {
+            this.isSalesModalEdit = false;
+            this.$modal.show('salesModal');
+        },
+        handleSalesEditClick(id) {
+            this.salesId = id;
+            this.isSalesModalEdit = true;
+            this.$modal.show('salesModal');
+        },
+        handleSalesRemoveClick(id) {
+            this.salesId = id;
+        },
         handleFloatButtonClick(idx) {
             if (idx.idx == 0) {
                 this.$modal.show('salesModal');
@@ -699,6 +742,7 @@ export default {
         },
         handleCloseSalesModal() {
             this.$modal.hide('salesModal');
+            this.getSales();
         },
 	},
 };

@@ -6,7 +6,7 @@
             :minHeight="300"
             width="50%"
             >
-                <h3 class="text-center">{{ $t('sales.salesReport') }}</h3>
+                <h3 class="text-center mt-2">{{ $t('sales.salesReport') }}</h3>
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                         <base-selector-input
@@ -74,7 +74,7 @@
                     fill
                     >
                         <i class="fas fa-plus mr-1"></i>
-                        {{$t('component.add')}}
+                        {{ isEdit ? $t('component.save') : $t('component.add')}}
                 </base-button>
         </modal>
     </div>
@@ -109,6 +109,14 @@ export default {
             type: [String, Number],
             default: "",
         },
+        isEdit: {
+            type: Boolean,
+            default: false,
+        },
+        salesId: {
+            type: [String, Number],
+            default: "",
+        },
     },
     data() {
         let today = this.$moment();
@@ -121,24 +129,59 @@ export default {
             volume: 0,
         };
     },
-    mounted() {
-        // console.log(this.storeOptions);
+    watch: {
+        isEdit: function(value) {
+            if (value) {
+                this.getSalesDetail();
+            }
+        },
+        salesId: function(value) {
+            if (value) {
+                this.getSalesDetail();
+            }
+        },
     },
     methods: {
-        async handleSubmitSalesReport() {
-            // let param = `&store_id=${this.storeId}`;
-            await this.$store.dispatch('sales/add', {
-                model: {
-                    store_id: this.storeId,
-                    revenue: this.revenue,
-                    profit: this.profit,
-                    profit_margin: this.profitMargin,
-                    volume: this.volume,
-                    collection_date: this.date,
-                }
-            }).then(() => {
-                this.$emit('close-modal');
+        async getSalesDetail() {
+            await this.$store.dispatch('sales/getById', {
+                id: this.salesId,
+            }).then((response) => {
+                this.date = response.data.collection_date.substring(0, 10);
+                this.revenue = parseInt(response.data.revenue);
+                this.profit = parseInt(response.data.profit);
+                this.profitMargin = parseInt(response.data.profit_margin);
+                this.volume = parseInt(response.data.volume);
             });
+        },
+        async handleSubmitSalesReport() {
+            if (this.isEdit) {
+                await this.$store.dispatch('sales/update', {
+                    id: this.salesId,
+                    model: {
+                        store_id: this.storeId,
+                        revenue: this.revenue,
+                        profit: this.profit,
+                        profit_margin: this.profitMargin,
+                        volume: this.volume,
+                        collection_date: this.date,
+                    }
+                }).then(() => {
+                    this.$emit('close-modal');
+                });
+            } else {
+                await this.$store.dispatch('sales/add', {
+                    model: {
+                        store_id: this.storeId,
+                        revenue: this.revenue,
+                        profit: this.profit,
+                        profit_margin: this.profitMargin,
+                        volume: this.volume,
+                        collection_date: this.date,
+                    }
+                }).then(() => {
+                    this.$emit('close-modal');
+                });
+            }
         },
     },
 };
