@@ -114,6 +114,23 @@
 			<i class="fas fa-chevron-left mr-1"></i>
 			{{$t('component.back')}}
 		</base-button>
+
+        <vue-fab 
+            mainBtnColor="#1d8cf8"
+            size="big"
+            :scrollAutoHide="false"
+            icon="more_vert"
+            activeIcon="add"
+            >
+            <fab-item 
+                :idx="0"
+                title="add"
+                color="#1d8cf8"
+                titleColor="#fff"
+                titleBgColor="#1d8cf8"
+                icon="description"
+                @clickItem="handleFloatButtonClick" />
+        </vue-fab>
 	</div>
 </template>
 <script>
@@ -200,27 +217,27 @@ export default {
                 return: 0,
                 passing: 0,
             };
-			// await this.initStore();
+			await this.initStore();
             await this.initDevice().then(() => {
                 this.getTotalTraffics();
             });
         },
-		// async initStore() {
-		// 	await this.$store.dispatch('store/getAll').then(() => {
-        //         let stores = this.$store.getters["store/models"];
-        //         let tmpStoreOptions = [];
-        //         for (let i = 0; i < stores.length; i++) {
-		// 			if (stores[i].store_id == this.storeId) {
-		// 				this.detail.model = stores[i];
-		// 			}
-		// 			tmpStoreOptions.push({
-        //                 value: stores[i].store_id,
-        //                 label: stores[i].store_name,
-        //             });
-		// 		}
-        //         this.totalTrafficsStoreOptions = tmpStoreOptions;
-        //     });
-		// },
+		async initStore() {
+			await this.$store.dispatch('store/getAll').then(() => {
+                let stores = this.$store.getters["store/models"];
+                // let tmpStoreOptions = [];
+                for (let i = 0; i < stores.length; i++) {
+					if (stores[i].store_id == this.storeId) {
+						this.detail.model = stores[i];
+					}
+					// tmpStoreOptions.push({
+                    //     value: stores[i].store_id,
+                    //     label: stores[i].store_name,
+                    // });
+				}
+                // this.totalTrafficsStoreOptions = tmpStoreOptions;
+            });
+		},
 		async initDevice() {
             await this.$store.dispatch('inStoreTraffic/getAll', {
 				param: {
@@ -658,6 +675,11 @@ export default {
 				this.$router.go(-1);
 			}
 		},
+        handleFloatButtonClick(idx) {
+            if (idx.idx == 0) {
+                console.log(idx.idx);
+            }
+        },
 	},
 };
 </script>

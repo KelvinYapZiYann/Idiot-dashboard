@@ -15,6 +15,8 @@ import swal from "vue-sweetalert2";
 import '@sweetalert2/theme-bootstrap-4/bootstrap-4.scss';
 import VueMoment from 'vue-moment';
 
+import VueFab from 'vue-float-action-button'
+
 import "@/assets/scss/dashboard.scss";
 
 Vue.config.productionTip = false
@@ -32,6 +34,7 @@ Vue.use(swal, {
   buttonsStyling: false,
 });
 Vue.use(VueMoment);
+Vue.use(VueFab);
 
 new Vue({
   store,
