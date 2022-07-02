@@ -28,7 +28,7 @@
                         v-on:show-details="showDetails"
                         :disableDelete="true"
                         :disableEdit="true"
-                        :startIndex="1"
+                        :startIndex="resource.data.from"
                     >
                         <template slot-scope="{ row }">
                             <td
@@ -69,8 +69,8 @@
                         </div>
                         <base-pagination
                             class="pagination-no-border"
-                            v-model="resource.data.currentPage"
-                            :per-page="resource.data.perPage"
+                            :value="resource.data.current_page"
+                            :per-page="resource.data.per_page"
                             :total="resource.data.total"
                             @input="handlePagination"
                             type="primary"
@@ -108,7 +108,6 @@ export default {
                     volume: this.$t('sales.volume'),
                 },
             },
-            paginationPage: 1,
         };
     },
     props: {
@@ -119,13 +118,11 @@ export default {
                 return {
                     models: [],
                     data: {
-                        canAdd: false,
-                        currentPage: 1,
+                        current_page: 1,
                         total: 0,
                         from: 0,
                         to: 0,
-                        perPage: 10,
-                        links: []
+                        per_page: 10,
                     }
                 }
             },
@@ -143,7 +140,7 @@ export default {
             this.$emit('handle-remove-click', id);
         },
         handlePagination(id) {
-            console.log(id);
+            this.$emit('get-all', id);
         },
         addModel() {
             this.$emit('handle-add-click');

@@ -115,7 +115,7 @@
             </div>
             <base-pagination
               class="pagination-no-border"
-              v-model="resource.data.currentPage"
+              v-model="resource.data.current_page"
               :per-page="resource.data.perPage"
               :total="resource.data.total"
               @input="handlePagination"
@@ -169,12 +169,12 @@ export default {
         return {
           models: [],
           data: {
-            canAdd: false,
-            currentPage: 1,
+            can_add: false,
+            current_page: 1,
             total: 0,
             from: 0,
             to: 0,
-            perPage: 10,
+            per_page: 10,
             links: []
           }
         }

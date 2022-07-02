@@ -105,7 +105,7 @@
             </div>
             <base-pagination
               class="pagination-no-border"
-              v-model="resource.data.currentPage"
+              v-model="resource.data.current_page"
               :per-page="resource.data.perPage"
               :total="resource.data.total"
               @input="handlePagination"
@@ -157,7 +157,7 @@ export default {
           models: [],
           data: {
             canAdd: false,
-            currentPage: 1,
+            current_page: 1,
             total: 0,
             from: 0,
             to: 0,
@@ -228,7 +228,7 @@ export default {
     // },
     getResource() {
       this.$emit('getResource');
-      // this.$emit('getResource', this.resource.data.currentPage);
+      // this.$emit('getResource', this.resource.data.current_page);
     },
     // async handlePagination(pageId) {
     //   this.$emit('getResource', pageId);

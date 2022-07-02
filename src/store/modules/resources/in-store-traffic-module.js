@@ -30,8 +30,8 @@ const mutations = {
             state.models.push(obj);
         });
         // state.data = {
-        //     'canAdd': response.meta.canAdd,
-        //     'currentPage': response.meta.current_page,
+        //     'can_add': response.meta.canAdd,
+        //     'current_page': response.meta.current_page,
         //     'from': response.meta.from,
         //     'to': response.meta.to,
         //     'total': response.meta.total,

@@ -108,6 +108,7 @@
 
         <sales-table
             :resource="salesResource"
+            @get-all="getSales"
             @handle-add-click="handleSalesAddClick"
             @handle-edit-click="handleSalesEditClick"
             @handle-remove-click="handleSalesRemoveClick"
@@ -275,11 +276,11 @@ export default {
                 this.salesStoreOptions = tmpStoreOptions;
             });
 		},
-        async getSales() {
+        async getSales(pageId) {
+            console.log(pageId);
             await this.$store.dispatch('sales/getAll', {
-                param: `store_id=${this.storeId}`,
+                param: `store_id=${this.storeId}` + (pageId ? `&page=${pageId}` : ''),
             }).then((response) => {
-                console.log(response.meta);
                 this.salesResource = {
                     models: response.data,
                     data: response.meta,
