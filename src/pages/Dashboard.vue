@@ -883,7 +883,7 @@ export default {
                 }
                 this.totalTrafficsDeviceOptions = tmpDeviceOptions;
             }
-            if (this.totalTrafficsStoreOptionsLength > storeOptions.length) {
+            if (storeOptions.length != 0 && this.totalTrafficsStoreOptionsLength > storeOptions.length) {
                 this.totalTrafficsSelectedDevices = "";
             }
             this.totalTrafficsStoreOptionsLength = storeOptions.length;
@@ -950,7 +950,7 @@ export default {
                 }
                 this.comparisonTotalTrafficsDeviceOptions = tmpDeviceOptions;
             }
-            if (this.comparisonTotalTrafficsStoreOptionsLength > storeOptions.length) {
+            if (storeOptions.length != 0 && this.comparisonTotalTrafficsStoreOptionsLength > storeOptions.length) {
                 this.comparisonTotalTrafficsSelectedDevices = "";
             }
             this.comparisonTotalTrafficsStoreOptionsLength = storeOptions.length;
@@ -1076,7 +1076,7 @@ export default {
                 }
                 this.specificComparisonTotalTrafficsDeviceOptions1 = tmpDeviceOptions;
             }
-            if (this.specificComparisonTotalTrafficsStoreOptions1Length > storeOptions.length) {
+            if (storeOptions.length != 0 && this.specificComparisonTotalTrafficsStoreOptions1Length > storeOptions.length) {
                 this.specificComparisonTotalTrafficsSelectedDevices1 = "";
             }
             this.specificComparisonTotalTrafficsStoreOptions1Length = storeOptions.length;
@@ -1149,7 +1149,7 @@ export default {
                 }
                 this.specificComparisonTotalTrafficsDeviceOptions2 = tmpDeviceOptions;
             }
-            if (this.specificComparisonTotalTrafficsStoreOptions2Length > storeOptions.length) {
+            if (storeOptions.length != 0 && this.specificComparisonTotalTrafficsStoreOptions2Length > storeOptions.length) {
                 this.specificComparisonTotalTrafficsSelectedDevices2 = "";
             }
             this.specificComparisonTotalTrafficsStoreOptions2Length = storeOptions.length;
