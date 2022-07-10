@@ -133,14 +133,10 @@
   },
   "typeOptions": [
     { "id": "enter", "name": "Enter" },
-    { "id": "exit", "name": "Exit" },
-    { "id": "return", "name": "Return" },
     { "id": "passing", "name": "Passing" }
   ],
   "multiTypeOptions": [
     { "value": "enter", "label": "Enter" },
-    { "value": "exit", "label": "Exit" },
-    { "value": "return", "label": "Return" },
     { "value": "passing", "label": "Passing" }
   ],
   "dateRangeOptions": [
