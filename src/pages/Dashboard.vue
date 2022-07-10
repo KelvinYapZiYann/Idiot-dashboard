@@ -620,6 +620,7 @@ export default {
             specificComparisonTotalTrafficsSelectedEndDate1: tomorrowString,
             specificComparisonTotalTrafficsSelectedStores1: "",
             specificComparisonTotalTrafficsStoreOptions1: [],
+            specificComparisonTotalTrafficsStoreOptions1Length: 0,
             specificComparisonTotalTrafficsSelectedDevices1: "",
             specificComparisonTotalTrafficsDeviceOptions1: [],
 
@@ -628,6 +629,7 @@ export default {
             specificComparisonTotalTrafficsSelectedEndDate2: todayString,
             specificComparisonTotalTrafficsSelectedStores2: "",
             specificComparisonTotalTrafficsStoreOptions2: [],
+            specificComparisonTotalTrafficsStoreOptions2Length: 0,
             specificComparisonTotalTrafficsSelectedDevices2: "",
             specificComparisonTotalTrafficsDeviceOptions2: [],
             specificComparisonTotalTraffics1: {
@@ -1053,7 +1055,31 @@ export default {
         specificComparisonTotalTrafficsEndDateChange1() {
             this.getSpecificComparisonTotalTraffics1();
         },
-        specificComparisonTotalTrafficsStoresChange1() {
+        specificComparisonTotalTrafficsStoresChange1(storeOptions) {
+            if (storeOptions.length == 0) {
+                this.specificComparisonTotalTrafficsDeviceOptions1 = this.deviceOptions;
+            } else {
+                let tmpStoreOptions = [];
+                for (let i = 0; i < storeOptions.length; i++) {
+                    for (let j = 0; j < this.deviceOptions.length; j++) {
+                        if (this.deviceOptions[j].storeId == storeOptions[i]) {
+                            tmpStoreOptions.push(j);
+                        }
+                    }
+                }
+                let tmpDeviceOptions = [];
+                for (let i = 0; i < tmpStoreOptions.length; i++) {
+                    tmpDeviceOptions.push({
+                        value: this.deviceOptions[tmpStoreOptions[i]].value,
+                        label: this.deviceOptions[tmpStoreOptions[i]].label,
+                    });
+                }
+                this.specificComparisonTotalTrafficsDeviceOptions1 = tmpDeviceOptions;
+            }
+            if (this.specificComparisonTotalTrafficsStoreOptions1Length > storeOptions.length) {
+                this.specificComparisonTotalTrafficsSelectedDevices1 = "";
+            }
+            this.specificComparisonTotalTrafficsStoreOptions1Length = storeOptions.length;
             this.getSpecificComparisonTotalTraffics1();
         },
         specificComparisonTotalTrafficsDevicesChange1() {
@@ -1102,7 +1128,31 @@ export default {
         specificComparisonTotalTrafficsEndDateChange2() {
             this.getSpecificComparisonTotalTraffics2();
         },
-        specificComparisonTotalTrafficsStoresChange2() {
+        specificComparisonTotalTrafficsStoresChange2(storeOptions) {
+            if (storeOptions.length == 0) {
+                this.specificComparisonTotalTrafficsDeviceOptions2 = this.deviceOptions;
+            } else {
+                let tmpStoreOptions = [];
+                for (let i = 0; i < storeOptions.length; i++) {
+                    for (let j = 0; j < this.deviceOptions.length; j++) {
+                        if (this.deviceOptions[j].storeId == storeOptions[i]) {
+                            tmpStoreOptions.push(j);
+                        }
+                    }
+                }
+                let tmpDeviceOptions = [];
+                for (let i = 0; i < tmpStoreOptions.length; i++) {
+                    tmpDeviceOptions.push({
+                        value: this.deviceOptions[tmpStoreOptions[i]].value,
+                        label: this.deviceOptions[tmpStoreOptions[i]].label,
+                    });
+                }
+                this.specificComparisonTotalTrafficsDeviceOptions2 = tmpDeviceOptions;
+            }
+            if (this.specificComparisonTotalTrafficsStoreOptions2Length > storeOptions.length) {
+                this.specificComparisonTotalTrafficsSelectedDevices2 = "";
+            }
+            this.specificComparisonTotalTrafficsStoreOptions2Length = storeOptions.length;
             this.getSpecificComparisonTotalTraffics2();
         },
         specificComparisonTotalTrafficsDevicesChange2() {
