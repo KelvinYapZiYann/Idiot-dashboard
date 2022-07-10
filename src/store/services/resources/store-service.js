@@ -34,7 +34,7 @@ function get(pageId) {
 }
   
 function getById(id) {
-    return axios.get(`${url}/store/${id}`, config).then(response => {
+    return axios.get(`${url}/details/store?store_id=${id}`, config).then(response => {
         return response.data;
     });
 }

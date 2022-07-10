@@ -256,22 +256,25 @@ export default {
             });
         },
 		async initStore() {
-			await this.$store.dispatch('store/getAll').then(() => {
-                let stores = this.$store.getters["store/models"];
+			await this.$store.dispatch('store/getById', {
+                id: this.storeId,
+            }).then(() => {
+                let store = this.$store.getters["store/model"];
                 let tmpStoreOptions = [];
-                for (let i = 0; i < stores.length; i++) {
-					if (stores[i].store_id == this.storeId) {
-						this.detail.model = stores[i];
-					}
+                // for (let i = 0; i < stores.length; i++) {
+				// 	if (stores[i].store_id == this.storeId) {
+				// 		this.detail.model = store;
+				// 	}
 					// tmpStoreOptions.push({
                     //     value: stores[i].store_id,
                     //     label: stores[i].store_name,
                     // });
                     tmpStoreOptions.push({
-                        id: stores[i].store_id,
-                        name: stores[i].store_name,
+                        id: this.storeId,
+                        name: store.store_name,
                     });
-				}
+                    // todo: asdasd
+				// }
                 // this.totalTrafficsStoreOptions = tmpStoreOptions;
                 this.salesStoreOptions = tmpStoreOptions;
             });

@@ -4,6 +4,7 @@ const state = {
     models: [],
     data: {},
     selector: {},
+    model: {},
 };
 
 const mutations = {
@@ -40,25 +41,7 @@ const mutations = {
         }
     },
     SET_RESOURCE: (state, response) => {
-        let fields = response.data.fields;
-        let obj = {};
-        obj.id = response.data.id;
-        for (let key in fields) {
-            obj[key] = fields[key];
-        }
-        state.models = [obj];
-        let selectors = response.meta.selector;
-        for (let field in selectors) {
-            let options = [];
-            let selector = selectors[field];
-            for (let key in selector) {
-                options.push({
-                    id: key,
-                    name: selector[key]
-                });
-            }
-            state.selector[field] = options;
-        }
+        state.model = response[0];
     },
 };
 
@@ -84,8 +67,8 @@ const actions = {
             console.error(e);
         });
     },
-    getById({commit}, id) {
-        return service.getById(id).then((response) => {
+    getById({commit}, param) {
+        return service.getById(param.id).then((response) => {
             commit('SET_RESOURCE', response);
         }).catch((e) => {
             console.error(e);
@@ -119,6 +102,7 @@ const getters = {
     models: state => state.models,
     data: state => state.data,
     selector: state => state.selector,
+    model: state => state.model,
 };
 
 const store = {
