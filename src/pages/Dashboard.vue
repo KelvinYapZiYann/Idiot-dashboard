@@ -152,7 +152,7 @@
             </div>
         </category-card>
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.enter ? totalTraffics.enter : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.enter')"
@@ -161,7 +161,7 @@
                     >
                 </stats-card>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.exit ? totalTraffics.exit : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.exit')"
@@ -178,8 +178,8 @@
                     icon="fas fa-undo-alt"
                     >
                 </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            </div> -->
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.passing ? totalTraffics.passing : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.passing')"
