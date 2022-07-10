@@ -572,6 +572,7 @@ export default {
 
             comparisonTotalTrafficsSelectedStores: "",
             comparisonTotalTrafficsStoreOptions: [],
+            comparisonTotalTrafficsStoreOptionsLength: 0,
             comparisonTotalTrafficsSelectedDevices: "",
             comparisonTotalTrafficsDeviceOptions: [],
             comparisonTotalTrafficsTypes: ["enter", "passing"],
@@ -926,7 +927,31 @@ export default {
             }
         },
 
-        comparisonTotalTrafficsStoresChange() {
+        comparisonTotalTrafficsStoresChange(storeOptions) {
+            if (storeOptions.length == 0) {
+                this.comparisonTotalTrafficsDeviceOptions = this.deviceOptions;
+            } else {
+                let tmpStoreOptions = [];
+                for (let i = 0; i < storeOptions.length; i++) {
+                    for (let j = 0; j < this.deviceOptions.length; j++) {
+                        if (this.deviceOptions[j].storeId == storeOptions[i]) {
+                            tmpStoreOptions.push(j);
+                        }
+                    }
+                }
+                let tmpDeviceOptions = [];
+                for (let i = 0; i < tmpStoreOptions.length; i++) {
+                    tmpDeviceOptions.push({
+                        value: this.deviceOptions[tmpStoreOptions[i]].value,
+                        label: this.deviceOptions[tmpStoreOptions[i]].label,
+                    });
+                }
+                this.comparisonTotalTrafficsDeviceOptions = tmpDeviceOptions;
+            }
+            if (this.comparisonTotalTrafficsStoreOptionsLength > storeOptions.length) {
+                this.comparisonTotalTrafficsSelectedDevices = "";
+            }
+            this.comparisonTotalTrafficsStoreOptionsLength = storeOptions.length;
             this.getComparisonTotalTraffics();
         },
         comparisonTotalTrafficsDevicesChange() {
