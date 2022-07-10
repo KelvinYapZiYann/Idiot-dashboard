@@ -50,11 +50,11 @@ export default {
   mounted() {
     this.$watch(
       "chartData",
-      (newVal, oldVal) => {
-        this.updateGradients(this.chartData);
-        if (!oldVal) {
+      () => {
+        // this.updateGradients(this.chartData);
+        // if (!oldVal) {
           this.renderChart(this.chartData, this.extraOptions);
-        }
+        // }
       },
       { immediate: true }
     );
