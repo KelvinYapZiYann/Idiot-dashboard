@@ -26,7 +26,8 @@
                         :columns="table.columns"
                         thead-classes="text-primary"
                         v-on:show-details="showDetails"
-                        :disableDelete="true"
+                        v-on:delete-details="deleteDetails"
+                        :disableDelete="false"
                         :disableEdit="true"
                         :startIndex="resource.data.from"
                     >

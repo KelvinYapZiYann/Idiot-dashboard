@@ -277,7 +277,6 @@ export default {
             });
 		},
         async getSales(pageId) {
-            console.log(pageId);
             await this.$store.dispatch('sales/getAll', {
                 param: `store_id=${this.storeId}` + (pageId ? `&page=${pageId}` : ''),
             }).then((response) => {
@@ -733,8 +732,12 @@ export default {
             this.isSalesModalEdit = true;
             this.$modal.show('salesModal');
         },
-        handleSalesRemoveClick(id) {
-            this.salesId = id;
+        async handleSalesRemoveClick(id) {
+            await this.$store.dispatch('sales/remove', {
+				id: id
+			}).then(() => {
+                this.getSales();
+            });
         },
         handleFloatButtonClick(idx) {
             if (idx.idx == 0) {
