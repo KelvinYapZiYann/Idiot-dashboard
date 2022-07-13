@@ -263,7 +263,7 @@ export default {
                 let tmpStoreOptions = [];
                 // for (let i = 0; i < stores.length; i++) {
 				// 	if (stores[i].store_id == this.storeId) {
-				// 		this.detail.model = store;
+						this.detail.model = store;
 				// 	}
 					// tmpStoreOptions.push({
                     //     value: stores[i].store_id,
