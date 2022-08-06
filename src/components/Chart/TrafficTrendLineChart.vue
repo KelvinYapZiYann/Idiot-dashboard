@@ -69,14 +69,31 @@
 						</el-select>
 					</div>
 					<div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-						<base-selector-input 
+						<!-- <base-selector-input 
 							:label="$t('chart.type')"
 							:placeholder="$t('chart.type')"
 							v-model="chartType"
 							:options="$t('chartTypeOptions')"
 							@input="chartTypeSelectorChange"
 							>
-						</base-selector-input>
+						</base-selector-input> -->
+						<label class="col-12">{{$t('chart.type')}}</label>
+						<el-select
+							class="select-info"
+							size="large"
+							v-model="chartType"
+							:placeholder="$t('chart.type')"
+							@change="chartTypeSelectorChange"
+						>
+							<el-option
+								v-for="option in $t('chartTypeOptions')"
+								class="select-info"
+								:value="option.id"
+								:label="option.name"
+								:key="option.name"
+							>
+							</el-option>
+						</el-select>
 					</div>
 					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType != 'daily'">
 						<base-input 
@@ -89,14 +106,31 @@
 						</base-input>
 					</div>
 					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily'">
-						<base-selector-input 
+						<!-- <base-selector-input 
 							:label="$t('date.dateRange')"
 							:placeholder="$t('date.dateRange')"
 							v-model="dateRange.dateRange"
 							:options="$t('customDateRangeOptions')"
 							@input="dateRangeSelectorChange"
 							>
-						</base-selector-input>
+						</base-selector-input> -->
+						<label class="col-12">{{$t('date.dateRange')}}</label>
+						<el-select
+							class="select-info"
+							size="large"
+							v-model="dateRange.dateRange"
+							:placeholder="$t('date.dateRange')"
+							@change="dateRangeSelectorChange"
+						>
+							<el-option
+								v-for="option in $t('customDateRangeOptions')"
+								class="select-info"
+								:value="option.id"
+								:label="option.name"
+								:key="option.name"
+							>
+							</el-option>
+						</el-select>
 					</div>
 					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
 						<base-input 
@@ -137,7 +171,7 @@
 import { 
 	BaseButton,
 	BaseInput,
-	BaseSelectorInput,
+	// BaseSelectorInput,
 	Card,
 	LineChart
 } from "@/components/index";
@@ -151,7 +185,7 @@ export default {
         [Select.name]: Select,
 		BaseButton,
 		BaseInput,
-		BaseSelectorInput,
+		// BaseSelectorInput,
 		Card,
 		LineChart,
 	},
