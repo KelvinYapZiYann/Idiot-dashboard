@@ -15,7 +15,6 @@
 							class="select-info"
 							size="large"
 							v-model="displayTypes"
-							collapse-tags
 							:placeholder="$t('dashboard.type')"
 							@change="displayTypesChange"
 						>
@@ -36,7 +35,6 @@
 							class="select-info"
 							size="large"
 							v-model="selectedStores"
-							collapse-tags
 							:placeholder="$t('component.stores')"
 							@change="storesChange"
 						>
@@ -57,7 +55,6 @@
 							class="select-info"
 							size="large"
 							v-model="selectedDevices"
-							collapse-tags
 							:placeholder="$t('component.inStoreTraffics')"
 							@change="devicesChange"
 						>

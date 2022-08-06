@@ -9,13 +9,32 @@
 
 		<category-card :title="$t('component.total') + ' ' + $t('component.traffics')">
             <div class="row">
-                <base-selector-input
+                <!-- <base-selector-input
                     :label="$t('date.dateRange')"
                     v-model="totalTrafficsSelectedDateRange"
                     :options="$t('customDateRangeOptions')"
                     class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
                     @input="totalTrafficsDateRangeSelectorChange"
-                ></base-selector-input>
+                ></base-selector-input> -->
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-select
+                        class="select-info"
+                        size="large"
+                        v-model="totalTrafficsSelectedDateRange"
+                        :placeholder="$t('date.dateRange')"
+                        @change="totalTrafficsDateRangeSelectorChange"
+                    >
+                        <el-option
+                            v-for="option in $t('customDateRangeOptions')"
+                            class="select-info"
+                            :value="option.id"
+                            :label="option.name"
+                            :key="option.name"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
                 <base-input 
                     :label="$t('date.start')"
                     :placeholder="$t('date.start')"
@@ -43,7 +62,6 @@
                         class="select-info"
                         size="large"
                         v-model="totalTrafficsSelectedDevices"
-                        collapse-tags
                         :placeholder="$t('component.inStoreTraffics')"
                         @change="totalTrafficsDevicesChange"
                     >
@@ -153,7 +171,7 @@
 </template>
 <script>
 import { 
-	BaseSelectorInput,
+	// BaseSelectorInput,
 	BaseInput,
 	BaseButton, 
 	BaseDetail,
@@ -170,7 +188,7 @@ export default {
 	components: {
         [Option.name]: Option,
         [Select.name]: Select,
-		BaseSelectorInput,
+		// BaseSelectorInput,
 		BaseInput,
 		BaseButton, 
 		BaseDetail,

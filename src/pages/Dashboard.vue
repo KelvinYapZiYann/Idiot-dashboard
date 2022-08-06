@@ -107,6 +107,7 @@
                     v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
                 </base-input>
+
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('component.stores')}}</label>
                     <el-select
@@ -114,7 +115,6 @@
                         class="select-info"
                         size="large"
                         v-model="totalTrafficsSelectedStores"
-                        collapse-tags
                         :placeholder="$t('component.stores')"
                         @change="totalTrafficsStoresChange"
                     >
@@ -135,7 +135,6 @@
                         class="select-info"
                         size="large"
                         v-model="totalTrafficsSelectedDevices"
-                        collapse-tags
                         :placeholder="$t('component.inStoreTraffics')"
                         @change="totalTrafficsDevicesChange"
                     >
@@ -199,7 +198,6 @@
                         class="select-info"
                         size="large"
                         v-model="comparisonTotalTrafficsTypes"
-                        collapse-tags
                         :placeholder="$t('component.stores')"
                     >
                         <el-option
@@ -219,7 +217,6 @@
                         class="select-info"
                         size="large"
                         v-model="comparisonTotalTrafficsSelectedStores"
-                        collapse-tags
                         :placeholder="$t('component.stores')"
                         @change="comparisonTotalTrafficsStoresChange"
                     >
@@ -240,7 +237,6 @@
                         class="select-info"
                         size="large"
                         v-model="comparisonTotalTrafficsSelectedDevices"
-                        collapse-tags
                         :placeholder="$t('component.inStoreTraffics')"
                         @change="comparisonTotalTrafficsDevicesChange"
                     >
@@ -298,7 +294,6 @@
                         class="select-info"
                         size="large"
                         v-model="specificComparisonTotalTrafficsTypes"
-                        collapse-tags
                         :placeholder="$t('component.stores')"
                     >
                         <el-option
@@ -347,7 +342,6 @@
                         class="select-info"
                         size="large"
                         v-model="specificComparisonTotalTrafficsSelectedStores1"
-                        collapse-tags
                         :placeholder="$t('component.stores')"
                         @change="specificComparisonTotalTrafficsStoresChange1"
                     >
@@ -368,7 +362,6 @@
                         class="select-info"
                         size="large"
                         v-model="specificComparisonTotalTrafficsSelectedDevices1"
-                        collapse-tags
                         :placeholder="$t('component.inStoreTraffics')"
                         @change="specificComparisonTotalTrafficsDevicesChange1"
                     >
@@ -418,7 +411,6 @@
                         class="select-info"
                         size="large"
                         v-model="specificComparisonTotalTrafficsSelectedStores2"
-                        collapse-tags
                         :placeholder="$t('component.stores')"
                         @change="specificComparisonTotalTrafficsStoresChange2"
                     >
@@ -439,7 +431,6 @@
                         class="select-info"
                         size="large"
                         v-model="specificComparisonTotalTrafficsSelectedDevices2"
-                        collapse-tags
                         :placeholder="$t('component.inStoreTraffics')"
                         @change="specificComparisonTotalTrafficsDevicesChange2"
                     >
