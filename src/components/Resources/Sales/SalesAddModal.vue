@@ -4,7 +4,7 @@
             :name="name"
             height="auto"
             :minHeight="300"
-            width="50%"
+            width="100%"
             >
                 <h3 class="text-center mt-2">{{ $t('sales.salesReport') }}</h3>
                 <div class="row">

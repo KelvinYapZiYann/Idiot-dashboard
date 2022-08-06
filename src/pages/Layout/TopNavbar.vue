@@ -17,7 +17,7 @@
             <span class="navbar-toggler-bar bar3"></span>
           </button>
         </div>
-        <a class="navbar-brand" href="javascript:void(0)">{{$t('company.name')}}</a>
+        <a class="navbar-brand" href="javascript:void(0)" @click="handleHomeClick">{{$t('company.name')}}</a>
       </div>
       
     </div>
@@ -146,6 +146,11 @@ export default {
         //   type: "danger",
         //   message: "Oops, something went wrong!",
         // });
+      }
+    },
+    handleHomeClick() {
+      if (router.currentRoute.name != 'Dashboard') {
+        router.push({ name: "Dashboard" });
       }
     },
   },
