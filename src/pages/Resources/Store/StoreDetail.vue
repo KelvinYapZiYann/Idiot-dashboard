@@ -60,7 +60,8 @@
                     <el-date-picker
                         size="large"
                         v-model="totalTrafficsSelected2DateRange"
-                        :placeholder="$t('date.dateRange')"
+                        :start-placeholder="$t('date.start')"
+                        :end-placeholder="$t('date.end')"
                         type="daterange"
                         @input="totalTrafficsDateRangeChange"
                     ></el-date-picker>
@@ -192,13 +193,13 @@ import {
 } from "@/components/index";
 import SalesTable from "@/components/Resources/Sales/SalesTable";
 import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
-import { Input, Select, Option } from "element-ui";
+import { DatePicker, Select, Option } from "element-ui";
 
 export default {
 	components: {
         [Option.name]: Option,
         [Select.name]: Select,
-        [Input.name]: Input,
+        [DatePicker.name]: DatePicker,
 		// BaseSelectorInput,
 		// BaseInput,
 		BaseButton, 

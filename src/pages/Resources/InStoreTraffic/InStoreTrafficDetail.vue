@@ -35,7 +35,7 @@
                         </el-option>
                     </el-select>
                 </div>
-                <base-input 
+                <!-- <base-input 
                     :label="$t('date.start')"
                     :placeholder="$t('date.start')"
                     v-model="totalTrafficsSelectedStartDate"
@@ -44,8 +44,8 @@
                     @input="totalTrafficsStartDateChange"
                     v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
-                </base-input>
-                <base-input 
+                </base-input> -->
+                <!-- <base-input 
                     :label="$t('date.end')"
                     :placeholder="$t('date.end')"
                     v-model="totalTrafficsSelectedEndDate"
@@ -54,7 +54,18 @@
                     @input="totalTrafficsEndDateChange"
                     v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
-                </base-input>
+                </base-input> -->
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" v-show="totalTrafficsSelectedDateRange == 'custom'">
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-date-picker
+                        size="large"
+                        v-model="totalTrafficsSelected2DateRange"
+                        :start-placeholder="$t('date.start')"
+                        :end-placeholder="$t('date.end')"
+                        type="daterange"
+                        @input="totalTrafficsDateRangeChange"
+                    ></el-date-picker>
+                </div>
             </div>
         </category-card>
 		<div class="row">
@@ -112,21 +123,22 @@
 <script>
 import { 
 	// BaseSelectorInput,
-	BaseInput,
+	// BaseInput,
 	BaseButton, 
 	BaseDetail,
 	StatsCard,
 	CategoryCard,
 	TrafficTrendLineChart,
 } from "@/components/index";
-import { Select, Option } from "element-ui";
+import { DatePicker, Select, Option } from "element-ui";
 
 export default {
 	components: {
         [Option.name]: Option,
         [Select.name]: Select,
+        [DatePicker.name]: DatePicker,
 		// BaseSelectorInput,
-		BaseInput,
+		// BaseInput,
 		BaseButton, 
 		BaseDetail,
 		StatsCard,
@@ -147,7 +159,7 @@ export default {
 		}
 	},
 	data() {
-		let today = this.$moment();
+		// let today = this.$moment();
 		return {
 			detail: {
 				model: {},
@@ -159,8 +171,9 @@ export default {
 			},
 
 			totalTrafficsSelectedDateRange: "today",
-            totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
-            totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
+            // totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
+            // totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
+            totalTrafficsSelected2DateRange: "",
             totalTraffics: {
                 enter: 0,
                 exit: 0,
@@ -201,10 +214,13 @@ export default {
 		totalTrafficsDateRangeSelectorChange() {
             this.getTotalTraffics();
         },
-        totalTrafficsStartDateChange() {
-            this.getTotalTraffics();
-        },
-        totalTrafficsEndDateChange() {
+        // totalTrafficsStartDateChange() {
+        //     this.getTotalTraffics();
+        // },
+        // totalTrafficsEndDateChange() {
+        //     this.getTotalTraffics();
+        // },
+        totalTrafficsDateRangeChange() {
             this.getTotalTraffics();
         },
 		totalTrafficsDevicesChange() {
@@ -213,8 +229,14 @@ export default {
         async getTotalTraffics() {
             let param = `&device_id=${this.inStoreTrafficId}`;
             if (this.totalTrafficsSelectedDateRange == 'custom') {
+                if (!this.totalTrafficsSelected2DateRange) {
+                    return;
+                }
+                if (this.totalTrafficsSelected2DateRange.length != 2) {
+                    return;
+                }
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${this.totalTrafficsSelectedStartDate},${this.totalTrafficsSelectedEndDate}` + param
+                    param: `date=${this.$moment(this.totalTrafficsSelected2DateRange[0]).format('YYYY-MM-DD')},${this.$moment(this.totalTrafficsSelected2DateRange[1]).format('YYYY-MM-DD')}` + param
                 }).then((response) => {
                         let totalTraffics = response;
                     this.totalTraffics = {
