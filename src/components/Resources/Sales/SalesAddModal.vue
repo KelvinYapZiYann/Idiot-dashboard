@@ -9,62 +9,114 @@
                 <h3 class="text-center mt-2">{{ $t('sales.salesReport') }}</h3>
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                        <base-selector-input
+                        <!-- <base-selector-input
                             :label="$t('component.store')"
                             v-model="storeId"
                             :options="storeOptions"
                             class="col-12"
                             :disabled="selectedStore != ''"
-                        ></base-selector-input>
+                        ></base-selector-input> -->
+                        <label class="col-12">{{$t('component.store')}}</label>
+                        <el-select
+                            class="select-info"
+                            size="large"
+                            v-model="storeId"
+                            :placeholder="$t('component.store')"
+                            :disabled="selectedStore != ''"
+                        >
+                            <el-option
+                                v-for="option in storeOptions"
+                                class="select-info"
+                                :value="option.id"
+                                :label="option.name"
+                                :key="option.name"
+                            >
+                            </el-option>
+                        </el-select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                        <base-input
+                        <!-- <base-input
                             :label="$t('date.date')"
                             :placeholder="$t('date.date')"
                             class="col-12"
                             type="date"
                             v-model="date"
-                        ></base-input>
+                        ></base-input> -->
+                        <label class="col-12">{{$t('date.date')}}</label>
+                        <el-date-picker
+                            size="large"
+                            v-model="date"
+                            :placeholder="$t('date.date')"
+                            type="date"
+                        ></el-date-picker>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                        <base-input
+                        <!-- <base-input
                             :label="$t('sales.revenueRm')"
                             :placeholder="$t('sales.revenueRm')"
                             class="col-12"
                             type="number"
                             v-model="revenue"
-                        ></base-input>
+                        ></base-input> -->
+                        <label class="col-12">{{$t('sales.revenueRm')}}</label>
+                        <el-input-number
+                            size="large"
+                            v-model="revenue"
+                            type="number"
+                            :placeholder="$t('sales.revenueRm')"
+                        ></el-input-number>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                        <base-input
+                        <!-- <base-input
                             :label="$t('sales.profitRm')"
                             :placeholder="$t('sales.profitRm')"
                             class="col-12"
                             type="number"
                             v-model="profit"
-                        ></base-input>
+                        ></base-input> -->
+                        <label class="col-12">{{$t('sales.profitRm')}}</label>
+                        <el-input-number
+                            size="large"
+                            v-model="profit"
+                            :placeholder="$t('sales.profitRm')"
+                            type="number"
+                        ></el-input-number>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                        <base-input
+                        <!-- <base-input
                             :label="$t('sales.profitMarginRm')"
                             :placeholder="$t('sales.profitMarginRm')"
                             class="col-12"
                             type="number"
                             v-model="profitMargin"
-                        ></base-input>
+                        ></base-input> -->
+                        <label class="col-12">{{$t('sales.profitMarginRm')}}</label>
+                        <el-input-number
+                            size="large"
+                            v-model="profitMargin"
+                            :placeholder="$t('sales.profitMarginRm')"
+                            type="number"
+                        ></el-input-number>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                        <base-input
+                        <!-- <base-input
                             :label="$t('sales.volume')"
                             :placeholder="$t('sales.volume')"
                             class="col-12"
                             type="number"
                             v-model="volume"
-                        ></base-input>
+                        ></base-input> -->
+                        <label class="col-12">{{$t('sales.volume')}}</label>
+                        <el-input-number
+                            size="large"
+                            v-model="volume"
+                            :placeholder="$t('sales.volume')"
+                            type="number"
+                        ></el-input-number>
                     </div>
                 </div>
                 <base-button 
@@ -82,16 +134,21 @@
 
 <script>
 import { 
-    BaseSelectorInput,
-	BaseInput,
+    // BaseSelectorInput,
+	// BaseInput,
     BaseButton,
 } from "@/components/index";
+import { InputNumber, DatePicker, Select, Option } from "element-ui";
 
 export default {
     name: "sales-add-modal",
     components: {
-        BaseSelectorInput,
-        BaseInput,
+        [InputNumber.name]: InputNumber,
+        [Option.name]: Option,
+        [Select.name]: Select,
+        [DatePicker.name]: DatePicker,
+        // BaseSelectorInput,
+        // BaseInput,
         BaseButton,
 	},
     props: {
