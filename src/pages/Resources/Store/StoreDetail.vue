@@ -35,7 +35,7 @@
                         </el-option>
                     </el-select>
                 </div>
-                <base-input 
+                <!-- <base-input 
                     :label="$t('date.start')"
                     :placeholder="$t('date.start')"
                     v-model="totalTrafficsSelectedStartDate"
@@ -44,8 +44,8 @@
                     @input="totalTrafficsStartDateChange"
                     v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
-                </base-input>
-                <base-input 
+                </base-input> -->
+                <!-- <base-input 
                     :label="$t('date.end')"
                     :placeholder="$t('date.end')"
                     v-model="totalTrafficsSelectedEndDate"
@@ -54,7 +54,17 @@
                     @input="totalTrafficsEndDateChange"
                     v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
-                </base-input>
+                </base-input> -->
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" v-show="totalTrafficsSelectedDateRange == 'custom'">
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-date-picker
+                        size="large"
+                        v-model="totalTrafficsSelected2DateRange"
+                        :placeholder="$t('date.dateRange')"
+                        type="daterange"
+                        @input="totalTrafficsDateRangeChange"
+                    ></el-date-picker>
+                </div>
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('component.inStoreTraffics')}}</label>
                     <el-select
@@ -78,7 +88,7 @@
             </div>
         </category-card>
 		<div class="row">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.enter ? totalTraffics.enter : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.enter')"
@@ -87,7 +97,7 @@
                     >
                 </stats-card>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.exit ? totalTraffics.exit : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.exit')"
@@ -95,8 +105,8 @@
                     icon="fas fa-sign-out-alt"
                     >
                 </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            </div> -->
+            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.return ? totalTraffics.return : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.return')"
@@ -104,8 +114,8 @@
                     icon="fas fa-undo-alt"
                     >
                 </stats-card>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
+            </div> -->
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.passing ? totalTraffics.passing : '0'"
                     :sub-title="$t('component.total') + ' ' + $t('property.passing')"
@@ -172,8 +182,8 @@
 <script>
 import { 
 	// BaseSelectorInput,
-	BaseInput,
-	BaseButton, 
+	// BaseInput,
+	BaseButton,
 	BaseDetail,
 	StatsCard,
 	CategoryCard,
@@ -182,14 +192,15 @@ import {
 } from "@/components/index";
 import SalesTable from "@/components/Resources/Sales/SalesTable";
 import InStoreTrafficTable from "@/components/Resources/InStoreTraffic/InStoreTrafficTable";
-import { Select, Option } from "element-ui";
+import { Input, Select, Option } from "element-ui";
 
 export default {
 	components: {
         [Option.name]: Option,
         [Select.name]: Select,
+        [Input.name]: Input,
 		// BaseSelectorInput,
-		BaseInput,
+		// BaseInput,
 		BaseButton, 
 		BaseDetail,
 		StatsCard,
@@ -213,7 +224,7 @@ export default {
 		}
 	},
 	data() {
-		let today = this.$moment();
+		// let today = this.$moment();
 		return {
 			detail: {
 				model: {},
@@ -224,8 +235,9 @@ export default {
 			},
 
 			totalTrafficsSelectedDateRange: "today",
-            totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
-            totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
+            // totalTrafficsSelectedStartDate: today.format("YYYY-MM-DD"),
+            // totalTrafficsSelectedEndDate: today.add(1, 'days').format("YYYY-MM-DD"),
+            totalTrafficsSelected2DateRange: "",
             totalTrafficsSelectedStores: "",
             // totalTrafficsStoreOptions: [],
             totalTrafficsSelectedDevices: "",
@@ -343,10 +355,13 @@ export default {
 		totalTrafficsDateRangeSelectorChange() {
             this.getTotalTraffics();
         },
-        totalTrafficsStartDateChange() {
-            this.getTotalTraffics();
-        },
-        totalTrafficsEndDateChange() {
+        // totalTrafficsStartDateChange() {
+        //     this.getTotalTraffics();
+        // },
+        // totalTrafficsEndDateChange() {
+        //     this.getTotalTraffics();
+        // },
+        totalTrafficsDateRangeChange() {
             this.getTotalTraffics();
         },
 		totalTrafficsDevicesChange() {
@@ -358,8 +373,14 @@ export default {
                 param += `&device_id=${this.totalTrafficsSelectedDevices.join()}`;
             }
             if (this.totalTrafficsSelectedDateRange == 'custom') {
+                if (!this.totalTrafficsSelected2DateRange) {
+                    return;
+                }
+                if (this.totalTrafficsSelected2DateRange.length != 2) {
+                    return;
+                }
                 this.$store.dispatch('inStoreTraffic/getTotalTraffics', {
-                    param: `date=${this.totalTrafficsSelectedStartDate},${this.totalTrafficsSelectedEndDate}` + param
+                    param: `date=${this.$moment(this.totalTrafficsSelected2DateRange[0]).format('YYYY-MM-DD')},${this.$moment(this.totalTrafficsSelected2DateRange[1]).format('YYYY-MM-DD')}` + param
                 }).then((response) => {
                     let totalTraffics = response;
                     this.totalTraffics = {
