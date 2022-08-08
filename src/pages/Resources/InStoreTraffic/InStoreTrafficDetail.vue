@@ -275,14 +275,16 @@ export default {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
                     }
-                    this.trendLineChartLabels = tmpTrendLineChartLabels;
+                    if (param.startDate && param.endDate) {
+                        this.trendLineChartLabels = tmpTrendLineChartLabels;
 
-                    queries.push({
-                        label: this.$t('dashboard.all'),
-                        dateRange: `${param.startDate},${param.endDate}`,
-                        daysDifference: daysDifference + 1,
-                        query:  `&device_id=${this.inStoreTrafficId}`,
-                    });
+                        queries.push({
+                            label: this.$t('dashboard.all'),
+                            dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
+                            daysDifference: daysDifference + 1,
+                            query:  `&device_id=${this.inStoreTrafficId}`,
+                        });
+                    }
                 } else {
                     await this.$store.dispatch('decode/decodeDateRangeOneDayBefore', param.dateRange).then((dateRange) => {
                         let tmpTrendLineChartLabels = [];

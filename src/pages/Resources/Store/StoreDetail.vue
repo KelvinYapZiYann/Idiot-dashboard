@@ -420,37 +420,39 @@ export default {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
                     }
-                    this.trendLineChartLabels = tmpTrendLineChartLabels;
+                    if (param.startDate && param.endDate) {
+                        this.trendLineChartLabels = tmpTrendLineChartLabels;
 
-                    queries.push({
-                        label: this.$t('dashboard.all'),
-                        dateRange: `${param.startDate},${param.endDate}`,
-                        daysDifference: daysDifference + 1,
-                        query:  `&store_id=${this.storeId}`,
-                    });
-                    // for (let i = 0; i < param.stores.length; i++) {
-                    //     for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
-                    //         if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
-                    //             queries.push({
-                    //                 label: this.totalTrafficsStoreOptions[j].label,
-                    //                 dateRange: `${param.startDate},${param.endDate}`,
-                    //                 daysDifference: daysDifference + 1,
-                    //                 query: `&store_id=${param.stores[i]}`
-                    //             });
-                    //             break;
-                    //         }
-                    //     }
-                    // }
-                    for (let i = 0; i < param.devices.length; i++) {
-                        for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
-                            if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
-                                queries.push({
-                                    label: this.totalTrafficsDeviceOptions[j].label,
-                                    dateRange: `${param.startDate},${param.endDate}`,
-                                    daysDifference: daysDifference + 1,
-                                    query: `&store_id=${this.storeId}&device_id=${param.devices[i]}`
-                                });
-                                break;
+                        queries.push({
+                            label: this.$t('dashboard.all'),
+                            dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
+                            daysDifference: daysDifference + 1,
+                            query:  `&store_id=${this.storeId}`,
+                        });
+                        // for (let i = 0; i < param.stores.length; i++) {
+                        //     for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
+                        //         if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
+                        //             queries.push({
+                        //                 label: this.totalTrafficsStoreOptions[j].label,
+                        //                 dateRange: `${param.startDate},${param.endDate}`,
+                        //                 daysDifference: daysDifference + 1,
+                        //                 query: `&store_id=${param.stores[i]}`
+                        //             });
+                        //             break;
+                        //         }
+                        //     }
+                        // }
+                        for (let i = 0; i < param.devices.length; i++) {
+                            for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
+                                if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
+                                    queries.push({
+                                        label: this.totalTrafficsDeviceOptions[j].label,
+                                        dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
+                                        daysDifference: daysDifference + 1,
+                                        query: `&store_id=${this.storeId}&device_id=${param.devices[i]}`
+                                    });
+                                    break;
+                                }
                             }
                         }
                     }
