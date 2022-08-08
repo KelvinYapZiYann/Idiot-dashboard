@@ -6,24 +6,62 @@
                     :title="$t('dashboard.byStore')"
                 >
                     <div class="row">
-                        <base-selector-input
+                        <!-- <base-selector-input
                             :label="$t('dashboard.type')"
                             v-model="byStoreSelectedType"
                             :options="$t('typeOptions')"
                             class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byStoreTypeSelectorChange"
-                        ></base-selector-input>
-                        <base-selector-input
+                        ></base-selector-input> -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                            <label class="col-12">{{$t('dashboard.type')}}</label>
+                            <el-select
+                                class="select-info"
+                                size="large"
+                                v-model="byStoreSelectedType"
+                                :placeholder="$t('dashboard.type')"
+                                @change="byStoreTypeSelectorChange"
+                            >
+                                <el-option
+                                    v-for="option in $t('typeOptions')"
+                                    class="select-info"
+                                    :value="option.id"
+                                    :label="option.name"
+                                    :key="option.name"
+                                >
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <!-- <base-selector-input
                             :label="$t('date.dateRange')"
                             v-model="byStoreSelectedDateRange"
                             :options="$t('dateRangeOptions')"
                             class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byStoreDateRangeSelectorChange"
-                        ></base-selector-input>
+                        ></base-selector-input> -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                            <label class="col-12">{{$t('date.dateRange')}}</label>
+                            <el-select
+                                class="select-info"
+                                size="large"
+                                v-model="byStoreSelectedDateRange"
+                                :placeholder="$t('date.dateRange')"
+                                @change="byStoreDateRangeSelectorChange"
+                            >
+                                <el-option
+                                    v-for="option in $t('dateRangeOptions')"
+                                    class="select-info"
+                                    :value="option.id"
+                                    :label="option.name"
+                                    :key="option.name"
+                                >
+                                </el-option>
+                            </el-select>
+                        </div>
                     </div>
                     <div class="row">
                         <div 
-                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
+                            class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
                             v-for="(value, i) in byStore"
                             :key="i"
                         >
@@ -44,24 +82,62 @@
                     :title="$t('dashboard.byFloor')"
                 >
                     <div class="row">
-                        <base-selector-input
+                        <!-- <base-selector-input
                             :label="$t('dashboard.type')"
                             v-model="byFloorSelectedType"
                             :options="$t('typeOptions')"
                             class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byFloorSelectorChange"
-                        ></base-selector-input>
-                        <base-selector-input
+                        ></base-selector-input> -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                            <label class="col-12">{{$t('dashboard.type')}}</label>
+                            <el-select
+                                class="select-info"
+                                size="large"
+                                v-model="byFloorSelectedType"
+                                :placeholder="$t('dashboard.type')"
+                                @change="byFloorSelectorChange"
+                            >
+                                <el-option
+                                    v-for="option in $t('typeOptions')"
+                                    class="select-info"
+                                    :value="option.id"
+                                    :label="option.name"
+                                    :key="option.name"
+                                >
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <!-- <base-selector-input
                             :label="$t('date.dateRange')"
                             v-model="byFloorSelectedDateRange"
                             :options="$t('dateRangeOptions')"
                             class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
                             @input="byFloorDateRangeSelectorChange"
-                        ></base-selector-input>
+                        ></base-selector-input> -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                            <label class="col-12">{{$t('date.dateRange')}}</label>
+                            <el-select
+                                class="select-info"
+                                size="large"
+                                v-model="byFloorSelectedDateRange"
+                                :placeholder="$t('date.dateRange')"
+                                @change="byFloorDateRangeSelectorChange"
+                            >
+                                <el-option
+                                    v-for="option in $t('dateRangeOptions')"
+                                    class="select-info"
+                                    :value="option.id"
+                                    :label="option.name"
+                                    :key="option.name"
+                                >
+                                </el-option>
+                            </el-select>
+                        </div>
                     </div>
                     <div class="row">
                         <div 
-                            class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
+                            class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 d-flex flex-column justify-content-center"
                             v-for="(value, i) in byFloor"
                             :key="i"
                         >
@@ -80,14 +156,33 @@
         
         <category-card :title="$t('component.total') + ' ' + $t('component.traffics')">
             <div class="row">
-                <base-selector-input
+                <!-- <base-selector-input
                     :label="$t('date.dateRange')"
                     v-model="totalTrafficsSelectedDateRange"
                     :options="$t('customDateRangeOptions')"
                     class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
                     @input="totalTrafficsDateRangeSelectorChange"
-                ></base-selector-input>
-                <base-input 
+                ></base-selector-input> -->
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-select
+                        class="select-info"
+                        size="large"
+                        v-model="totalTrafficsSelectedDateRange"
+                        :placeholder="$t('chart.type')"
+                        @change="totalTrafficsDateRangeSelectorChange"
+                    >
+                        <el-option
+                            v-for="option in $t('customDateRangeOptions')"
+                            class="select-info"
+                            :value="option.id"
+                            :label="option.name"
+                            :key="option.name"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+                <!-- <base-input 
                     :label="$t('date.start')"
                     :placeholder="$t('date.start')"
                     v-model="totalTrafficsSelectedStartDate"
@@ -106,7 +201,22 @@
                     @input="totalTrafficsEndDateChange"
                     v-show="totalTrafficsSelectedDateRange == 'custom'"
                     >
-                </base-input>
+                </base-input> -->
+
+                <div 
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" 
+                    v-show="totalTrafficsSelectedDateRange == 'custom'"
+                >
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-date-picker
+                        size="large"
+                        v-model="totalTrafficsSelected2DateRange"
+                        :start-placeholder="$t('date.start')"
+                        :end-placeholder="$t('date.end')"
+                        type="daterange"
+                        @input="totalTrafficsChange"
+                    ></el-date-picker>
+                </div>
 
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('component.stores')}}</label>
@@ -308,14 +418,35 @@
                 </div>
             </div>
             <div class="row">
-                <base-selector-input
+                <!-- <base-selector-input
                     :label="$t('date.dateRange') + ' ' + 1"
                     v-model="specificComparisonTotalTrafficsSelectedDateRange1"
                     :options="$t('customDateRangeOptions')"
                     class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
                     @input="specificComparisonTotalTrafficsDateRangeSelectorChange1"
-                ></base-selector-input>
-                <base-input 
+                ></base-selector-input> -->
+
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-select
+                        class="select-info"
+                        size="large"
+                        v-model="specificComparisonTotalTrafficsSelectedDateRange1"
+                        :placeholder="$t('chart.type')"
+                        @change="specificComparisonTotalTrafficsDateRangeSelectorChange1"
+                    >
+                        <el-option
+                            v-for="option in $t('customDateRangeOptions')"
+                            class="select-info"
+                            :value="option.id"
+                            :label="option.name"
+                            :key="option.name"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+
+                <!-- <base-input 
                     :label="$t('date.start')"
                     :placeholder="$t('date.start')"
                     v-model="specificComparisonTotalTrafficsSelectedStartDate1"
@@ -334,7 +465,23 @@
                     @input="specificComparisonTotalTrafficsEndDateChange1"
                     v-show="specificComparisonTotalTrafficsSelectedDateRange1 == 'custom'"
                     >
-                </base-input>
+                </base-input> -->
+
+                <div 
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" 
+                    v-show="specificComparisonTotalTrafficsSelectedDateRange1 == 'custom'"
+                >
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-date-picker
+                        size="large"
+                        v-model="specificComparisonTotalTraffics2SelectedDateRange1"
+                        :start-placeholder="$t('date.start')"
+                        :end-placeholder="$t('date.end')"
+                        type="daterange"
+                        @input="specificComparisonTotalTrafficsDateRangeChange1"
+                    ></el-date-picker>
+                </div>
+
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('component.stores') + ' ' + 1}}</label>
                     <el-select
@@ -377,14 +524,35 @@
                 </div>
             </div>
             <div class="row">
-                <base-selector-input
+                <!-- <base-selector-input
                     :label="$t('date.dateRange') + ' ' + 2"
                     v-model="specificComparisonTotalTrafficsSelectedDateRange2"
                     :options="$t('customDateRangeOptions')"
                     class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6"
                     @input="specificComparisonTotalTrafficsDateRangeSelectorChange2"
-                ></base-selector-input>
-                <base-input 
+                ></base-selector-input> -->
+
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-select
+                        class="select-info"
+                        size="large"
+                        v-model="specificComparisonTotalTrafficsSelectedDateRange2"
+                        :placeholder="$t('chart.type')"
+                        @change="specificComparisonTotalTrafficsDateRangeSelectorChange2"
+                    >
+                        <el-option
+                            v-for="option in $t('customDateRangeOptions')"
+                            class="select-info"
+                            :value="option.id"
+                            :label="option.name"
+                            :key="option.name"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+
+                <!-- <base-input 
                     :label="$t('date.start')"
                     :placeholder="$t('date.start')"
                     v-model="specificComparisonTotalTrafficsSelectedStartDate2"
@@ -403,7 +571,23 @@
                     @input="specificComparisonTotalTrafficsEndDateChange2"
                     v-show="specificComparisonTotalTrafficsSelectedDateRange2 == 'custom'"
                     >
-                </base-input>
+                </base-input> -->
+
+                <div 
+                    class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" 
+                    v-show="specificComparisonTotalTrafficsSelectedDateRange2 == 'custom'"
+                >
+                    <label class="col-12">{{$t('date.dateRange')}}</label>
+                    <el-date-picker
+                        size="large"
+                        v-model="specificComparisonTotalTraffics2SelectedDateRange2"
+                        :start-placeholder="$t('date.start')"
+                        :end-placeholder="$t('date.end')"
+                        type="daterange"
+                        @input="specificComparisonTotalTrafficsDateRangeChange2"
+                    ></el-date-picker>
+                </div>
+
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('component.stores') + ' ' + 2}}</label>
                     <el-select
@@ -510,31 +694,32 @@
 </template>
 <script>
 import {
-    BaseSelectorInput,
-    BaseInput,
+    // BaseSelectorInput,
+    // BaseInput,
     CategoryCard,
     StatsCard,
     TrafficsCard,
     TrafficTrendLineChart,
 } from "@/components/index";
-import { Select, Option } from "element-ui";
+import { DatePicker, Select, Option } from "element-ui";
 
 export default {
     components: {
         [Option.name]: Option,
         [Select.name]: Select,
-        BaseSelectorInput,
-        BaseInput,
+        [DatePicker.name]: DatePicker,
+        // BaseSelectorInput,
+        // BaseInput,
         CategoryCard,
         StatsCard,
         TrafficsCard,
         TrafficTrendLineChart,
     },
     data() {
-        let today = this.$moment();
-        let todayString = today.format("YYYY-MM-DD");
-        let tomorrowString = today.add(1, 'days').format("YYYY-MM-DD");
-        let yesterdayString = today.subtract(2, 'days').format("YYYY-MM-DD");
+        // let today = this.$moment();
+        // let todayString = today.format("YYYY-MM-DD");
+        // let tomorrowString = today.add(1, 'days').format("YYYY-MM-DD");
+        // let yesterdayString = today.subtract(2, 'days').format("YYYY-MM-DD");
         return {
             byStoreSelectedType: "enter",
             byStoreSelectedDateRange: "today",
@@ -547,8 +732,9 @@ export default {
             deviceOptions: [],
 
             totalTrafficsSelectedDateRange: "today",
-            totalTrafficsSelectedStartDate: todayString,
-            totalTrafficsSelectedEndDate: tomorrowString,
+            // totalTrafficsSelectedStartDate: todayString,
+            // totalTrafficsSelectedEndDate: tomorrowString,
+            totalTrafficsSelected2DateRange: "",
             totalTrafficsSelectedStores: "",
             totalTrafficsStoreOptions: [],
             totalTrafficsStoreOptionsLength: 0,
@@ -607,8 +793,9 @@ export default {
             },
             specificComparisonTotalTrafficsTypes: ["enter", "return", "passing"],
             specificComparisonTotalTrafficsSelectedDateRange1: "today",
-            specificComparisonTotalTrafficsSelectedStartDate1: todayString,
-            specificComparisonTotalTrafficsSelectedEndDate1: tomorrowString,
+            // specificComparisonTotalTrafficsSelectedStartDate1: todayString,
+            // specificComparisonTotalTrafficsSelectedEndDate1: tomorrowString,
+            specificComparisonTotalTraffics2SelectedDateRange1: "",
             specificComparisonTotalTrafficsSelectedStores1: "",
             specificComparisonTotalTrafficsStoreOptions1: [],
             specificComparisonTotalTrafficsStoreOptions1Length: 0,
@@ -616,8 +803,9 @@ export default {
             specificComparisonTotalTrafficsDeviceOptions1: [],
 
             specificComparisonTotalTrafficsSelectedDateRange2: "yesterday",
-            specificComparisonTotalTrafficsSelectedStartDate2: yesterdayString,
-            specificComparisonTotalTrafficsSelectedEndDate2: todayString,
+            // specificComparisonTotalTrafficsSelectedStartDate2: yesterdayString,
+            // specificComparisonTotalTrafficsSelectedEndDate2: todayString,
+            specificComparisonTotalTraffics2SelectedDateRange2: "",
             specificComparisonTotalTrafficsSelectedStores2: "",
             specificComparisonTotalTrafficsStoreOptions2: [],
             specificComparisonTotalTrafficsStoreOptions2Length: 0,
@@ -853,6 +1041,9 @@ export default {
         totalTrafficsEndDateChange() {
             this.getTotalTraffics();
         },
+        totalTrafficsChange() {
+            this.getTotalTraffics();
+        },
         totalTrafficsStoresChange(storeOptions) {
             if (storeOptions.length == 0) {
                 this.totalTrafficsDeviceOptions = this.deviceOptions;
@@ -1046,6 +1237,9 @@ export default {
         specificComparisonTotalTrafficsEndDateChange1() {
             this.getSpecificComparisonTotalTraffics1();
         },
+        specificComparisonTotalTrafficsDateRangeChange1() {
+            this.getSpecificComparisonTotalTraffics1();
+        },
         specificComparisonTotalTrafficsStoresChange1(storeOptions) {
             if (storeOptions.length == 0) {
                 this.specificComparisonTotalTrafficsDeviceOptions1 = this.deviceOptions;
@@ -1117,6 +1311,9 @@ export default {
             this.getSpecificComparisonTotalTraffics2();
         },
         specificComparisonTotalTrafficsEndDateChange2() {
+            this.getSpecificComparisonTotalTraffics2();
+        },
+        specificComparisonTotalTrafficsDateRangeChange2() {
             this.getSpecificComparisonTotalTraffics2();
         },
         specificComparisonTotalTrafficsStoresChange2(storeOptions) {
