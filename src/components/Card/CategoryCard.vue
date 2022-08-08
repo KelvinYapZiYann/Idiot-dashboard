@@ -1,6 +1,10 @@
 <template>
     <card class="card-category" :show-footer-line="true">
-        <span class="card-title">{{ title }}</span>
+        <span class="card-title">
+            <slot name="title">
+                {{ title }}
+            </slot>
+        </span>
         <slot>
 
         </slot>

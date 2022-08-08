@@ -39,7 +39,8 @@
     "of": "Of",
     "entries": "Entries",
     "total": "Total",
-    "comparison": "Comparison"
+    "comparison": "Comparison",
+    "history": "History"
   },
   "property": {
     "enter": "Enter",
@@ -129,7 +130,9 @@
     "type": "Type",
     "dateRange": "Date Range",
     "phoneRepair": "Phone Repair",
-    "all": "All"
+    "all": "All",
+    "historyTrafficsDescription": "Cards that compares today, yesterday, this week, last week, this month, and last month history traffics.",
+    "comparisonTrafficsDescription": "Cards that compares history traffics of your selected option 1 and option 2."
   },
   "typeOptions": [
     { "id": "enter", "name": "Enter" },

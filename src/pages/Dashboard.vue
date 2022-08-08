@@ -299,7 +299,11 @@
             </div>
         </div>
 
-        <category-card :title="$t('component.comparison') + ' ' + $t('component.traffics')">
+        <category-card>
+            <div slot="title">
+                {{ $t('component.history') + ' ' + $t('component.traffics') }}
+                <i class="fa-solid fa-align-center" :title="$t('dashboard.historyTrafficsDescription')"></i>
+            </div>
             <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('dashboard.type')}}</label>
@@ -395,7 +399,11 @@
             </div>
         </div>
 
-        <category-card :title="$t('component.comparison') + ' ' + $t('component.traffics')">
+        <category-card>
+            <div slot="title">
+                {{ $t('component.comparison') + ' ' + $t('component.traffics') }}
+                <i class="fa-solid fa-align-center" :title="$t('dashboard.comparisonTrafficsDescription')"></i>
+            </div>
             <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
                     <label class="col-12">{{$t('dashboard.type')}}</label>
