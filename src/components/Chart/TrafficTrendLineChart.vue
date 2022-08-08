@@ -96,14 +96,22 @@
 						</el-select>
 					</div>
 					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType != 'daily'">
-						<base-input 
+						<!-- <base-input 
 							:label="$t('date.date')"
 							:placeholder="$t('date.date')"
 							v-model="date"
 							type="date"
 							@input="dateChange"
 							>
-						</base-input>
+						</base-input> -->
+						<label class="col-12">{{$t('date.date')}}</label>
+						<el-date-picker
+                            size="large"
+                            v-model="date"
+                            :placeholder="$t('date.date')"
+                            type="date"
+							@input="dateChange"
+                        ></el-date-picker>
 					</div>
 					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily'">
 						<!-- <base-selector-input 
@@ -132,7 +140,7 @@
 							</el-option>
 						</el-select>
 					</div>
-					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
+					<!-- <div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
 						<base-input 
 							:label="$t('date.start')"
 							:placeholder="$t('date.start')"
@@ -151,6 +159,17 @@
 							@input="dateRangeEndDateChange"
 							>
 						</base-input>
+					</div> -->
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
+						<label class="col-12">{{$t('date.dateRange')}}</label>
+						<el-date-picker
+							size="large"
+							v-model="dateRange.dateRange2"
+							:start-placeholder="$t('date.start')"
+							:end-placeholder="$t('date.end')"
+							type="daterange"
+							@input="dateRangeChange"
+						></el-date-picker>
 					</div>
 				</div>
 				<line-chart
@@ -170,7 +189,7 @@
 <script>
 import { 
 	BaseButton,
-	BaseInput,
+	// BaseInput,
 	// BaseSelectorInput,
 	Card,
 	LineChart
@@ -184,7 +203,7 @@ export default {
         [Option.name]: Option,
         [Select.name]: Select,
 		BaseButton,
-		BaseInput,
+		// BaseInput,
 		// BaseSelectorInput,
 		Card,
 		LineChart,
@@ -231,8 +250,9 @@ export default {
 			},
 			dateRange: {
 				dateRange: "weekTillDate",
-				startDate: today.format("YYYY-MM-DD"),
-				endDate: today.add(1, 'days').format("YYYY-MM-DD")
+				dateRange2: "",
+				// startDate: today.format("YYYY-MM-DD"),
+				// endDate: today.add(1, 'days').format("YYYY-MM-DD")
 			},
 			date: today.subtract(1, 'days').format("YYYY-MM-DD"),
 			chartType: "daily",
@@ -366,6 +386,9 @@ export default {
 		dateRangeEndDateChange() {
 			this.trafficTrendChartChange();
 		},
+		dateRangeChange() {
+			this.trafficTrendChartChange();
+		},
 		trafficTrendChartChange() {
 			this.$emit("trend-chart-change", {
 				stores: this.selectedStores,
@@ -373,8 +396,8 @@ export default {
 				chartType: this.chartType,
 				date: this.date,
 				dateRange: this.dateRange.dateRange,
-				startDate: this.dateRange.startDate,
-				endDate: this.dateRange.endDate,
+				startDate: this.dateRange.dateRange2[0],
+				endDate: this.dateRange.dateRange2[1],
 			});
 		},
 	},
