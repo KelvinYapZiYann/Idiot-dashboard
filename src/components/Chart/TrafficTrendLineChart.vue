@@ -131,7 +131,7 @@
 							@change="dateRangeSelectorChange"
 						>
 							<el-option
-								v-for="option in $t('customDateRangeOptions')"
+								v-for="option in $t('customDateRangeOptions2')"
 								class="select-info"
 								:value="option.id"
 								:label="option.name"

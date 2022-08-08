@@ -165,6 +165,13 @@
     { "id": "lastYear", "name": "Last Year" },
     { "id": "custom", "name": "Custom" }
   ],
+  "customDateRangeOptions2": [
+    { "id": "today", "name": "Today" },
+    { "id": "yesterday", "name": "Yesterday" },
+    { "id": "weekTillDate", "name": "Week Till Date" },
+    { "id": "lastWeek", "name": "Last Week" },
+    { "id": "custom", "name": "Custom" }
+  ],
   "chartTypeOptions": [
     { "id": "minute15", "name": "15 Minute" },
     { "id": "hourly", "name": "Hourly" },

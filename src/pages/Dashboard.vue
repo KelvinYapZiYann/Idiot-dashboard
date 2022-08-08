@@ -1394,6 +1394,7 @@ export default {
             let queries = [];
             if (param.chartType == 'daily') {
                 if (param.dateRange == 'custom') {
+                    console.log(param);
                     let tmpTrendLineChartLabels = [];
                     let tmpStartDate = this.$moment(param.startDate);
                     let tmpEndDate = this.$moment(param.endDate);
@@ -1402,37 +1403,44 @@ export default {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
                     }
-                    this.trendLineChartLabels = tmpTrendLineChartLabels;
-                    
-                    queries.push({
-                        label: this.$t('dashboard.all'),
-                        dateRange: `${param.startDate},${param.endDate}`,
-                        daysDifference: daysDifference + 1,
-                        query: '',
-                    });
-                    for (let i = 0; i < param.stores.length; i++) {
-                        for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
-                            if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
-                                queries.push({
-                                    label: this.totalTrafficsStoreOptions[j].label,
-                                    dateRange: `${param.startDate},${param.endDate}`,
-                                    daysDifference: daysDifference + 1,
-                                    query: `&store_id=${param.stores[i]}`
-                                });
-                                break;
+                    if (param.startDate && param.endDate) {
+                        this.trendLineChartLabels = tmpTrendLineChartLabels;
+                        queries.push({
+                            label: this.$t('dashboard.all'),
+                            dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
+                            startDate: tmpStartDate,
+                            endDate: tmpEndDate,
+                            daysDifference: daysDifference + 1,
+                            query: '',
+                        });
+                        for (let i = 0; i < param.stores.length; i++) {
+                            for (let j = 0; j < this.totalTrafficsStoreOptions.length; j++) {
+                                if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
+                                    queries.push({
+                                        label: this.totalTrafficsStoreOptions[j].label,
+                                        dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
+                                        startDate: tmpStartDate,
+                                        endDate: tmpEndDate,
+                                        daysDifference: daysDifference + 1,
+                                        query: `&store_id=${param.stores[i]}`
+                                    });
+                                    break;
+                                }
                             }
                         }
-                    }
-                    for (let i = 0; i < param.devices.length; i++) {
-                        for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
-                            if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
-                                queries.push({
-                                    label: this.totalTrafficsDeviceOptions[j].label,
-                                    dateRange: `${param.startDate},${param.endDate}`,
-                                    daysDifference: daysDifference + 1,
-                                    query: `&device_id=${param.devices[i]}`
-                                });
-                                break;
+                        for (let i = 0; i < param.devices.length; i++) {
+                            for (let j = 0; j < this.totalTrafficsDeviceOptions.length; j++) {
+                                if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
+                                    queries.push({
+                                        label: this.totalTrafficsDeviceOptions[j].label,
+                                        dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
+                                        startDate: tmpStartDate,
+                                        endDate: tmpEndDate,
+                                        daysDifference: daysDifference + 1,
+                                        query: `&device_id=${param.devices[i]}`
+                                    });
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1451,6 +1459,8 @@ export default {
                         queries.push({
                             label: this.$t('dashboard.all'),
                             dateRange: dateRange,
+                            startDate: tmpStartDate,
+                            endDate: tmpEndDate,
                             daysDifference: daysDifference + 1,
                             query: '',
                         });
@@ -1460,6 +1470,8 @@ export default {
                                     queries.push({
                                         label: this.totalTrafficsStoreOptions[j].label,
                                         dateRange: dateRange,
+                                        startDate: tmpStartDate,
+                                        endDate: tmpEndDate,
                                         daysDifference: daysDifference + 1,
                                         query: `&store_id=${param.stores[i]}`
                                     });
@@ -1473,6 +1485,8 @@ export default {
                                     queries.push({
                                         label: this.totalTrafficsDeviceOptions[j].label,
                                         dateRange: dateRange,
+                                        startDate: tmpStartDate,
+                                        endDate: tmpEndDate,
                                         daysDifference: daysDifference + 1,
                                         query: `&device_id=${param.devices[i]}`
                                     });
@@ -1484,13 +1498,15 @@ export default {
                 }
                 let lines = [];
                 let tmpFlag = 0;
-                for (let i = 0; i < queries.length; i++) {
-                    await this.getDailyTrafficTrendChart(lines, queries[i].daysDifference, queries[i].label, queries[i].dateRange, queries[i].query).then(() => {
-                        tmpFlag++;
-                        if (tmpFlag == queries.length) {
-                            this.trendLineChartLines = lines;
-                        }
-                    });
+                if (queries.length > 0) {
+                    for (let i = 0; i < queries.length; i++) {
+                        await this.getDailyTrafficTrendChart(lines, i, queries[i].daysDifference, queries[i].label, queries[i].dateRange, queries[i].startDate, queries[i].endDate, queries[i].query).then(() => {
+                            tmpFlag++;
+                            if (tmpFlag == queries.length) {
+                                this.trendLineChartLines = lines;
+                            }
+                        });
+                    }
                 }
             } else if (param.chartType == 'hourly') {
                 let tmpTrendLineChartLabels = [];
@@ -1621,21 +1637,37 @@ export default {
                 }
             }
         },
-        async getDailyTrafficTrendChart(lines, daysDifference, label, dateRange, query) {
+        async getDailyTrafficTrendChart(lines, lineId, daysDifference, label, dateRange, startDate, endDate, query) {
+            console.log(startDate);
+            console.log(endDate);
+            // console.log(dateRange);
+            // if (daysDifference > 7) {
+            //     let tmpDaysDifference = ((daysDifference - 1) / 7) + 1;
+            // } else {
+
+            // }
             await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
                 param: `date=${dateRange}` + query
             }).then((response) => {
                 if (response.length == daysDifference) {
-                    lines.push({
-                        label: label,
-                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
-                    });
+                    if (lines.length == lineId) {
+                        lines.push({
+                            label: label,
+                            data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+                        });
+                    } else {
+                        lines[lineId].data.splice(lines[lineId].data.length, 0, response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0)));
+                    }
                 } else if (response.length > daysDifference) {
                     response.splice(response.length - 1, response.length - daysDifference);
-                    lines.push({
-                        label: label,
-                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
-                    });
+                    if (lines.length == lineId) {
+                        lines.push({
+                            label: label,
+                            data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+                        });
+                    } else {
+                        lines[lineId].data.splice(lines[lineId].data.length, 0, response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0)));
+                    }
                 } else {
                     response = response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
                     let tmpJ = 0;
@@ -1656,10 +1688,14 @@ export default {
                             passing: 0,
                         });
                     }
-                    lines.push({
-                        label: label,
-                        data: tmpData,
-                    });
+                    if (lines.length == lineId) {
+                        lines.push({
+                            label: label,
+                            data: tmpData,
+                        });
+                    } else {
+                        lines[lineId].data.splice(lines[lineId].data.length, 0, tmpData);
+                    }
                 }
             });
         },
