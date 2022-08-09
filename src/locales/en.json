@@ -30,6 +30,7 @@
     "remove": "Remove",
     "cancel": "Cancel",
     "back": "Back",
+    "ok": "OK",
 
     "online": "Online",
     "offline": "Offline",
@@ -117,7 +118,9 @@
     "contactUs": "Don't hesitate to contact us if you face any problems",
 
     "downloadExcelConfirmation": "Are you sure to download this data to Excel file?",
-    "downloadExcelFailed": "Download Excel file is failed."
+    "downloadExcelFailed": "Download Excel file is failed.",
+
+    "trafficTrendChartDateRangeExceeded": "Please make sure that the date range is not more than 10 days. This restriction will be removed soon."
   },
   "inStoreTrafficType": {
     "ENTRANCE": "Entrance"

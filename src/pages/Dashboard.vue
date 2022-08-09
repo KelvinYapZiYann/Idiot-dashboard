@@ -1394,11 +1394,19 @@ export default {
             let queries = [];
             if (param.chartType == 'daily') {
                 if (param.dateRange == 'custom') {
-                    console.log(param);
                     let tmpTrendLineChartLabels = [];
                     let tmpStartDate = this.$moment(param.startDate);
                     let tmpEndDate = this.$moment(param.endDate);
                     let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
+                    if (daysDifference > 10) {
+                        this.$swal.fire({
+                            text: this.$t('alert.trafficTrendChartDateRangeExceeded'),
+                            showCancelButton: false,
+                            confirmButtonText: this.$t('component.ok'),
+                            icon: "warning",
+                        });
+                        return;
+                    }
                     for (let i = 0; i < daysDifference + 1; i++) {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
@@ -1638,14 +1646,10 @@ export default {
             }
         },
         async getDailyTrafficTrendChart(lines, lineId, daysDifference, label, dateRange, startDate, endDate, query) {
-            console.log(startDate);
-            console.log(endDate);
-            // console.log(dateRange);
-            // if (daysDifference > 7) {
-            //     let tmpDaysDifference = ((daysDifference - 1) / 7) + 1;
-            // } else {
-
-            // }
+            if (daysDifference > 10) {
+                console.log(startDate);
+                console.log(endDate);
+            }
             await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
                 param: `date=${dateRange}` + query
             }).then((response) => {

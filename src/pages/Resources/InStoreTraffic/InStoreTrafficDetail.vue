@@ -271,6 +271,15 @@ export default {
                     let tmpStartDate = this.$moment(param.startDate);
                     let tmpEndDate = this.$moment(param.endDate);
                     let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
+                    if (daysDifference > 10) {
+                        this.$swal.fire({
+                            text: this.$t('alert.trafficTrendChartDateRangeExceeded'),
+                            showCancelButton: false,
+                            confirmButtonText: this.$t('component.ok'),
+                            icon: "warning",
+                        });
+                        return;
+                    }
                     for (let i = 0; i < daysDifference + 1; i++) {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
