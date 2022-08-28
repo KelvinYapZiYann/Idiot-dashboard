@@ -1398,15 +1398,15 @@ export default {
                     let tmpStartDate = this.$moment(param.startDate);
                     let tmpEndDate = this.$moment(param.endDate);
                     let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
-                    if (daysDifference > 10) {
-                        this.$swal.fire({
-                            text: this.$t('alert.trafficTrendChartDateRangeExceeded'),
-                            showCancelButton: false,
-                            confirmButtonText: this.$t('component.ok'),
-                            icon: "warning",
-                        });
-                        return;
-                    }
+                    // if (daysDifference > 10) {
+                    //     this.$swal.fire({
+                    //         text: this.$t('alert.trafficTrendChartDateRangeExceeded'),
+                    //         showCancelButton: false,
+                    //         confirmButtonText: this.$t('component.ok'),
+                    //         icon: "warning",
+                    //     });
+                    //     return;
+                    // }
                     for (let i = 0; i < daysDifference + 1; i++) {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
@@ -1647,8 +1647,8 @@ export default {
         },
         async getDailyTrafficTrendChart(lines, lineId, daysDifference, label, dateRange, startDate, endDate, query) {
             if (daysDifference > 10) {
-                console.log(startDate);
-                console.log(endDate);
+                await this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, 0, label, dateRange, startDate, endDate, query);
+                return;
             }
             await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
                 param: `date=${dateRange}` + query
@@ -1701,6 +1701,17 @@ export default {
                         lines[lineId].data.splice(lines[lineId].data.length, 0, tmpData);
                     }
                 }
+            });
+        },
+        async getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, daysDifferenceId, label, dateRange, startDate, endDate, query) {
+            if (daysDifference > 10) {
+                await this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference - 10, daysDifferenceId + 1, label, dateRange, startDate, endDate, query);
+                return;
+            }
+            await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
+                param: `date=${startDate.format('YYYY-MM-DD')}` + query
+            }).then((response) => {
+                
             });
         },
         async getHourlyTrafficTrendChart(lines, timeDifference, label, date, query) {

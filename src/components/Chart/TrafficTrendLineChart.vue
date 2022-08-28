@@ -160,7 +160,7 @@
 							>
 						</base-input>
 					</div> -->
-					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
+					<div class="col-xl-3 col-lg-4 col-sm-6 col-12" v-show="chartType == 'daily' && dateRange.dateRange == 'custom'">
 						<label class="col-12">{{$t('date.dateRange')}}</label>
 						<el-date-picker
 							size="large"
