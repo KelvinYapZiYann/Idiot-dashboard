@@ -1396,7 +1396,9 @@ export default {
                 if (param.dateRange == 'custom') {
                     let tmpTrendLineChartLabels = [];
                     let tmpStartDate = this.$moment(param.startDate);
+                    let tmpStartDate2 = this.$moment(param.startDate);
                     let tmpEndDate = this.$moment(param.endDate);
+                    let tmpEndDate2 = this.$moment(param.endDate);
                     let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
                     // if (daysDifference > 10) {
                     //     this.$swal.fire({
@@ -1415,9 +1417,9 @@ export default {
                         this.trendLineChartLabels = tmpTrendLineChartLabels;
                         queries.push({
                             label: this.$t('dashboard.all'),
-                            dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
-                            startDate: tmpStartDate,
-                            endDate: tmpEndDate,
+                            dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                            startDate: tmpStartDate2,
+                            endDate: tmpEndDate2,
                             daysDifference: daysDifference + 1,
                             query: '',
                         });
@@ -1426,9 +1428,9 @@ export default {
                                 if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
                                     queries.push({
                                         label: this.totalTrafficsStoreOptions[j].label,
-                                        dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
-                                        startDate: tmpStartDate,
-                                        endDate: tmpEndDate,
+                                        dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                                        startDate: tmpStartDate2,
+                                        endDate: tmpEndDate2,
                                         daysDifference: daysDifference + 1,
                                         query: `&store_id=${param.stores[i]}`
                                     });
@@ -1441,9 +1443,9 @@ export default {
                                 if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
                                     queries.push({
                                         label: this.totalTrafficsDeviceOptions[j].label,
-                                        dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
-                                        startDate: tmpStartDate,
-                                        endDate: tmpEndDate,
+                                        dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                                        startDate: tmpStartDate2,
+                                        endDate: tmpEndDate2,
                                         daysDifference: daysDifference + 1,
                                         query: `&device_id=${param.devices[i]}`
                                     });
@@ -1647,7 +1649,9 @@ export default {
         },
         async getDailyTrafficTrendChart(lines, lineId, daysDifference, label, dateRange, startDate, endDate, query) {
             if (daysDifference > 10) {
-                await this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, 0, label, dateRange, startDate, endDate, query);
+                let tmpStartDate = this.$moment(startDate.format('YYYY-MM-DD'));
+                let tmpEndDate = this.$moment(endDate.format('YYYY-MM-DD'));
+                await this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, label, dateRange, tmpStartDate, tmpEndDate, query);
                 return;
             }
             await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
@@ -1703,15 +1707,27 @@ export default {
                 }
             });
         },
-        async getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, daysDifferenceId, label, dateRange, startDate, endDate, query) {
-            if (daysDifference > 10) {
-                await this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference - 10, daysDifferenceId + 1, label, dateRange, startDate, endDate, query);
+        async getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, label, dateRange, startDate, endDate, query) {
+            if (daysDifference <= 0) {
                 return;
             }
+            let tmpStartDate = startDate.format('YYYY-MM-DD');
+            let tmpEndDate = daysDifference <= 10 ? endDate.format('YYYY-MM-DD') : startDate.add(9, 'days').format('YYYY-MM-DD');
             await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
-                param: `date=${startDate.format('YYYY-MM-DD')}` + query
+                param: `date=${tmpStartDate},${tmpEndDate}` + query
             }).then((response) => {
-                
+                if (lines[lineId]) {
+                    lines[lineId].data = lines[lineId].data.concat(response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0)));
+                } else {
+                    lines.push({
+                        label: label,
+                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+                    });
+                }
+                if (daysDifference > 10) {
+                    this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference - 10, label, dateRange, startDate.add(1, 'days'), endDate, query);
+                    return;
+                }
             });
         },
         async getHourlyTrafficTrendChart(lines, timeDifference, label, date, query) {
