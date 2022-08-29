@@ -1400,15 +1400,6 @@ export default {
                     let tmpEndDate = this.$moment(param.endDate);
                     let tmpEndDate2 = this.$moment(param.endDate);
                     let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
-                    // if (daysDifference > 10) {
-                    //     this.$swal.fire({
-                    //         text: this.$t('alert.trafficTrendChartDateRangeExceeded'),
-                    //         showCancelButton: false,
-                    //         confirmButtonText: this.$t('component.ok'),
-                    //         icon: "warning",
-                    //     });
-                    //     return;
-                    // }
                     for (let i = 0; i < daysDifference + 1; i++) {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
@@ -1458,7 +1449,9 @@ export default {
                     await this.$store.dispatch('decode/decodeDateRangeOneDayBefore', param.dateRange).then((dateRange) => {
                         let tmpTrendLineChartLabels = [];
                         let tmpStartDate = this.$moment(dateRange.substring(0, 10));
+                        let tmpStartDate2 = this.$moment(dateRange.substring(0, 10));
                         let tmpEndDate = this.$moment(dateRange.substring(11, 21));
+                        let tmpEndDate2 = this.$moment(dateRange.substring(11, 21));
                         let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
                         for (let i = 0; i < daysDifference + 1; i++) {
                             tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
@@ -1468,9 +1461,9 @@ export default {
 
                         queries.push({
                             label: this.$t('dashboard.all'),
-                            dateRange: dateRange,
-                            startDate: tmpStartDate,
-                            endDate: tmpEndDate,
+                            dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                            startDate: tmpStartDate2,
+                            endDate: tmpEndDate2,
                             daysDifference: daysDifference + 1,
                             query: '',
                         });
@@ -1479,9 +1472,9 @@ export default {
                                 if (this.totalTrafficsStoreOptions[j].value == param.stores[i]) {
                                     queries.push({
                                         label: this.totalTrafficsStoreOptions[j].label,
-                                        dateRange: dateRange,
-                                        startDate: tmpStartDate,
-                                        endDate: tmpEndDate,
+                                        dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                                        startDate: tmpStartDate2,
+                                        endDate: tmpEndDate2,
                                         daysDifference: daysDifference + 1,
                                         query: `&store_id=${param.stores[i]}`
                                     });
@@ -1494,9 +1487,9 @@ export default {
                                 if (this.totalTrafficsDeviceOptions[j].value == param.devices[i]) {
                                     queries.push({
                                         label: this.totalTrafficsDeviceOptions[j].label,
-                                        dateRange: dateRange,
-                                        startDate: tmpStartDate,
-                                        endDate: tmpEndDate,
+                                        dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                                        startDate: tmpStartDate2,
+                                        endDate: tmpEndDate2,
                                         daysDifference: daysDifference + 1,
                                         query: `&device_id=${param.devices[i]}`
                                     });

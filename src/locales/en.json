@@ -173,6 +173,8 @@
     { "id": "yesterday", "name": "Yesterday" },
     { "id": "weekTillDate", "name": "Week Till Date" },
     { "id": "lastWeek", "name": "Last Week" },
+    { "id": "monthTillDate", "name": "Month Till Date" },
+    { "id": "lastMonth", "name": "Last Month" },
     { "id": "custom", "name": "Custom" }
   ],
   "chartTypeOptions": [
