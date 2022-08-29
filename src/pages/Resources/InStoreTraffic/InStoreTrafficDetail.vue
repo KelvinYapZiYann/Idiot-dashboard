@@ -269,17 +269,19 @@ export default {
                 if (param.dateRange == 'custom') {
                     let tmpTrendLineChartLabels = [];
                     let tmpStartDate = this.$moment(param.startDate);
+                    let tmpStartDate2 = this.$moment(param.startDate);
                     let tmpEndDate = this.$moment(param.endDate);
+                    let tmpEndDate2 = this.$moment(param.endDate);
                     let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
-                    if (daysDifference > 10) {
-                        this.$swal.fire({
-                            text: this.$t('alert.trafficTrendChartDateRangeExceeded'),
-                            showCancelButton: false,
-                            confirmButtonText: this.$t('component.ok'),
-                            icon: "warning",
-                        });
-                        return;
-                    }
+                    // if (daysDifference > 10) {
+                    //     this.$swal.fire({
+                    //         text: this.$t('alert.trafficTrendChartDateRangeExceeded'),
+                    //         showCancelButton: false,
+                    //         confirmButtonText: this.$t('component.ok'),
+                    //         icon: "warning",
+                    //     });
+                    //     return;
+                    // }
                     for (let i = 0; i < daysDifference + 1; i++) {
                         tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
                         tmpStartDate.add(1, 'days');
@@ -289,7 +291,9 @@ export default {
 
                         queries.push({
                             label: this.$t('dashboard.all'),
-                            dateRange: `${param.startDate.toISOString().substring(0,10)},${param.endDate.toISOString().substring(0,10)}`,
+                            dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                            startDate: tmpStartDate2,
+                            endDate: tmpEndDate2,
                             daysDifference: daysDifference + 1,
                             query:  `&device_id=${this.inStoreTrafficId}`,
                         });
@@ -298,7 +302,9 @@ export default {
                     await this.$store.dispatch('decode/decodeDateRangeOneDayBefore', param.dateRange).then((dateRange) => {
                         let tmpTrendLineChartLabels = [];
                         let tmpStartDate = this.$moment(dateRange.substring(0, 10));
+                        let tmpStartDate2 = this.$moment(dateRange.substring(0, 10));
                         let tmpEndDate = this.$moment(dateRange.substring(11, 21));
+                        let tmpEndDate2 = this.$moment(dateRange.substring(11, 21));
                         let daysDifference = tmpEndDate.diff(tmpStartDate, 'days');
                         for (let i = 0; i < daysDifference + 1; i++) {
                             tmpTrendLineChartLabels.push(tmpStartDate.format('YYYY-MM-DD (ddd)'));
@@ -308,7 +314,9 @@ export default {
 
                         queries.push({
                             label: this.$t('dashboard.all'),
-                            dateRange: dateRange,
+                            dateRange: `${tmpStartDate2.format('YYYY-MM-DD')},${tmpEndDate2.format('YYYY-MM-DD')}`,
+                            startDate: tmpStartDate2,
+                            endDate: tmpEndDate2,
                             daysDifference: daysDifference + 1,
                             query: `&device_id=${this.inStoreTrafficId}`,
                         });
@@ -317,7 +325,7 @@ export default {
                 let lines = [];
                 let tmpFlag = 0;
                 for (let i = 0; i < queries.length; i++) {
-                    await this.getDailyTrafficTrendChart(lines, queries[i].daysDifference, queries[i].label, queries[i].dateRange, queries[i].query).then(() => {
+                    await this.getDailyTrafficTrendChart(lines, i, queries[i].daysDifference, queries[i].label, queries[i].dateRange, queries[i].startDate, queries[i].endDate, queries[i].query).then(() => {
                         tmpFlag++;
                         if (tmpFlag == queries.length) {
                             this.trendLineChartLines = lines;
@@ -405,21 +413,35 @@ export default {
                 }
             }
         },
-        async getDailyTrafficTrendChart(lines, daysDifference, label, dateRange, query) {
+        async getDailyTrafficTrendChart(lines, lineId, daysDifference, label, dateRange, startDate, endDate, query) {
+            if (daysDifference > 10) {
+                let tmpStartDate = this.$moment(startDate.format('YYYY-MM-DD'));
+                let tmpEndDate = this.$moment(endDate.format('YYYY-MM-DD'));
+                await this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, label, dateRange, tmpStartDate, tmpEndDate, query);
+                return;
+            }
             await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
                 param: `date=${dateRange}` + query
             }).then((response) => {
                 if (response.length == daysDifference) {
-                    lines.push({
-                        label: label,
-                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
-                    });
+                    if (lines.length == lineId) {
+                        lines.push({
+                            label: label,
+                            data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+                        });
+                    } else {
+                        lines[lineId].data.splice(lines[lineId].data.length, 0, response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0)));
+                    }
                 } else if (response.length > daysDifference) {
                     response.splice(response.length - 1, response.length - daysDifference);
-                    lines.push({
-                        label: label,
-                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
-                    });
+                    if (lines.length == lineId) {
+                        lines.push({
+                            label: label,
+                            data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+                        });
+                    } else {
+                        lines[lineId].data.splice(lines[lineId].data.length, 0, response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0)));
+                    }
                 } else {
                     response = response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
                     let tmpJ = 0;
@@ -440,10 +462,37 @@ export default {
                             passing: 0,
                         });
                     }
+                    if (lines.length == lineId) {
+                        lines.push({
+                            label: label,
+                            data: tmpData,
+                        });
+                    } else {
+                        lines[lineId].data.splice(lines[lineId].data.length, 0, tmpData);
+                    }
+                }
+            });
+        },
+        async getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference, label, dateRange, startDate, endDate, query) {
+            if (daysDifference <= 0) {
+                return;
+            }
+            let tmpStartDate = startDate.format('YYYY-MM-DD');
+            let tmpEndDate = daysDifference <= 10 ? endDate.format('YYYY-MM-DD') : startDate.add(9, 'days').format('YYYY-MM-DD');
+            await this.$store.dispatch('inStoreTraffic/getDailyTraffics', {
+                param: `date=${tmpStartDate},${tmpEndDate}` + query
+            }).then((response) => {
+                if (lines[lineId]) {
+                    lines[lineId].data = lines[lineId].data.concat(response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0)));
+                } else {
                     lines.push({
                         label: label,
-                        data: tmpData,
+                        data: response.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
                     });
+                }
+                if (daysDifference > 10) {
+                    this.getDailyTrafficTrendChartExceedDaysDifference(lines, lineId, daysDifference - 10, label, dateRange, startDate.add(1, 'days'), endDate, query);
+                    return;
                 }
             });
         },
