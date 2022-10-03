@@ -1,6 +1,6 @@
 <template>
     <div class="content col-xl-10 col-lg-12 col-md-12 ml-auto mr-auto">
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                 <category-card
                     :title="$t('dashboard.byStore')"
@@ -260,7 +260,7 @@
                 </div>
             </div>
         </category-card>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <stats-card
                     :title="totalTraffics.enter ? totalTraffics.enter : '0'"
@@ -366,7 +366,7 @@
                 </div>
             </div>
         </category-card>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
                 <traffics-card
                     :sub-title="$t('date.today')"
@@ -638,7 +638,7 @@
                 </div>
             </div>
         </category-card>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-12">
                 <traffics-card
                     :sub-title="specificComparisonTotalTrafficsSelectedDateRange1"
